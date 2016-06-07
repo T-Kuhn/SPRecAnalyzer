@@ -20,3 +20,5 @@ D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csprojResolve
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.SPRA_Form.resources
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.Properties.Resources.resources
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csproj.GenerateResource.Cache
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\Interop.MLApp.dll
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csproj.ResolveComReference.cache

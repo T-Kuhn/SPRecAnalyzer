@@ -31,6 +31,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.gpibInterfaceTab = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.labelSequencer = new System.Windows.Forms.Label();
             this.buttonSeqStart = new System.Windows.Forms.Button();
             this.textBoxSequencer = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -45,22 +46,30 @@
             this.labelStringToWrite = new System.Windows.Forms.Label();
             this.textBoxStringToWrite = new System.Windows.Forms.TextBox();
             this.cameraTab = new System.Windows.Forms.TabPage();
-            this.labelSequencer = new System.Windows.Forms.Label();
+            this.matlabTab = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonStartMatlab = new System.Windows.Forms.Button();
+            this.unusedTab = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).BeginInit();
+            this.matlabTab.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.gpibInterfaceTab);
             this.tabControl1.Controls.Add(this.cameraTab);
+            this.tabControl1.Controls.Add(this.matlabTab);
+            this.tabControl1.Controls.Add(this.unusedTab);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(655, 364);
+            this.tabControl1.Size = new System.Drawing.Size(689, 364);
             this.tabControl1.TabIndex = 0;
             // 
             // gpibInterfaceTab
@@ -71,21 +80,31 @@
             this.gpibInterfaceTab.Location = new System.Drawing.Point(4, 22);
             this.gpibInterfaceTab.Name = "gpibInterfaceTab";
             this.gpibInterfaceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.gpibInterfaceTab.Size = new System.Drawing.Size(647, 338);
+            this.gpibInterfaceTab.Size = new System.Drawing.Size(681, 338);
             this.gpibInterfaceTab.TabIndex = 0;
             this.gpibInterfaceTab.Text = "GPIB Interface";
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.labelSequencer);
             this.groupBox2.Controls.Add(this.buttonSeqStart);
             this.groupBox2.Controls.Add(this.textBoxSequencer);
-            this.groupBox2.Location = new System.Drawing.Point(233, 6);
+            this.groupBox2.Location = new System.Drawing.Point(233, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(212, 327);
+            this.groupBox2.Size = new System.Drawing.Size(221, 330);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Advanced";
+            // 
+            // labelSequencer
+            // 
+            this.labelSequencer.AutoSize = true;
+            this.labelSequencer.Location = new System.Drawing.Point(15, 22);
+            this.labelSequencer.Name = "labelSequencer";
+            this.labelSequencer.Size = new System.Drawing.Size(64, 12);
+            this.labelSequencer.TabIndex = 12;
+            this.labelSequencer.Text = "Sequencer: ";
             // 
             // buttonSeqStart
             // 
@@ -106,6 +125,8 @@
             this.textBoxSequencer.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxSequencer.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer.TabIndex = 11;
+            this.textBoxSequencer.Text = "D:1S1000F5000R200\r\nD:2S1000F5000R200\r\nH:W-\r\nM:W+P2000+P1000\r\nM:W+P2000+P1000\r\nM:W" +
+    "+P2000+P1000";
             // 
             // groupBox1
             // 
@@ -229,22 +250,67 @@
             this.cameraTab.Location = new System.Drawing.Point(4, 22);
             this.cameraTab.Name = "cameraTab";
             this.cameraTab.Padding = new System.Windows.Forms.Padding(3);
-            this.cameraTab.Size = new System.Drawing.Size(647, 338);
+            this.cameraTab.Size = new System.Drawing.Size(681, 338);
             this.cameraTab.TabIndex = 1;
             this.cameraTab.Text = "Camera";
             // 
-            // labelSequencer
+            // matlabTab
             // 
-            this.labelSequencer.AutoSize = true;
-            this.labelSequencer.Location = new System.Drawing.Point(15, 22);
-            this.labelSequencer.Name = "labelSequencer";
-            this.labelSequencer.Size = new System.Drawing.Size(64, 12);
-            this.labelSequencer.TabIndex = 12;
-            this.labelSequencer.Text = "Sequencer: ";
+            this.matlabTab.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.matlabTab.Controls.Add(this.groupBox3);
+            this.matlabTab.Location = new System.Drawing.Point(4, 22);
+            this.matlabTab.Name = "matlabTab";
+            this.matlabTab.Size = new System.Drawing.Size(681, 338);
+            this.matlabTab.TabIndex = 2;
+            this.matlabTab.Text = "Matlab Interface";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.buttonStartMatlab);
+            this.groupBox3.Location = new System.Drawing.Point(6, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(212, 327);
+            this.groupBox3.TabIndex = 12;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Basics";
+            // 
+            // buttonStartMatlab
+            // 
+            this.buttonStartMatlab.Location = new System.Drawing.Point(56, 42);
+            this.buttonStartMatlab.Name = "buttonStartMatlab";
+            this.buttonStartMatlab.Size = new System.Drawing.Size(75, 23);
+            this.buttonStartMatlab.TabIndex = 10;
+            this.buttonStartMatlab.Text = "Start";
+            this.buttonStartMatlab.UseVisualStyleBackColor = true;
+            this.buttonStartMatlab.Click += new System.EventHandler(this.buttonStartMatlab_Click);
+            // 
+            // unusedTab
+            // 
+            this.unusedTab.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.unusedTab.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.unusedTab.Location = new System.Drawing.Point(4, 22);
+            this.unusedTab.Name = "unusedTab";
+            this.unusedTab.Size = new System.Drawing.Size(681, 338);
+            this.unusedTab.TabIndex = 3;
+            this.unusedTab.Text = "Unused Tab";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.textBox1.Location = new System.Drawing.Point(11, 192);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox1.Size = new System.Drawing.Size(204, 118);
+            this.textBox1.TabIndex = 10;
+            this.textBox1.Text = "m. origin:    H:W-\r\nel. origin:   R:W\r\nvelocity:     D:1S100F1000R100\r\nrel. move:" +
+    "    M:W+P1000+P1000\r\nabs. move:    A:W+P1000+P1000\r\njog move:     J:W++\r\nfree mo" +
+    "t:     C:W0 / C:W1";
             // 
             // SPRA_Form
             // 
-            this.ClientSize = new System.Drawing.Size(679, 388);
+            this.ClientSize = new System.Drawing.Size(740, 388);
             this.Controls.Add(this.tabControl1);
             this.Name = "SPRA_Form";
             this.Text = "SP Record Analyzer";
@@ -255,6 +321,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).EndInit();
+            this.matlabTab.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -284,6 +352,11 @@
         private System.Windows.Forms.Button buttonSeqStart;
         private System.Windows.Forms.TextBox textBoxSequencer;
         private System.Windows.Forms.Label labelSequencer;
+        private System.Windows.Forms.TabPage matlabTab;
+        private System.Windows.Forms.TabPage unusedTab;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button buttonStartMatlab;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
