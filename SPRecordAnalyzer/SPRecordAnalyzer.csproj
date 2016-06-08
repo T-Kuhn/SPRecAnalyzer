@@ -48,9 +48,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Jai_FactoryDotNET">
+      <HintPath>bin\Debug\JAI\Jai_FactoryDotNET.dll</HintPath>
+    </Reference>
     <Reference Include="NationalInstruments.NI4882, Version=13.0.45.159, Culture=neutral, PublicKeyToken=4febd62461bf11a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\KT\SimpleReadWrite\cs\bin\Debug\NationalInstruments.NI4882.dll</HintPath>
+      <HintPath>bin\Debug\NI\NationalInstruments.NI4882.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
