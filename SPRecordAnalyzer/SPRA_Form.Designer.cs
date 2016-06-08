@@ -30,11 +30,12 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.gpibInterfaceTab = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBoxAdvanced = new System.Windows.Forms.GroupBox();
+            this.textBoxInfo = new System.Windows.Forms.TextBox();
             this.labelSequencer = new System.Windows.Forms.Label();
             this.buttonSeqStart = new System.Windows.Forms.Button();
             this.textBoxSequencer = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxBasics = new System.Windows.Forms.GroupBox();
             this.numericUpDownAdress = new System.Windows.Forms.NumericUpDown();
             this.textBoxStringRead = new System.Windows.Forms.TextBox();
             this.labelAdress = new System.Windows.Forms.Label();
@@ -50,14 +51,22 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.unusedTab = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.groupBoxStatus = new System.Windows.Forms.GroupBox();
+            this.textBoxMotor1 = new System.Windows.Forms.TextBox();
+            this.textBoxMotor2 = new System.Windows.Forms.TextBox();
+            this.textBoxStatus = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxAdvanced.SuspendLayout();
+            this.groupBoxBasics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).BeginInit();
             this.matlabTab.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBoxStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -69,33 +78,48 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(689, 364);
+            this.tabControl1.Size = new System.Drawing.Size(698, 364);
             this.tabControl1.TabIndex = 0;
             // 
             // gpibInterfaceTab
             // 
             this.gpibInterfaceTab.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.gpibInterfaceTab.Controls.Add(this.groupBox2);
-            this.gpibInterfaceTab.Controls.Add(this.groupBox1);
+            this.gpibInterfaceTab.Controls.Add(this.groupBoxStatus);
+            this.gpibInterfaceTab.Controls.Add(this.groupBoxAdvanced);
+            this.gpibInterfaceTab.Controls.Add(this.groupBoxBasics);
             this.gpibInterfaceTab.Location = new System.Drawing.Point(4, 22);
             this.gpibInterfaceTab.Name = "gpibInterfaceTab";
             this.gpibInterfaceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.gpibInterfaceTab.Size = new System.Drawing.Size(681, 338);
+            this.gpibInterfaceTab.Size = new System.Drawing.Size(690, 338);
             this.gpibInterfaceTab.TabIndex = 0;
             this.gpibInterfaceTab.Text = "GPIB Interface";
             // 
-            // groupBox2
+            // groupBoxAdvanced
             // 
-            this.groupBox2.Controls.Add(this.textBox1);
-            this.groupBox2.Controls.Add(this.labelSequencer);
-            this.groupBox2.Controls.Add(this.buttonSeqStart);
-            this.groupBox2.Controls.Add(this.textBoxSequencer);
-            this.groupBox2.Location = new System.Drawing.Point(233, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(221, 330);
-            this.groupBox2.TabIndex = 11;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Advanced";
+            this.groupBoxAdvanced.Controls.Add(this.textBoxInfo);
+            this.groupBoxAdvanced.Controls.Add(this.labelSequencer);
+            this.groupBoxAdvanced.Controls.Add(this.buttonSeqStart);
+            this.groupBoxAdvanced.Controls.Add(this.textBoxSequencer);
+            this.groupBoxAdvanced.Location = new System.Drawing.Point(233, 3);
+            this.groupBoxAdvanced.Name = "groupBoxAdvanced";
+            this.groupBoxAdvanced.Size = new System.Drawing.Size(221, 330);
+            this.groupBoxAdvanced.TabIndex = 11;
+            this.groupBoxAdvanced.TabStop = false;
+            this.groupBoxAdvanced.Text = "Advanced";
+            // 
+            // textBoxInfo
+            // 
+            this.textBoxInfo.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.textBoxInfo.Location = new System.Drawing.Point(11, 205);
+            this.textBoxInfo.Multiline = true;
+            this.textBoxInfo.Name = "textBoxInfo";
+            this.textBoxInfo.ReadOnly = true;
+            this.textBoxInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxInfo.Size = new System.Drawing.Size(204, 105);
+            this.textBoxInfo.TabIndex = 10;
+            this.textBoxInfo.Text = "m. origin:    H:W-\r\nel. origin:   R:W\r\nvelocity:     D:1S100F1000R100\r\nrel. move:" +
+    "    M:W+P1000+P1000\r\nabs. move:    A:W+P1000+P1000\r\njog move:     J:W++\r\nfree mo" +
+    "t:     C:W0 / C:W1\r\nstatus:       Q:";
             // 
             // labelSequencer
             // 
@@ -125,27 +149,28 @@
             this.textBoxSequencer.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxSequencer.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer.TabIndex = 11;
-            this.textBoxSequencer.Text = "D:1S1000F5000R200\r\nD:2S1000F5000R200\r\nH:W-\r\nM:W+P2000+P1000\r\nM:W+P2000+P1000\r\nM:W" +
-    "+P2000+P1000";
+            this.textBoxSequencer.Text = "D:1S1000F10000R200\r\nD:2S1000F10000R200\r\nH:W-\r\nM:W+P2000+P1000\r\nM:W+P20000+P10000\r" +
+    "\nM:W-P2000-P1000\r\nM:W+P2000+P10000\r\nM:W-P2000-P10000\r\nM:W+P2000+P1000\r\nM:W-P2000" +
+    "0-P10000";
             // 
-            // groupBox1
+            // groupBoxBasics
             // 
-            this.groupBox1.Controls.Add(this.numericUpDownAdress);
-            this.groupBox1.Controls.Add(this.textBoxStringRead);
-            this.groupBox1.Controls.Add(this.labelAdress);
-            this.groupBox1.Controls.Add(this.labelStringRead);
-            this.groupBox1.Controls.Add(this.buttonOpen);
-            this.groupBox1.Controls.Add(this.buttonRead);
-            this.groupBox1.Controls.Add(this.buttonClose);
-            this.groupBox1.Controls.Add(this.buttonWrite);
-            this.groupBox1.Controls.Add(this.labelStringToWrite);
-            this.groupBox1.Controls.Add(this.textBoxStringToWrite);
-            this.groupBox1.Location = new System.Drawing.Point(6, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(221, 331);
-            this.groupBox1.TabIndex = 10;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Basics";
+            this.groupBoxBasics.Controls.Add(this.numericUpDownAdress);
+            this.groupBoxBasics.Controls.Add(this.textBoxStringRead);
+            this.groupBoxBasics.Controls.Add(this.labelAdress);
+            this.groupBoxBasics.Controls.Add(this.labelStringRead);
+            this.groupBoxBasics.Controls.Add(this.buttonOpen);
+            this.groupBoxBasics.Controls.Add(this.buttonRead);
+            this.groupBoxBasics.Controls.Add(this.buttonClose);
+            this.groupBoxBasics.Controls.Add(this.buttonWrite);
+            this.groupBoxBasics.Controls.Add(this.labelStringToWrite);
+            this.groupBoxBasics.Controls.Add(this.textBoxStringToWrite);
+            this.groupBoxBasics.Location = new System.Drawing.Point(6, 3);
+            this.groupBoxBasics.Name = "groupBoxBasics";
+            this.groupBoxBasics.Size = new System.Drawing.Size(221, 331);
+            this.groupBoxBasics.TabIndex = 10;
+            this.groupBoxBasics.TabStop = false;
+            this.groupBoxBasics.Text = "Basics";
             // 
             // numericUpDownAdress
             // 
@@ -294,19 +319,88 @@
             this.unusedTab.TabIndex = 3;
             this.unusedTab.Text = "Unused Tab";
             // 
-            // textBox1
+            // groupBoxStatus
             // 
-            this.textBox1.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.textBox1.Location = new System.Drawing.Point(11, 192);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(204, 118);
-            this.textBox1.TabIndex = 10;
-            this.textBox1.Text = "m. origin:    H:W-\r\nel. origin:   R:W\r\nvelocity:     D:1S100F1000R100\r\nrel. move:" +
-    "    M:W+P1000+P1000\r\nabs. move:    A:W+P1000+P1000\r\njog move:     J:W++\r\nfree mo" +
-    "t:     C:W0 / C:W1";
+            this.groupBoxStatus.Controls.Add(this.label5);
+            this.groupBoxStatus.Controls.Add(this.label4);
+            this.groupBoxStatus.Controls.Add(this.label3);
+            this.groupBoxStatus.Controls.Add(this.label2);
+            this.groupBoxStatus.Controls.Add(this.textBoxStatus);
+            this.groupBoxStatus.Controls.Add(this.textBoxMotor2);
+            this.groupBoxStatus.Controls.Add(this.textBoxMotor1);
+            this.groupBoxStatus.Location = new System.Drawing.Point(460, 3);
+            this.groupBoxStatus.Name = "groupBoxStatus";
+            this.groupBoxStatus.Size = new System.Drawing.Size(221, 330);
+            this.groupBoxStatus.TabIndex = 13;
+            this.groupBoxStatus.TabStop = false;
+            this.groupBoxStatus.Text = "Status";
+            // 
+            // textBoxMotor1
+            // 
+            this.textBoxMotor1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBoxMotor1.Location = new System.Drawing.Point(106, 95);
+            this.textBoxMotor1.Name = "textBoxMotor1";
+            this.textBoxMotor1.ReadOnly = true;
+            this.textBoxMotor1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxMotor1.Size = new System.Drawing.Size(88, 19);
+            this.textBoxMotor1.TabIndex = 10;
+            // 
+            // textBoxMotor2
+            // 
+            this.textBoxMotor2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBoxMotor2.Location = new System.Drawing.Point(106, 120);
+            this.textBoxMotor2.Name = "textBoxMotor2";
+            this.textBoxMotor2.ReadOnly = true;
+            this.textBoxMotor2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxMotor2.Size = new System.Drawing.Size(88, 19);
+            this.textBoxMotor2.TabIndex = 11;
+            // 
+            // textBoxStatus
+            // 
+            this.textBoxStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.textBoxStatus.Location = new System.Drawing.Point(106, 33);
+            this.textBoxStatus.Name = "textBoxStatus";
+            this.textBoxStatus.ReadOnly = true;
+            this.textBoxStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxStatus.Size = new System.Drawing.Size(88, 19);
+            this.textBoxStatus.TabIndex = 12;
+            this.textBoxStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(36, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 12);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Bus Status:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(68, 74);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(67, 12);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Pulse count:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(36, 98);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(42, 12);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Motor1:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(36, 123);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(42, 12);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Motor2:";
             // 
             // SPRA_Form
             // 
@@ -314,15 +408,18 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "SPRA_Form";
             this.Text = "SP Record Analyzer";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FTV_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.gpibInterfaceTab.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxAdvanced.ResumeLayout(false);
+            this.groupBoxAdvanced.PerformLayout();
+            this.groupBoxBasics.ResumeLayout(false);
+            this.groupBoxBasics.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).EndInit();
             this.matlabTab.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.groupBoxStatus.ResumeLayout(false);
+            this.groupBoxStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -347,8 +444,8 @@
         private System.Windows.Forms.Button buttonOpen;
         private System.Windows.Forms.NumericUpDown numericUpDownAdress;
         private System.Windows.Forms.Label labelAdress;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxAdvanced;
+        private System.Windows.Forms.GroupBox groupBoxBasics;
         private System.Windows.Forms.Button buttonSeqStart;
         private System.Windows.Forms.TextBox textBoxSequencer;
         private System.Windows.Forms.Label labelSequencer;
@@ -356,7 +453,15 @@
         private System.Windows.Forms.TabPage unusedTab;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button buttonStartMatlab;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxInfo;
+        private System.Windows.Forms.GroupBox groupBoxStatus;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBoxStatus;
+        private System.Windows.Forms.TextBox textBoxMotor2;
+        private System.Windows.Forms.TextBox textBoxMotor1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
     }
 }
 
