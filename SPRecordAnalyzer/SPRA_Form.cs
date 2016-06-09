@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,9 +19,13 @@ namespace SPRecordAnalyzer
     {
         private Thread stageComThread;
         private bool seqRunning;
+        private bool AIARunning;
+        private bool AIAinit;
         private string[] splittedString;
         private Device device;
         private int seqCounter;
+        private int imgNmbr;
+        private bool busReady;
         delegate void setStatusBoxCallback(string text);
         delegate void setPosTextMotor1Callback(string text);
         delegate void setPosTextMotor2Callback(string text);
@@ -40,6 +45,7 @@ namespace SPRecordAnalyzer
             InitializeComponent();
             stageComThread = new Thread(sCT);
             seqRunning = false;
+            imgNmbr = 0;
             // start thread
             stageComThread.Start();
             Jai_FactoryWrapper.EFactoryError error = Jai_FactoryWrapper.EFactoryError.Success;
@@ -70,6 +76,7 @@ namespace SPRecordAnalyzer
             // This Thread will go one forever. It will only be destroyd when the form is closed.
             while (true)
             {
+                // GPIB communication
                 if (device != null)
                 {
                     writeToStage("Q:");
@@ -78,13 +85,14 @@ namespace SPRecordAnalyzer
                     responceSplit = response.Split(',');
                     setPosTextMotor1(responceSplit[0]);
                     setPosTextMotor2(responceSplit[1]);
-                }
-                if (seqRunning)
-                {
                     writeToStage("!:");
                     Thread.Sleep(5);
                     response = readFromStage();
-                    if (response.Contains("R"))
+                    busReady = response.Contains("R");
+                }
+                if (seqRunning)
+                {
+                    if (busReady)
                     {
                         // bus is ready!
                         setStatusBox("Ready");
@@ -108,6 +116,32 @@ namespace SPRecordAnalyzer
                         // bus is not ready
                         setStatusBox("Busy");
                     }
+                }
+
+                // Automatic Image Acquisition
+                if (device != null && myCamera != null)
+                {
+                    if (busReady && AIARunning)
+                    {
+                        if (!AIAinit)
+                        {
+                            writeToStage(textBoxAIAinitInstr.Text);
+                            Thread.Sleep(5);
+                            AIAinit = false;
+                        }
+                        else
+                        {
+                            writeToStage(textBoxAIAloopInstr.Text);
+                            Thread.Sleep(5);
+                            writeToStage("G:");
+                            int i;
+                            Int32.TryParse(textBoxAIAwaitBefImage.Text, out i);
+                            Thread.Sleep(i);
+                            if(checkBoxSaveImages.Checked)
+                                Savebmp();
+                        }
+                    }
+                        
                 }
                 Thread.Sleep(5);
             }
@@ -267,7 +301,22 @@ namespace SPRecordAnalyzer
         
         private void buttonSeqStart_Click(object sender, EventArgs e)
         {
-            string str = textBoxSequencer.Text;
+            string str = textBoxSequencer1.Text;
+            splittedString = str.Split('\n');
+            for (int i = 0; i < splittedString.Length; i++)
+            {
+                splittedString[i] = splittedString[i].Replace("\r", "");
+                splittedString[i] = splittedString[i].Replace("\n", "");
+                Debug.WriteLine("String entry : " + splittedString[i]);
+            }
+            seqRunning = true;
+            seqCounter = 0;
+            Debug.WriteLine("Length of the splitted string: " + splittedString.Length);
+        }
+
+        private void buttonSeq2Start_Click(object sender, EventArgs e)
+        {
+            string str = textBoxSequencer2.Text;
             splittedString = str.Split('\n');
             for (int i = 0; i < splittedString.Length; i++)
             {
@@ -299,7 +348,6 @@ namespace SPRecordAnalyzer
             // Display result
             //object[] res = result as object[];
         }
-
         // CAMERA FUNCTIONS START
         private void WidthNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
@@ -327,10 +375,23 @@ namespace SPRecordAnalyzer
             GainLabel.Text = myGainNode.Value.ToString();
         }
 
+        private void buttonSaveBMP_Click(object sender, EventArgs e)
+        {
+            myCamera.SaveLastRawFrame("D:/KT/img/tmp.bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
+        }
+
+        private void Savebmp()
+        {
+            myCamera.SaveLastRawFrame("D:/KT/img/Image" + imgNmbr + ".bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
+            imgNmbr++;
+        }
+
         private void buttonCameraStart_Click(object sender, EventArgs e)
         {
             if (myCamera != null)
+            {
                 myCamera.StartImageAcquisition(true, 5);
+            }
         }
 
         private void buttonCameraStop_Click(object sender, EventArgs e)
@@ -452,15 +513,6 @@ namespace SPRecordAnalyzer
                 GainTrackBar.Enabled = false;
 
                 MessageBox.Show("No Cameras Found!");
-            }
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (myCamera != null)
-            {
-                buttonCameraStart_Click(null, null);
-                myCamera.Close();
             }
         }
 
@@ -600,8 +652,17 @@ namespace SPRecordAnalyzer
             }
 
             error = Jai_FactoryWrapper.J_Node_SetValueString(hNodeIncoming, false, sbJaiPixelFormatName.ToString());
-        }
-        // CAMERA FUNCTIONS STOP
+        }// CAMERA FUNCTIONS STOP
 
+        private void buttonAIAStart_Click(object sender, EventArgs e)
+        {
+            AIARunning = true;
+            AIAinit = true;
+        }
+
+        private void buttonAIAStop_Click(object sender, EventArgs e)
+        {
+            AIARunning = false;
+        }
     }
 }

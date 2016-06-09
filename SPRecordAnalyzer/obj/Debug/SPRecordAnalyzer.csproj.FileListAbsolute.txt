@@ -10,20 +10,20 @@ C:\Users\uozumi\documents\visual studio 2015\Projects\SPRecordAnalyzer\SPRecordA
 C:\Users\uozumi\documents\visual studio 2015\Projects\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.exe
 C:\Users\uozumi\documents\visual studio 2015\Projects\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.pdb
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\SPRecordAnalyzer.exe.config
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.exe
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.pdb
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\SPRecordAnalyzer.exe
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\SPRecordAnalyzer.pdb
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\NationalInstruments.NI4882.xml
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csprojResolveAssemblyReference.cache
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.SPRA_Form.resources
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.Properties.Resources.resources
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csproj.GenerateResource.Cache
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\Interop.MLApp.dll
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csproj.ResolveComReference.cache
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\Jai_FactoryDotNET.dll
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\NationalInstruments.NI4882.dll
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\log4net.dll
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\Jai_FactoryDotNET.pdb
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\Jai_FactoryDotNET.xml
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\NationalInstruments.NI4882.xml
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\log4net.xml
-D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\NationalInstruments.NI4882.dll
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\Interop.MLApp.dll
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csproj.ResolveComReference.cache
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.SPRA_Form.resources
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.Properties.Resources.resources
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csproj.GenerateResource.Cache
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.exe
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.pdb
+D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csprojResolveAssemblyReference.cache

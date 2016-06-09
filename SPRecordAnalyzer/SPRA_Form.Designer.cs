@@ -40,9 +40,9 @@
             this.textBoxMotor1 = new System.Windows.Forms.TextBox();
             this.groupBoxAdvanced = new System.Windows.Forms.GroupBox();
             this.textBoxInfo = new System.Windows.Forms.TextBox();
-            this.labelSequencer = new System.Windows.Forms.Label();
-            this.buttonSeqStart = new System.Windows.Forms.Button();
-            this.textBoxSequencer = new System.Windows.Forms.TextBox();
+            this.labelSequencer1 = new System.Windows.Forms.Label();
+            this.buttonSeq1Start = new System.Windows.Forms.Button();
+            this.textBoxSequencer1 = new System.Windows.Forms.TextBox();
             this.groupBoxBasics = new System.Windows.Forms.GroupBox();
             this.numericUpDownAdress = new System.Windows.Forms.NumericUpDown();
             this.textBoxStringRead = new System.Windows.Forms.TextBox();
@@ -54,9 +54,6 @@
             this.buttonWrite = new System.Windows.Forms.Button();
             this.labelStringToWrite = new System.Windows.Forms.Label();
             this.textBoxStringToWrite = new System.Windows.Forms.TextBox();
-            this.matlabTab = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.cameraTab = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.GainGroupBox = new System.Windows.Forms.GroupBox();
@@ -71,15 +68,30 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.SearchButton = new System.Windows.Forms.Button();
             this.CameraIDTextBox = new System.Windows.Forms.TextBox();
-            this.unusedTab = new System.Windows.Forms.TabPage();
+            this.matlabTab = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonStartMatlab = new System.Windows.Forms.Button();
+            this.autImgAcq = new System.Windows.Forms.TabPage();
+            this.labelSequencer2 = new System.Windows.Forms.Label();
+            this.buttonSeq2Start = new System.Windows.Forms.Button();
+            this.textBoxSequencer2 = new System.Windows.Forms.TextBox();
+            this.buttonSaveBMP = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.buttonAIAStop = new System.Windows.Forms.Button();
+            this.buttonAIAStart = new System.Windows.Forms.Button();
+            this.labelAIAinit = new System.Windows.Forms.Label();
+            this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
+            this.labelAIAloopinstr = new System.Windows.Forms.Label();
+            this.textBoxAIAloopInstr = new System.Windows.Forms.TextBox();
+            this.checkBoxSaveImages = new System.Windows.Forms.CheckBox();
+            this.textBoxAIAwaitBefImage = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxAdvanced.SuspendLayout();
             this.groupBoxBasics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).BeginInit();
-            this.matlabTab.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.cameraTab.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.GainGroupBox.SuspendLayout();
@@ -88,6 +100,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.HeightNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WidthNumericUpDown)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.matlabTab.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.autImgAcq.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -95,7 +111,7 @@
             this.tabControl1.Controls.Add(this.gpibInterfaceTab);
             this.tabControl1.Controls.Add(this.cameraTab);
             this.tabControl1.Controls.Add(this.matlabTab);
-            this.tabControl1.Controls.Add(this.unusedTab);
+            this.tabControl1.Controls.Add(this.autImgAcq);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -117,6 +133,7 @@
             // 
             // groupBoxStatus
             // 
+            this.groupBoxStatus.Controls.Add(this.textBoxInfo);
             this.groupBoxStatus.Controls.Add(this.label5);
             this.groupBoxStatus.Controls.Add(this.label4);
             this.groupBoxStatus.Controls.Add(this.label3);
@@ -200,10 +217,12 @@
             // 
             // groupBoxAdvanced
             // 
-            this.groupBoxAdvanced.Controls.Add(this.textBoxInfo);
-            this.groupBoxAdvanced.Controls.Add(this.labelSequencer);
-            this.groupBoxAdvanced.Controls.Add(this.buttonSeqStart);
-            this.groupBoxAdvanced.Controls.Add(this.textBoxSequencer);
+            this.groupBoxAdvanced.Controls.Add(this.labelSequencer2);
+            this.groupBoxAdvanced.Controls.Add(this.buttonSeq2Start);
+            this.groupBoxAdvanced.Controls.Add(this.textBoxSequencer2);
+            this.groupBoxAdvanced.Controls.Add(this.labelSequencer1);
+            this.groupBoxAdvanced.Controls.Add(this.buttonSeq1Start);
+            this.groupBoxAdvanced.Controls.Add(this.textBoxSequencer1);
             this.groupBoxAdvanced.Location = new System.Drawing.Point(233, 3);
             this.groupBoxAdvanced.Name = "groupBoxAdvanced";
             this.groupBoxAdvanced.Size = new System.Drawing.Size(221, 330);
@@ -214,7 +233,7 @@
             // textBoxInfo
             // 
             this.textBoxInfo.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.textBoxInfo.Location = new System.Drawing.Point(11, 205);
+            this.textBoxInfo.Location = new System.Drawing.Point(10, 208);
             this.textBoxInfo.Multiline = true;
             this.textBoxInfo.Name = "textBoxInfo";
             this.textBoxInfo.ReadOnly = true;
@@ -225,37 +244,35 @@
     "    M:W+P1000+P1000\r\nabs. move:    A:W+P1000+P1000\r\njog move:     J:W++\r\nfree mo" +
     "t:     C:W0 / C:W1\r\nstatus:       Q:";
             // 
-            // labelSequencer
+            // labelSequencer1
             // 
-            this.labelSequencer.AutoSize = true;
-            this.labelSequencer.Location = new System.Drawing.Point(15, 22);
-            this.labelSequencer.Name = "labelSequencer";
-            this.labelSequencer.Size = new System.Drawing.Size(64, 12);
-            this.labelSequencer.TabIndex = 12;
-            this.labelSequencer.Text = "Sequencer: ";
+            this.labelSequencer1.AutoSize = true;
+            this.labelSequencer1.Location = new System.Drawing.Point(15, 22);
+            this.labelSequencer1.Name = "labelSequencer1";
+            this.labelSequencer1.Size = new System.Drawing.Size(70, 12);
+            this.labelSequencer1.TabIndex = 12;
+            this.labelSequencer1.Text = "Sequencer1: ";
             // 
-            // buttonSeqStart
+            // buttonSeq1Start
             // 
-            this.buttonSeqStart.Location = new System.Drawing.Point(17, 140);
-            this.buttonSeqStart.Name = "buttonSeqStart";
-            this.buttonSeqStart.Size = new System.Drawing.Size(75, 23);
-            this.buttonSeqStart.TabIndex = 10;
-            this.buttonSeqStart.Text = "Start";
-            this.buttonSeqStart.UseVisualStyleBackColor = true;
-            this.buttonSeqStart.Click += new System.EventHandler(this.buttonSeqStart_Click);
+            this.buttonSeq1Start.Location = new System.Drawing.Point(17, 140);
+            this.buttonSeq1Start.Name = "buttonSeq1Start";
+            this.buttonSeq1Start.Size = new System.Drawing.Size(75, 23);
+            this.buttonSeq1Start.TabIndex = 10;
+            this.buttonSeq1Start.Text = "Start";
+            this.buttonSeq1Start.UseVisualStyleBackColor = true;
+            this.buttonSeq1Start.Click += new System.EventHandler(this.buttonSeqStart_Click);
             // 
-            // textBoxSequencer
+            // textBoxSequencer1
             // 
-            this.textBoxSequencer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.textBoxSequencer.Location = new System.Drawing.Point(17, 42);
-            this.textBoxSequencer.Multiline = true;
-            this.textBoxSequencer.Name = "textBoxSequencer";
-            this.textBoxSequencer.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxSequencer.Size = new System.Drawing.Size(179, 92);
-            this.textBoxSequencer.TabIndex = 11;
-            this.textBoxSequencer.Text = "D:1S1000F10000R200\r\nD:2S1000F10000R200\r\nH:W-\r\nM:W+P2000+P1000\r\nM:W+P20000+P10000\r" +
-    "\nM:W-P2000-P1000\r\nM:W+P2000+P10000\r\nM:W-P2000-P10000\r\nM:W+P2000+P1000\r\nM:W-P2000" +
-    "0-P10000";
+            this.textBoxSequencer1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.textBoxSequencer1.Location = new System.Drawing.Point(17, 42);
+            this.textBoxSequencer1.Multiline = true;
+            this.textBoxSequencer1.Name = "textBoxSequencer1";
+            this.textBoxSequencer1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxSequencer1.Size = new System.Drawing.Size(179, 92);
+            this.textBoxSequencer1.TabIndex = 11;
+            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:W+P65896+P0";
             // 
             // groupBoxBasics
             // 
@@ -373,37 +390,6 @@
             this.textBoxStringToWrite.TabIndex = 5;
             this.textBoxStringToWrite.Text = "M:1+P5000";
             // 
-            // matlabTab
-            // 
-            this.matlabTab.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.matlabTab.Controls.Add(this.groupBox1);
-            this.matlabTab.Location = new System.Drawing.Point(4, 22);
-            this.matlabTab.Name = "matlabTab";
-            this.matlabTab.Padding = new System.Windows.Forms.Padding(3);
-            this.matlabTab.Size = new System.Drawing.Size(690, 338);
-            this.matlabTab.TabIndex = 1;
-            this.matlabTab.Text = "Matlab";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.buttonStartMatlab);
-            this.groupBox1.Location = new System.Drawing.Point(6, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(212, 327);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Basics";
-            // 
-            // buttonStartMatlab
-            // 
-            this.buttonStartMatlab.Location = new System.Drawing.Point(56, 42);
-            this.buttonStartMatlab.Name = "buttonStartMatlab";
-            this.buttonStartMatlab.Size = new System.Drawing.Size(75, 23);
-            this.buttonStartMatlab.TabIndex = 10;
-            this.buttonStartMatlab.Text = "Start";
-            this.buttonStartMatlab.UseVisualStyleBackColor = true;
-            this.buttonStartMatlab.Click += new System.EventHandler(this.buttonStartMatlab_Click);
-            // 
             // cameraTab
             // 
             this.cameraTab.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -416,6 +402,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonSaveBMP);
             this.groupBox3.Controls.Add(this.GainGroupBox);
             this.groupBox3.Controls.Add(this.ImageSizeGroupBox);
             this.groupBox3.Controls.Add(this.buttonCameraStop);
@@ -502,7 +489,7 @@
             this.buttonCameraStop.Enabled = false;
             this.buttonCameraStop.Location = new System.Drawing.Point(454, 125);
             this.buttonCameraStop.Name = "buttonCameraStop";
-            this.buttonCameraStop.Size = new System.Drawing.Size(75, 21);
+            this.buttonCameraStop.Size = new System.Drawing.Size(75, 23);
             this.buttonCameraStop.TabIndex = 15;
             this.buttonCameraStop.Text = "Stop";
             this.buttonCameraStop.UseVisualStyleBackColor = true;
@@ -513,7 +500,7 @@
             this.buttonCameraStart.Enabled = false;
             this.buttonCameraStart.Location = new System.Drawing.Point(454, 98);
             this.buttonCameraStart.Name = "buttonCameraStart";
-            this.buttonCameraStart.Size = new System.Drawing.Size(75, 21);
+            this.buttonCameraStart.Size = new System.Drawing.Size(75, 23);
             this.buttonCameraStart.TabIndex = 14;
             this.buttonCameraStart.Text = "Start";
             this.buttonCameraStart.UseVisualStyleBackColor = true;
@@ -548,15 +535,186 @@
             this.CameraIDTextBox.Size = new System.Drawing.Size(476, 42);
             this.CameraIDTextBox.TabIndex = 0;
             // 
-            // unusedTab
+            // matlabTab
             // 
-            this.unusedTab.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.unusedTab.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.unusedTab.Location = new System.Drawing.Point(4, 22);
-            this.unusedTab.Name = "unusedTab";
-            this.unusedTab.Size = new System.Drawing.Size(690, 338);
-            this.unusedTab.TabIndex = 3;
-            this.unusedTab.Text = "Unused Tab";
+            this.matlabTab.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.matlabTab.Controls.Add(this.groupBox1);
+            this.matlabTab.Location = new System.Drawing.Point(4, 22);
+            this.matlabTab.Name = "matlabTab";
+            this.matlabTab.Padding = new System.Windows.Forms.Padding(3);
+            this.matlabTab.Size = new System.Drawing.Size(690, 338);
+            this.matlabTab.TabIndex = 1;
+            this.matlabTab.Text = "Matlab";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.buttonStartMatlab);
+            this.groupBox1.Location = new System.Drawing.Point(6, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(212, 327);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Basics";
+            // 
+            // buttonStartMatlab
+            // 
+            this.buttonStartMatlab.Location = new System.Drawing.Point(56, 42);
+            this.buttonStartMatlab.Name = "buttonStartMatlab";
+            this.buttonStartMatlab.Size = new System.Drawing.Size(75, 23);
+            this.buttonStartMatlab.TabIndex = 10;
+            this.buttonStartMatlab.Text = "Start";
+            this.buttonStartMatlab.UseVisualStyleBackColor = true;
+            this.buttonStartMatlab.Click += new System.EventHandler(this.buttonStartMatlab_Click);
+            // 
+            // autImgAcq
+            // 
+            this.autImgAcq.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.autImgAcq.Controls.Add(this.groupBox4);
+            this.autImgAcq.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.autImgAcq.Location = new System.Drawing.Point(4, 22);
+            this.autImgAcq.Name = "autImgAcq";
+            this.autImgAcq.Size = new System.Drawing.Size(690, 338);
+            this.autImgAcq.TabIndex = 3;
+            this.autImgAcq.Text = "Automatic Image Acq.";
+            // 
+            // labelSequencer2
+            // 
+            this.labelSequencer2.AutoSize = true;
+            this.labelSequencer2.Location = new System.Drawing.Point(15, 175);
+            this.labelSequencer2.Name = "labelSequencer2";
+            this.labelSequencer2.Size = new System.Drawing.Size(70, 12);
+            this.labelSequencer2.TabIndex = 15;
+            this.labelSequencer2.Text = "Sequencer2: ";
+            // 
+            // buttonSeq2Start
+            // 
+            this.buttonSeq2Start.Location = new System.Drawing.Point(17, 293);
+            this.buttonSeq2Start.Name = "buttonSeq2Start";
+            this.buttonSeq2Start.Size = new System.Drawing.Size(75, 23);
+            this.buttonSeq2Start.TabIndex = 13;
+            this.buttonSeq2Start.Text = "Start";
+            this.buttonSeq2Start.UseVisualStyleBackColor = true;
+            this.buttonSeq2Start.Click += new System.EventHandler(this.buttonSeq2Start_Click);
+            // 
+            // textBoxSequencer2
+            // 
+            this.textBoxSequencer2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.textBoxSequencer2.Location = new System.Drawing.Point(17, 195);
+            this.textBoxSequencer2.Multiline = true;
+            this.textBoxSequencer2.Name = "textBoxSequencer2";
+            this.textBoxSequencer2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxSequencer2.Size = new System.Drawing.Size(179, 92);
+            this.textBoxSequencer2.TabIndex = 14;
+            this.textBoxSequencer2.Text = "M:2+P144100";
+            // 
+            // buttonSaveBMP
+            // 
+            this.buttonSaveBMP.Location = new System.Drawing.Point(454, 153);
+            this.buttonSaveBMP.Name = "buttonSaveBMP";
+            this.buttonSaveBMP.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveBMP.TabIndex = 18;
+            this.buttonSaveBMP.Text = "Save Image";
+            this.buttonSaveBMP.UseVisualStyleBackColor = true;
+            this.buttonSaveBMP.Click += new System.EventHandler(this.buttonSaveBMP_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.textBoxAIAwaitBefImage);
+            this.groupBox4.Controls.Add(this.checkBoxSaveImages);
+            this.groupBox4.Controls.Add(this.labelAIAloopinstr);
+            this.groupBox4.Controls.Add(this.textBoxAIAloopInstr);
+            this.groupBox4.Controls.Add(this.labelAIAinit);
+            this.groupBox4.Controls.Add(this.textBoxAIAinitInstr);
+            this.groupBox4.Controls.Add(this.buttonAIAStop);
+            this.groupBox4.Controls.Add(this.buttonAIAStart);
+            this.groupBox4.Location = new System.Drawing.Point(6, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(212, 332);
+            this.groupBox4.TabIndex = 18;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Basics";
+            // 
+            // buttonAIAStop
+            // 
+            this.buttonAIAStop.Location = new System.Drawing.Point(112, 218);
+            this.buttonAIAStop.Name = "buttonAIAStop";
+            this.buttonAIAStop.Size = new System.Drawing.Size(75, 23);
+            this.buttonAIAStop.TabIndex = 20;
+            this.buttonAIAStop.Text = "Stop";
+            this.buttonAIAStop.UseVisualStyleBackColor = true;
+            this.buttonAIAStop.Click += new System.EventHandler(this.buttonAIAStop_Click);
+            // 
+            // buttonAIAStart
+            // 
+            this.buttonAIAStart.Location = new System.Drawing.Point(21, 218);
+            this.buttonAIAStart.Name = "buttonAIAStart";
+            this.buttonAIAStart.Size = new System.Drawing.Size(75, 23);
+            this.buttonAIAStart.TabIndex = 19;
+            this.buttonAIAStart.Text = "Start";
+            this.buttonAIAStart.UseVisualStyleBackColor = true;
+            this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
+            // 
+            // labelAIAinit
+            // 
+            this.labelAIAinit.AutoSize = true;
+            this.labelAIAinit.Location = new System.Drawing.Point(17, 28);
+            this.labelAIAinit.Name = "labelAIAinit";
+            this.labelAIAinit.Size = new System.Drawing.Size(93, 12);
+            this.labelAIAinit.TabIndex = 21;
+            this.labelAIAinit.Text = "initial instruction:";
+            // 
+            // textBoxAIAinitInstr
+            // 
+            this.textBoxAIAinitInstr.Location = new System.Drawing.Point(19, 43);
+            this.textBoxAIAinitInstr.Name = "textBoxAIAinitInstr";
+            this.textBoxAIAinitInstr.Size = new System.Drawing.Size(156, 19);
+            this.textBoxAIAinitInstr.TabIndex = 22;
+            this.textBoxAIAinitInstr.Text = "D:2S600F10000R100";
+            // 
+            // labelAIAloopinstr
+            // 
+            this.labelAIAloopinstr.AutoSize = true;
+            this.labelAIAloopinstr.Location = new System.Drawing.Point(17, 79);
+            this.labelAIAloopinstr.Name = "labelAIAloopinstr";
+            this.labelAIAloopinstr.Size = new System.Drawing.Size(86, 12);
+            this.labelAIAloopinstr.TabIndex = 23;
+            this.labelAIAloopinstr.Text = "loop instruction:";
+            // 
+            // textBoxAIAloopInstr
+            // 
+            this.textBoxAIAloopInstr.Location = new System.Drawing.Point(19, 94);
+            this.textBoxAIAloopInstr.Name = "textBoxAIAloopInstr";
+            this.textBoxAIAloopInstr.Size = new System.Drawing.Size(156, 19);
+            this.textBoxAIAloopInstr.TabIndex = 24;
+            this.textBoxAIAloopInstr.Text = "M:2+P200";
+            // 
+            // checkBoxSaveImages
+            // 
+            this.checkBoxSaveImages.AutoSize = true;
+            this.checkBoxSaveImages.Location = new System.Drawing.Point(22, 119);
+            this.checkBoxSaveImages.Name = "checkBoxSaveImages";
+            this.checkBoxSaveImages.Size = new System.Drawing.Size(88, 16);
+            this.checkBoxSaveImages.TabIndex = 25;
+            this.checkBoxSaveImages.Text = "save Images";
+            this.checkBoxSaveImages.UseVisualStyleBackColor = true;
+            // 
+            // textBoxAIAwaitBefImage
+            // 
+            this.textBoxAIAwaitBefImage.Location = new System.Drawing.Point(108, 153);
+            this.textBoxAIAwaitBefImage.Name = "textBoxAIAwaitBefImage";
+            this.textBoxAIAwaitBefImage.Size = new System.Drawing.Size(79, 19);
+            this.textBoxAIAwaitBefImage.TabIndex = 27;
+            this.textBoxAIAwaitBefImage.Text = "800";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 156);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(84, 12);
+            this.label7.TabIndex = 28;
+            this.label7.Text = "wait time in ms";
             // 
             // SPRA_Form
             // 
@@ -574,8 +732,6 @@
             this.groupBoxBasics.ResumeLayout(false);
             this.groupBoxBasics.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).EndInit();
-            this.matlabTab.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
             this.cameraTab.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.GainGroupBox.ResumeLayout(false);
@@ -587,6 +743,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.WidthNumericUpDown)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.matlabTab.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.autImgAcq.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -613,11 +774,11 @@
         private System.Windows.Forms.Label labelAdress;
         private System.Windows.Forms.GroupBox groupBoxAdvanced;
         private System.Windows.Forms.GroupBox groupBoxBasics;
-        private System.Windows.Forms.Button buttonSeqStart;
-        private System.Windows.Forms.TextBox textBoxSequencer;
-        private System.Windows.Forms.Label labelSequencer;
+        private System.Windows.Forms.Button buttonSeq1Start;
+        private System.Windows.Forms.TextBox textBoxSequencer1;
+        private System.Windows.Forms.Label labelSequencer1;
         private System.Windows.Forms.TabPage cameraTab;
-        private System.Windows.Forms.TabPage unusedTab;
+        private System.Windows.Forms.TabPage autImgAcq;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBoxInfo;
         private System.Windows.Forms.GroupBox groupBoxStatus;
@@ -642,6 +803,20 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button SearchButton;
         private System.Windows.Forms.TextBox CameraIDTextBox;
+        private System.Windows.Forms.Label labelSequencer2;
+        private System.Windows.Forms.Button buttonSeq2Start;
+        private System.Windows.Forms.TextBox textBoxSequencer2;
+        private System.Windows.Forms.Button buttonSaveBMP;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button buttonAIAStop;
+        private System.Windows.Forms.Button buttonAIAStart;
+        private System.Windows.Forms.Label labelAIAinit;
+        private System.Windows.Forms.TextBox textBoxAIAinitInstr;
+        private System.Windows.Forms.Label labelAIAloopinstr;
+        private System.Windows.Forms.TextBox textBoxAIAloopInstr;
+        private System.Windows.Forms.CheckBox checkBoxSaveImages;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBoxAIAwaitBefImage;
     }
 }
 
