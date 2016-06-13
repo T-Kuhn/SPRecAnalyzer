@@ -31,6 +31,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.gpibInterfaceTab = new System.Windows.Forms.TabPage();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
+            this.textBoxInfo = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -39,7 +40,9 @@
             this.textBoxMotor2 = new System.Windows.Forms.TextBox();
             this.textBoxMotor1 = new System.Windows.Forms.TextBox();
             this.groupBoxAdvanced = new System.Windows.Forms.GroupBox();
-            this.textBoxInfo = new System.Windows.Forms.TextBox();
+            this.labelSequencer2 = new System.Windows.Forms.Label();
+            this.buttonSeq2Start = new System.Windows.Forms.Button();
+            this.textBoxSequencer2 = new System.Windows.Forms.TextBox();
             this.labelSequencer1 = new System.Windows.Forms.Label();
             this.buttonSeq1Start = new System.Windows.Forms.Button();
             this.textBoxSequencer1 = new System.Windows.Forms.TextBox();
@@ -56,6 +59,7 @@
             this.textBoxStringToWrite = new System.Windows.Forms.TextBox();
             this.cameraTab = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonSaveBMP = new System.Windows.Forms.Button();
             this.GainGroupBox = new System.Windows.Forms.GroupBox();
             this.GainLabel = new System.Windows.Forms.Label();
             this.GainTrackBar = new System.Windows.Forms.TrackBar();
@@ -72,20 +76,18 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.autImgAcq = new System.Windows.Forms.TabPage();
-            this.labelSequencer2 = new System.Windows.Forms.Label();
-            this.buttonSeq2Start = new System.Windows.Forms.Button();
-            this.textBoxSequencer2 = new System.Windows.Forms.TextBox();
-            this.buttonSaveBMP = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.buttonAIAStop = new System.Windows.Forms.Button();
-            this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.labelAIAinit = new System.Windows.Forms.Label();
-            this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBoxAIAwaitBefImage = new System.Windows.Forms.TextBox();
+            this.checkBoxSaveImages = new System.Windows.Forms.CheckBox();
             this.labelAIAloopinstr = new System.Windows.Forms.Label();
             this.textBoxAIAloopInstr = new System.Windows.Forms.TextBox();
-            this.checkBoxSaveImages = new System.Windows.Forms.CheckBox();
-            this.textBoxAIAwaitBefImage = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.labelAIAinit = new System.Windows.Forms.Label();
+            this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
+            this.buttonAIAStop = new System.Windows.Forms.Button();
+            this.buttonAIAStart = new System.Windows.Forms.Button();
+            this.labelImageNumber = new System.Windows.Forms.Label();
+            this.textBoxImgNumber = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
@@ -147,6 +149,20 @@
             this.groupBoxStatus.TabIndex = 13;
             this.groupBoxStatus.TabStop = false;
             this.groupBoxStatus.Text = "Status";
+            // 
+            // textBoxInfo
+            // 
+            this.textBoxInfo.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.textBoxInfo.Location = new System.Drawing.Point(10, 208);
+            this.textBoxInfo.Multiline = true;
+            this.textBoxInfo.Name = "textBoxInfo";
+            this.textBoxInfo.ReadOnly = true;
+            this.textBoxInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxInfo.Size = new System.Drawing.Size(204, 105);
+            this.textBoxInfo.TabIndex = 10;
+            this.textBoxInfo.Text = "m. origin:    H:W-\r\nel. origin:   R:W\r\nvelocity:     D:1S100F1000R100\r\nrel. move:" +
+    "    M:W+P1000+P1000\r\nabs. move:    A:W+P1000+P1000\r\njog move:     J:W++\r\nfree mo" +
+    "t:     C:W0 / C:W1\r\nstatus:       Q:";
             // 
             // label5
             // 
@@ -230,19 +246,35 @@
             this.groupBoxAdvanced.TabStop = false;
             this.groupBoxAdvanced.Text = "Advanced";
             // 
-            // textBoxInfo
+            // labelSequencer2
             // 
-            this.textBoxInfo.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.textBoxInfo.Location = new System.Drawing.Point(10, 208);
-            this.textBoxInfo.Multiline = true;
-            this.textBoxInfo.Name = "textBoxInfo";
-            this.textBoxInfo.ReadOnly = true;
-            this.textBoxInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxInfo.Size = new System.Drawing.Size(204, 105);
-            this.textBoxInfo.TabIndex = 10;
-            this.textBoxInfo.Text = "m. origin:    H:W-\r\nel. origin:   R:W\r\nvelocity:     D:1S100F1000R100\r\nrel. move:" +
-    "    M:W+P1000+P1000\r\nabs. move:    A:W+P1000+P1000\r\njog move:     J:W++\r\nfree mo" +
-    "t:     C:W0 / C:W1\r\nstatus:       Q:";
+            this.labelSequencer2.AutoSize = true;
+            this.labelSequencer2.Location = new System.Drawing.Point(15, 175);
+            this.labelSequencer2.Name = "labelSequencer2";
+            this.labelSequencer2.Size = new System.Drawing.Size(70, 12);
+            this.labelSequencer2.TabIndex = 15;
+            this.labelSequencer2.Text = "Sequencer2: ";
+            // 
+            // buttonSeq2Start
+            // 
+            this.buttonSeq2Start.Location = new System.Drawing.Point(17, 293);
+            this.buttonSeq2Start.Name = "buttonSeq2Start";
+            this.buttonSeq2Start.Size = new System.Drawing.Size(75, 23);
+            this.buttonSeq2Start.TabIndex = 13;
+            this.buttonSeq2Start.Text = "Start";
+            this.buttonSeq2Start.UseVisualStyleBackColor = true;
+            this.buttonSeq2Start.Click += new System.EventHandler(this.buttonSeq2Start_Click);
+            // 
+            // textBoxSequencer2
+            // 
+            this.textBoxSequencer2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.textBoxSequencer2.Location = new System.Drawing.Point(17, 195);
+            this.textBoxSequencer2.Multiline = true;
+            this.textBoxSequencer2.Name = "textBoxSequencer2";
+            this.textBoxSequencer2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxSequencer2.Size = new System.Drawing.Size(179, 92);
+            this.textBoxSequencer2.TabIndex = 14;
+            this.textBoxSequencer2.Text = "M:2+P144100";
             // 
             // labelSequencer1
             // 
@@ -415,6 +447,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Basics";
             // 
+            // buttonSaveBMP
+            // 
+            this.buttonSaveBMP.Location = new System.Drawing.Point(454, 153);
+            this.buttonSaveBMP.Name = "buttonSaveBMP";
+            this.buttonSaveBMP.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveBMP.TabIndex = 18;
+            this.buttonSaveBMP.Text = "Save Image";
+            this.buttonSaveBMP.UseVisualStyleBackColor = true;
+            this.buttonSaveBMP.Click += new System.EventHandler(this.buttonSaveBMP_Click);
+            // 
             // GainGroupBox
             // 
             this.GainGroupBox.Controls.Add(this.GainLabel);
@@ -577,48 +619,10 @@
             this.autImgAcq.TabIndex = 3;
             this.autImgAcq.Text = "Automatic Image Acq.";
             // 
-            // labelSequencer2
-            // 
-            this.labelSequencer2.AutoSize = true;
-            this.labelSequencer2.Location = new System.Drawing.Point(15, 175);
-            this.labelSequencer2.Name = "labelSequencer2";
-            this.labelSequencer2.Size = new System.Drawing.Size(70, 12);
-            this.labelSequencer2.TabIndex = 15;
-            this.labelSequencer2.Text = "Sequencer2: ";
-            // 
-            // buttonSeq2Start
-            // 
-            this.buttonSeq2Start.Location = new System.Drawing.Point(17, 293);
-            this.buttonSeq2Start.Name = "buttonSeq2Start";
-            this.buttonSeq2Start.Size = new System.Drawing.Size(75, 23);
-            this.buttonSeq2Start.TabIndex = 13;
-            this.buttonSeq2Start.Text = "Start";
-            this.buttonSeq2Start.UseVisualStyleBackColor = true;
-            this.buttonSeq2Start.Click += new System.EventHandler(this.buttonSeq2Start_Click);
-            // 
-            // textBoxSequencer2
-            // 
-            this.textBoxSequencer2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.textBoxSequencer2.Location = new System.Drawing.Point(17, 195);
-            this.textBoxSequencer2.Multiline = true;
-            this.textBoxSequencer2.Name = "textBoxSequencer2";
-            this.textBoxSequencer2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxSequencer2.Size = new System.Drawing.Size(179, 92);
-            this.textBoxSequencer2.TabIndex = 14;
-            this.textBoxSequencer2.Text = "M:2+P144100";
-            // 
-            // buttonSaveBMP
-            // 
-            this.buttonSaveBMP.Location = new System.Drawing.Point(454, 153);
-            this.buttonSaveBMP.Name = "buttonSaveBMP";
-            this.buttonSaveBMP.Size = new System.Drawing.Size(75, 23);
-            this.buttonSaveBMP.TabIndex = 18;
-            this.buttonSaveBMP.Text = "Save Image";
-            this.buttonSaveBMP.UseVisualStyleBackColor = true;
-            this.buttonSaveBMP.Click += new System.EventHandler(this.buttonSaveBMP_Click);
-            // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.labelImageNumber);
+            this.groupBox4.Controls.Add(this.textBoxImgNumber);
             this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.textBoxAIAwaitBefImage);
             this.groupBox4.Controls.Add(this.checkBoxSaveImages);
@@ -634,6 +638,67 @@
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Basics";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 186);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(84, 12);
+            this.label7.TabIndex = 28;
+            this.label7.Text = "wait time in ms";
+            // 
+            // textBoxAIAwaitBefImage
+            // 
+            this.textBoxAIAwaitBefImage.Location = new System.Drawing.Point(108, 183);
+            this.textBoxAIAwaitBefImage.Name = "textBoxAIAwaitBefImage";
+            this.textBoxAIAwaitBefImage.Size = new System.Drawing.Size(79, 19);
+            this.textBoxAIAwaitBefImage.TabIndex = 27;
+            this.textBoxAIAwaitBefImage.Text = "1200";
+            // 
+            // checkBoxSaveImages
+            // 
+            this.checkBoxSaveImages.AutoSize = true;
+            this.checkBoxSaveImages.Location = new System.Drawing.Point(22, 122);
+            this.checkBoxSaveImages.Name = "checkBoxSaveImages";
+            this.checkBoxSaveImages.Size = new System.Drawing.Size(88, 16);
+            this.checkBoxSaveImages.TabIndex = 25;
+            this.checkBoxSaveImages.Text = "save Images";
+            this.checkBoxSaveImages.UseVisualStyleBackColor = true;
+            // 
+            // labelAIAloopinstr
+            // 
+            this.labelAIAloopinstr.AutoSize = true;
+            this.labelAIAloopinstr.Location = new System.Drawing.Point(17, 79);
+            this.labelAIAloopinstr.Name = "labelAIAloopinstr";
+            this.labelAIAloopinstr.Size = new System.Drawing.Size(86, 12);
+            this.labelAIAloopinstr.TabIndex = 23;
+            this.labelAIAloopinstr.Text = "loop instruction:";
+            // 
+            // textBoxAIAloopInstr
+            // 
+            this.textBoxAIAloopInstr.Location = new System.Drawing.Point(19, 94);
+            this.textBoxAIAloopInstr.Name = "textBoxAIAloopInstr";
+            this.textBoxAIAloopInstr.Size = new System.Drawing.Size(156, 19);
+            this.textBoxAIAloopInstr.TabIndex = 24;
+            this.textBoxAIAloopInstr.Text = "M:2+P600";
+            // 
+            // labelAIAinit
+            // 
+            this.labelAIAinit.AutoSize = true;
+            this.labelAIAinit.Location = new System.Drawing.Point(17, 28);
+            this.labelAIAinit.Name = "labelAIAinit";
+            this.labelAIAinit.Size = new System.Drawing.Size(93, 12);
+            this.labelAIAinit.TabIndex = 21;
+            this.labelAIAinit.Text = "initial instruction:";
+            // 
+            // textBoxAIAinitInstr
+            // 
+            this.textBoxAIAinitInstr.Location = new System.Drawing.Point(19, 43);
+            this.textBoxAIAinitInstr.Name = "textBoxAIAinitInstr";
+            this.textBoxAIAinitInstr.Size = new System.Drawing.Size(156, 19);
+            this.textBoxAIAinitInstr.TabIndex = 22;
+            this.textBoxAIAinitInstr.Text = "D:2S800F10000R100";
             // 
             // buttonAIAStop
             // 
@@ -655,66 +720,23 @@
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
             // 
-            // labelAIAinit
+            // labelImageNumber
             // 
-            this.labelAIAinit.AutoSize = true;
-            this.labelAIAinit.Location = new System.Drawing.Point(17, 28);
-            this.labelAIAinit.Name = "labelAIAinit";
-            this.labelAIAinit.Size = new System.Drawing.Size(93, 12);
-            this.labelAIAinit.TabIndex = 21;
-            this.labelAIAinit.Text = "initial instruction:";
+            this.labelImageNumber.AutoSize = true;
+            this.labelImageNumber.Location = new System.Drawing.Point(17, 154);
+            this.labelImageNumber.Name = "labelImageNumber";
+            this.labelImageNumber.Size = new System.Drawing.Size(80, 12);
+            this.labelImageNumber.TabIndex = 30;
+            this.labelImageNumber.Text = "Image Number:";
             // 
-            // textBoxAIAinitInstr
+            // textBoxImgNumber
             // 
-            this.textBoxAIAinitInstr.Location = new System.Drawing.Point(19, 43);
-            this.textBoxAIAinitInstr.Name = "textBoxAIAinitInstr";
-            this.textBoxAIAinitInstr.Size = new System.Drawing.Size(156, 19);
-            this.textBoxAIAinitInstr.TabIndex = 22;
-            this.textBoxAIAinitInstr.Text = "D:2S600F10000R100";
-            // 
-            // labelAIAloopinstr
-            // 
-            this.labelAIAloopinstr.AutoSize = true;
-            this.labelAIAloopinstr.Location = new System.Drawing.Point(17, 79);
-            this.labelAIAloopinstr.Name = "labelAIAloopinstr";
-            this.labelAIAloopinstr.Size = new System.Drawing.Size(86, 12);
-            this.labelAIAloopinstr.TabIndex = 23;
-            this.labelAIAloopinstr.Text = "loop instruction:";
-            // 
-            // textBoxAIAloopInstr
-            // 
-            this.textBoxAIAloopInstr.Location = new System.Drawing.Point(19, 94);
-            this.textBoxAIAloopInstr.Name = "textBoxAIAloopInstr";
-            this.textBoxAIAloopInstr.Size = new System.Drawing.Size(156, 19);
-            this.textBoxAIAloopInstr.TabIndex = 24;
-            this.textBoxAIAloopInstr.Text = "M:2+P200";
-            // 
-            // checkBoxSaveImages
-            // 
-            this.checkBoxSaveImages.AutoSize = true;
-            this.checkBoxSaveImages.Location = new System.Drawing.Point(22, 119);
-            this.checkBoxSaveImages.Name = "checkBoxSaveImages";
-            this.checkBoxSaveImages.Size = new System.Drawing.Size(88, 16);
-            this.checkBoxSaveImages.TabIndex = 25;
-            this.checkBoxSaveImages.Text = "save Images";
-            this.checkBoxSaveImages.UseVisualStyleBackColor = true;
-            // 
-            // textBoxAIAwaitBefImage
-            // 
-            this.textBoxAIAwaitBefImage.Location = new System.Drawing.Point(108, 153);
-            this.textBoxAIAwaitBefImage.Name = "textBoxAIAwaitBefImage";
-            this.textBoxAIAwaitBefImage.Size = new System.Drawing.Size(79, 19);
-            this.textBoxAIAwaitBefImage.TabIndex = 27;
-            this.textBoxAIAwaitBefImage.Text = "800";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(17, 156);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(84, 12);
-            this.label7.TabIndex = 28;
-            this.label7.Text = "wait time in ms";
+            this.textBoxImgNumber.Location = new System.Drawing.Point(108, 151);
+            this.textBoxImgNumber.Name = "textBoxImgNumber";
+            this.textBoxImgNumber.ReadOnly = true;
+            this.textBoxImgNumber.Size = new System.Drawing.Size(79, 19);
+            this.textBoxImgNumber.TabIndex = 29;
+            this.textBoxImgNumber.Text = "0";
             // 
             // SPRA_Form
             // 
@@ -817,6 +839,8 @@
         private System.Windows.Forms.CheckBox checkBoxSaveImages;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxAIAwaitBefImage;
+        private System.Windows.Forms.Label labelImageNumber;
+        private System.Windows.Forms.TextBox textBoxImgNumber;
     }
 }
 

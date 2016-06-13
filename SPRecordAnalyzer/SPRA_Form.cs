@@ -29,6 +29,7 @@ namespace SPRecordAnalyzer
         delegate void setStatusBoxCallback(string text);
         delegate void setPosTextMotor1Callback(string text);
         delegate void setPosTextMotor2Callback(string text);
+        delegate void savebmpCallback();
         // Main factory object
         CFactory myFactory = new CFactory();
 
@@ -147,8 +148,7 @@ namespace SPRecordAnalyzer
             }
         }
 
-        private
-            void buttonOpenGPIB_Click(object sender, EventArgs e)
+        private void buttonOpenGPIB_Click(object sender, EventArgs e)
         {
             try
             {
@@ -382,8 +382,19 @@ namespace SPRecordAnalyzer
 
         private void Savebmp()
         {
+            String text = imgNmbr.ToString();
             myCamera.SaveLastRawFrame("D:/KT/img/Image" + imgNmbr + ".bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
-            imgNmbr++;
+            if (textBoxImgNumber.InvokeRequired)
+            {
+                savebmpCallback d = new savebmpCallback(Savebmp);
+                Invoke(d);
+            }
+            else
+            {
+                textBoxImgNumber.Text = text;
+                imgNmbr++;
+            }
+            
         }
 
         private void buttonCameraStart_Click(object sender, EventArgs e)
