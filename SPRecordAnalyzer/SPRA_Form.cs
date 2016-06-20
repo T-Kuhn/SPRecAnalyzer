@@ -26,20 +26,23 @@ namespace SPRecordAnalyzer
         private int seqCounter;
         private int imgNmbr;
         private bool busReady;
+        
         delegate void setStatusBoxCallback(string text);
         delegate void setPosTextMotor1Callback(string text);
         delegate void setPosTextMotor2Callback(string text);
         delegate void savebmpCallback();
         // Main factory object
-        CFactory myFactory = new CFactory();
+        private CFactory myFactory = new CFactory();
 
         // Opened camera object
-        CCamera myCamera;
+        private CCamera myCamera;
 
         // GenICam nodes
-        CNode myWidthNode;
-        CNode myHeightNode;
-        CNode myGainNode;
+        private CNode myWidthNode;
+        private CNode myHeightNode;
+        private CNode myGainNode;
+        private CNode myExposureNode;
+        private CNode nodeAcquisitionMode;
 
         public SPRA_Form()
         {
@@ -166,6 +169,7 @@ namespace SPRecordAnalyzer
                 Cursor.Current = Cursors.Default;
             }
         }
+
         private void SetupControlState(bool isSessionOpen)
         {
             numericUpDownAdress.Enabled = !isSessionOpen;
@@ -194,11 +198,7 @@ namespace SPRecordAnalyzer
         {
             writeToStage(textBoxStringToWrite.Text);
         }
-
-        /// <summary>
-        /// write data to the GPIB bus which is connected to the stage
-        /// </summary>
-        /// <param name="txt">the data that has to be written to the bus</param>
+        
         private void writeToStage(String txt)
         {
             try
@@ -210,11 +210,7 @@ namespace SPRecordAnalyzer
                 MessageBox.Show(ex.Message);
             }
         }
-
-        /// <summary>
-        /// read data from the GPIB bus which is connected to the stage
-        /// </summary>
-        /// <returns>the data read from the input buffer</returns>
+        
         private String readFromStage()
         {
             String retStr = "";
@@ -329,6 +325,9 @@ namespace SPRecordAnalyzer
             Debug.WriteLine("Length of the splitted string: " + splittedString.Length);
         }
 
+        // - - - - - - - - - - - - - - - - -
+        // - - - MATLAB FUNCTIONS START  - -
+        // - - - - - - - - - - - - - - - - -
         private void buttonStartMatlab_Click(object sender, EventArgs e)
         {
             // Create the MATLAB instance 
@@ -337,7 +336,11 @@ namespace SPRecordAnalyzer
             // Change to the directory where the function is located 
             matlab.Execute(@"cd d:\KT\Matlab");
 
+            //textBoxMatlab.Text = "";
+
             matlab.Execute(@"gcaEx");
+
+            textBoxMatlab.Text = "it works!";
 
             // Define the output
             //object result = null;
@@ -348,7 +351,13 @@ namespace SPRecordAnalyzer
             // Display result
             //object[] res = result as object[];
         }
-        // CAMERA FUNCTIONS START
+        // - - - - - - - - - - - - - - - - -
+        // - - - MATLAB FUNCTIONS STOP - - -
+        // - - - - - - - - - - - - - - - - -
+
+        // - - - - - - - - - - - - - - - - -
+        // - - - CAMERA FUNCTIONS START  - -
+        // - - - - - - - - - - - - - - - - -
         private void WidthNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (myWidthNode != null)
@@ -513,6 +522,37 @@ namespace SPRecordAnalyzer
                     GainLabel.Enabled = false;
                     GainTrackBar.Enabled = false;
                 }
+
+                // Get the Exposure GenICam Node
+                myExposureNode = myCamera.GetNode("ExposureTimeRaw");
+                if (myExposureNode != null)
+                {
+                    currentValue = int.Parse(myExposureNode.Value.ToString());
+
+                    // Update range for the TrackBar Controls
+                    ExposureTrackBar.Maximum = int.Parse(myExposureNode.Max.ToString());
+                    ExposureTrackBar.Minimum = int.Parse(myExposureNode.Min.ToString());
+                    ExposureTrackBar.Value = currentValue;
+                    ExposureLabel.Text = myExposureNode.Value.ToString();
+
+                    ExposureLabel.Enabled = true;
+                    ExposureTrackBar.Enabled = true;
+                }
+                else
+                {
+                    ExposureLabel.Enabled = false;
+                    ExposureTrackBar.Enabled = false;
+                }
+                // Get the AcquisitionMode GenICam Node
+                nodeAcquisitionMode = myCamera.GetNode("AcquisitionMode");
+                if (null != nodeAcquisitionMode)
+                {
+                    // This thing can either be "Continuous"
+                    // or: "SingleFrame"
+                    nodeAcquisitionMode.Value = "Continuous";
+                    myCamera.AcquisitionCount = UInt32.MaxValue;
+                    comboBoxAcquisitionMode.SelectedIndex = 0;
+                }
             }
             else
             {
@@ -522,6 +562,8 @@ namespace SPRecordAnalyzer
                 HeightNumericUpDown.Enabled = true;
                 GainLabel.Enabled = false;
                 GainTrackBar.Enabled = false;
+                ExposureLabel.Enabled = false;
+                ExposureTrackBar.Enabled = false;
 
                 MessageBox.Show("No Cameras Found!");
             }
@@ -663,7 +705,30 @@ namespace SPRecordAnalyzer
             }
 
             error = Jai_FactoryWrapper.J_Node_SetValueString(hNodeIncoming, false, sbJaiPixelFormatName.ToString());
-        }// CAMERA FUNCTIONS STOP
+        }
+
+        private void ExposureTrackBar_Scroll(object sender, EventArgs e)
+        {
+            if (myExposureNode != null)
+                myExposureNode.Value = int.Parse(ExposureTrackBar.Value.ToString());
+
+            ExposureLabel.Text = myExposureNode.Value.ToString();
+        }
+        private void comboBoxAcquisitionMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int tmpSelInd = comboBoxAcquisitionMode.SelectedIndex;
+            if (tmpSelInd == 0)
+            {
+                nodeAcquisitionMode.Value = "Continuous";
+
+            }else if (tmpSelInd == 1)
+            {
+                nodeAcquisitionMode.Value = "SingleFrame"; 
+            }
+        }
+        // - - - - - - - - - - - - - - - - -
+        // - - - CAMERA FUNCTIONS STOP - - -
+        // - - - - - - - - - - - - - - - - -
 
         private void buttonAIAStart_Click(object sender, EventArgs e)
         {
@@ -675,5 +740,7 @@ namespace SPRecordAnalyzer
         {
             AIARunning = false;
         }
+
+
     }
 }

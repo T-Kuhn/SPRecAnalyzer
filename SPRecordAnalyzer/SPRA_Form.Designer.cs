@@ -59,11 +59,15 @@
             this.textBoxStringToWrite = new System.Windows.Forms.TextBox();
             this.cameraTab = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.ExposureLabel = new System.Windows.Forms.Label();
+            this.ExposureTrackBar = new System.Windows.Forms.TrackBar();
             this.buttonSaveBMP = new System.Windows.Forms.Button();
             this.GainGroupBox = new System.Windows.Forms.GroupBox();
             this.GainLabel = new System.Windows.Forms.Label();
             this.GainTrackBar = new System.Windows.Forms.TrackBar();
             this.ImageSizeGroupBox = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.HeightNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.WidthNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -74,9 +78,12 @@
             this.CameraIDTextBox = new System.Windows.Forms.TextBox();
             this.matlabTab = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxMatlab = new System.Windows.Forms.TextBox();
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.autImgAcq = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.labelImageNumber = new System.Windows.Forms.Label();
+            this.textBoxImgNumber = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxAIAwaitBefImage = new System.Windows.Forms.TextBox();
             this.checkBoxSaveImages = new System.Windows.Forms.CheckBox();
@@ -86,8 +93,7 @@
             this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.labelImageNumber = new System.Windows.Forms.Label();
-            this.textBoxImgNumber = new System.Windows.Forms.TextBox();
+            this.comboBoxAcquisitionMode = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
@@ -96,6 +102,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).BeginInit();
             this.cameraTab.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ExposureTrackBar)).BeginInit();
             this.GainGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GainTrackBar)).BeginInit();
             this.ImageSizeGroupBox.SuspendLayout();
@@ -274,7 +282,7 @@
             this.textBoxSequencer2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxSequencer2.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer2.TabIndex = 14;
-            this.textBoxSequencer2.Text = "M:2+P144100";
+            this.textBoxSequencer2.Text = "D:2S500F15000R1200\r\nJ:2+";
             // 
             // labelSequencer1
             // 
@@ -304,7 +312,7 @@
             this.textBoxSequencer1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxSequencer1.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer1.TabIndex = 11;
-            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:W+P65896+P0";
+            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:W+P64300+P0";
             // 
             // groupBoxBasics
             // 
@@ -434,6 +442,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.comboBoxAcquisitionMode);
+            this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.buttonSaveBMP);
             this.groupBox3.Controls.Add(this.GainGroupBox);
             this.groupBox3.Controls.Add(this.ImageSizeGroupBox);
@@ -446,6 +456,36 @@
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Basics";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.ExposureLabel);
+            this.groupBox5.Controls.Add(this.ExposureTrackBar);
+            this.groupBox5.Location = new System.Drawing.Point(218, 183);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(200, 85);
+            this.groupBox5.TabIndex = 18;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Exposure Control";
+            // 
+            // ExposureLabel
+            // 
+            this.ExposureLabel.AutoSize = true;
+            this.ExposureLabel.Enabled = false;
+            this.ExposureLabel.Location = new System.Drawing.Point(12, 19);
+            this.ExposureLabel.Name = "ExposureLabel";
+            this.ExposureLabel.Size = new System.Drawing.Size(11, 12);
+            this.ExposureLabel.TabIndex = 2;
+            this.ExposureLabel.Text = "0";
+            // 
+            // ExposureTrackBar
+            // 
+            this.ExposureTrackBar.Enabled = false;
+            this.ExposureTrackBar.Location = new System.Drawing.Point(6, 42);
+            this.ExposureTrackBar.Name = "ExposureTrackBar";
+            this.ExposureTrackBar.Size = new System.Drawing.Size(187, 45);
+            this.ExposureTrackBar.TabIndex = 1;
+            this.ExposureTrackBar.Scroll += new System.EventHandler(this.ExposureTrackBar_Scroll);
             // 
             // buttonSaveBMP
             // 
@@ -489,6 +529,7 @@
             // 
             // ImageSizeGroupBox
             // 
+            this.ImageSizeGroupBox.Controls.Add(this.label8);
             this.ImageSizeGroupBox.Controls.Add(this.label6);
             this.ImageSizeGroupBox.Controls.Add(this.HeightNumericUpDown);
             this.ImageSizeGroupBox.Controls.Add(this.WidthNumericUpDown);
@@ -498,6 +539,15 @@
             this.ImageSizeGroupBox.TabIndex = 16;
             this.ImageSizeGroupBox.TabStop = false;
             this.ImageSizeGroupBox.Text = "Image Size";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 20);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(33, 12);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Width";
             // 
             // label6
             // 
@@ -590,6 +640,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBoxMatlab);
             this.groupBox1.Controls.Add(this.buttonStartMatlab);
             this.groupBox1.Location = new System.Drawing.Point(6, 3);
             this.groupBox1.Name = "groupBox1";
@@ -597,6 +648,13 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Basics";
+            // 
+            // textBoxMatlab
+            // 
+            this.textBoxMatlab.Location = new System.Drawing.Point(43, 93);
+            this.textBoxMatlab.Name = "textBoxMatlab";
+            this.textBoxMatlab.Size = new System.Drawing.Size(100, 19);
+            this.textBoxMatlab.TabIndex = 11;
             // 
             // buttonStartMatlab
             // 
@@ -638,6 +696,24 @@
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Basics";
+            // 
+            // labelImageNumber
+            // 
+            this.labelImageNumber.AutoSize = true;
+            this.labelImageNumber.Location = new System.Drawing.Point(17, 154);
+            this.labelImageNumber.Name = "labelImageNumber";
+            this.labelImageNumber.Size = new System.Drawing.Size(80, 12);
+            this.labelImageNumber.TabIndex = 30;
+            this.labelImageNumber.Text = "Image Number:";
+            // 
+            // textBoxImgNumber
+            // 
+            this.textBoxImgNumber.Location = new System.Drawing.Point(108, 151);
+            this.textBoxImgNumber.Name = "textBoxImgNumber";
+            this.textBoxImgNumber.ReadOnly = true;
+            this.textBoxImgNumber.Size = new System.Drawing.Size(79, 19);
+            this.textBoxImgNumber.TabIndex = 29;
+            this.textBoxImgNumber.Text = "0";
             // 
             // label7
             // 
@@ -720,23 +796,17 @@
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
             // 
-            // labelImageNumber
+            // comboBoxAcquisitionMode
             // 
-            this.labelImageNumber.AutoSize = true;
-            this.labelImageNumber.Location = new System.Drawing.Point(17, 154);
-            this.labelImageNumber.Name = "labelImageNumber";
-            this.labelImageNumber.Size = new System.Drawing.Size(80, 12);
-            this.labelImageNumber.TabIndex = 30;
-            this.labelImageNumber.Text = "Image Number:";
-            // 
-            // textBoxImgNumber
-            // 
-            this.textBoxImgNumber.Location = new System.Drawing.Point(108, 151);
-            this.textBoxImgNumber.Name = "textBoxImgNumber";
-            this.textBoxImgNumber.ReadOnly = true;
-            this.textBoxImgNumber.Size = new System.Drawing.Size(79, 19);
-            this.textBoxImgNumber.TabIndex = 29;
-            this.textBoxImgNumber.Text = "0";
+            this.comboBoxAcquisitionMode.FormattingEnabled = true;
+            this.comboBoxAcquisitionMode.Items.AddRange(new object[] {
+            "Continuous",
+            "SingleFrame"});
+            this.comboBoxAcquisitionMode.Location = new System.Drawing.Point(12, 194);
+            this.comboBoxAcquisitionMode.Name = "comboBoxAcquisitionMode";
+            this.comboBoxAcquisitionMode.Size = new System.Drawing.Size(121, 20);
+            this.comboBoxAcquisitionMode.TabIndex = 19;
+            this.comboBoxAcquisitionMode.SelectedIndexChanged += new System.EventHandler(this.comboBoxAcquisitionMode_SelectedIndexChanged);
             // 
             // SPRA_Form
             // 
@@ -756,6 +826,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).EndInit();
             this.cameraTab.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ExposureTrackBar)).EndInit();
             this.GainGroupBox.ResumeLayout(false);
             this.GainGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GainTrackBar)).EndInit();
@@ -767,6 +840,7 @@
             this.groupBox2.PerformLayout();
             this.matlabTab.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.autImgAcq.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
@@ -812,7 +886,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button buttonStartMatlab;
         private System.Windows.Forms.GroupBox GainGroupBox;
         private System.Windows.Forms.Label GainLabel;
         private System.Windows.Forms.TrackBar GainTrackBar;
@@ -841,6 +914,13 @@
         private System.Windows.Forms.TextBox textBoxAIAwaitBefImage;
         private System.Windows.Forms.Label labelImageNumber;
         private System.Windows.Forms.TextBox textBoxImgNumber;
+        private System.Windows.Forms.Button buttonStartMatlab;
+        public System.Windows.Forms.TextBox textBoxMatlab;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label ExposureLabel;
+        private System.Windows.Forms.TrackBar ExposureTrackBar;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboBoxAcquisitionMode;
     }
 }
 

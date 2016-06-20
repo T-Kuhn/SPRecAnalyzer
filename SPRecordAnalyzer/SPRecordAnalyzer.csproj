@@ -74,7 +74,6 @@
     <Compile Include="SPRA_Form.Designer.cs">
       <DependentUpon>SPRA_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="GPIBStageController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="SPRA_Form.resx">

@@ -1,64 +1,19 @@
 ﻿
 This is just a memo.
 
-Good morning. What could be the next step?
+Here's what we're going to try today.
+We will try to improve the camera interface by adding some functionality.
+- Exposure time
+- Acquisition Mode
+- Software Trigger (How do we use this thing even?)
 
-We are now able to move the stage, get single images from the camera and start matlab
-from within Csharp. one thing we shouldn't be too sure about considers the exact way
-how the camera image acquisition works. We just copied the example code. That's it.
-At some point, we will have to read and and understand that part of the program. Because at
-some point we will need to save and connect the images taken by the camera.
-Which brings us to some of the deeper questions.
-- How exactly should we save the images?
-- How should we connect them? (we could write some sort of algorithm which tries to find the
-same pixel row in 2 images.)
+We got news. After all, it seems like it was a bad idea to have different Classes set textboxes and stuff
+from outside. It seems like form elements shouldn't be set to public no matter what.
+The form class should contain all the logic neccessary to control and change it's components.
+I could let other classes do some work, but the changes in textboxes ect. have to be done within
+the form class.
 
-What else is there to do. We did quite some work. But there is still a lot to do.
-We could try to save one of the incoming images as some kind of .bmp file. that would
-be interesting. What else? try to connect the dots (rather images).
-
-The first goal has to be the acquisition of good data!
-
-We should read the heisei17 thing.
-
-We did read the thing. It was interesting. The next thing has to be the image taking!!!
-
-we need some kind of folder where we can save all those images!
-we really want to save them as bmp. maybe even grayscale. But i am not sure about this.
-
-How can we get the image data from the camera? we can display it, but how can we manipulate/save it?
-
-it seems like we can use a function in the static Jai_FactoryWrapper library to save images.
-we need to convert it first. For this job too, Jai_FactoryWrapper should be usable.
-
-This is possible! That much I know. What I plan to do is possible. All that's left is doing it.
-Figuring the shit out. Should't be that hard!
-
-How are we doing? We need some kind of reality check!
-I think it's going ok.
-We are able to stream and save pictures.
-
-a ROI option in the interface would ne nice, I guess.
-
-How is this supposed to work?
-
-We take a shitload of pictures and save them all. we need as many pictures as needed for 1 full round.
-Then Matlab needs to come and help us.
-Matlab will make them all grayscale!
-And Matlab will connect them together.
-in the end. we should get 1 long picture.
-
-This long picture will be used for sound extraction.
-but that would only be about 1 sec of sound.
-we need to do the same for the rounds to come.
-
-an interesting thing to know would be exactly how many pictures we need for 1 full round.
-and how we should set up the ROI thing. 
-
-so, let's try to make some kind of automatic image acquisition thing
-
-
-
+Let's ignore the design issues and just add the exposure time thing!
 
 
 
