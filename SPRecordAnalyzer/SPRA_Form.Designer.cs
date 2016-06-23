@@ -59,6 +59,8 @@
             this.textBoxStringToWrite = new System.Windows.Forms.TextBox();
             this.cameraTab = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.comboBoxPartialScan = new System.Windows.Forms.ComboBox();
+            this.comboBoxAcquisitionMode = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.ExposureLabel = new System.Windows.Forms.Label();
             this.ExposureTrackBar = new System.Windows.Forms.TrackBar();
@@ -78,7 +80,6 @@
             this.CameraIDTextBox = new System.Windows.Forms.TextBox();
             this.matlabTab = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxMatlab = new System.Windows.Forms.TextBox();
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.autImgAcq = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -93,7 +94,12 @@
             this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.comboBoxAcquisitionMode = new System.Windows.Forms.ComboBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.swTrigRadio = new System.Windows.Forms.RadioButton();
+            this.freeRunRadio = new System.Windows.Forms.RadioButton();
+            this.buttonTrigger = new System.Windows.Forms.Button();
+            this.textBoxMatlab = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
@@ -114,6 +120,7 @@
             this.groupBox1.SuspendLayout();
             this.autImgAcq.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -442,6 +449,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonTrigger);
+            this.groupBox3.Controls.Add(this.groupBox7);
             this.groupBox3.Controls.Add(this.comboBoxAcquisitionMode);
             this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.buttonSaveBMP);
@@ -452,10 +461,38 @@
             this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Location = new System.Drawing.Point(6, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(536, 327);
+            this.groupBox3.Size = new System.Drawing.Size(681, 327);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Basics";
+            // 
+            // comboBoxPartialScan
+            // 
+            this.comboBoxPartialScan.FormattingEnabled = true;
+            this.comboBoxPartialScan.Items.AddRange(new object[] {
+            "Full Frame",
+            "Partial 2/3 lines",
+            "Partial 1/2 lines",
+            "Partial 1/4 lines",
+            "Partial 1/8 lines",
+            "Variable Partial Scan"});
+            this.comboBoxPartialScan.Location = new System.Drawing.Point(74, 69);
+            this.comboBoxPartialScan.Name = "comboBoxPartialScan";
+            this.comboBoxPartialScan.Size = new System.Drawing.Size(120, 20);
+            this.comboBoxPartialScan.TabIndex = 20;
+            this.comboBoxPartialScan.SelectedIndexChanged += new System.EventHandler(this.comboBoxPartialScan_SelectedIndexChanged);
+            // 
+            // comboBoxAcquisitionMode
+            // 
+            this.comboBoxAcquisitionMode.FormattingEnabled = true;
+            this.comboBoxAcquisitionMode.Items.AddRange(new object[] {
+            "Continuous",
+            "SingleFrame"});
+            this.comboBoxAcquisitionMode.Location = new System.Drawing.Point(305, 288);
+            this.comboBoxAcquisitionMode.Name = "comboBoxAcquisitionMode";
+            this.comboBoxAcquisitionMode.Size = new System.Drawing.Size(106, 20);
+            this.comboBoxAcquisitionMode.TabIndex = 19;
+            this.comboBoxAcquisitionMode.SelectedIndexChanged += new System.EventHandler(this.comboBoxAcquisitionMode_SelectedIndexChanged);
             // 
             // groupBox5
             // 
@@ -489,7 +526,7 @@
             // 
             // buttonSaveBMP
             // 
-            this.buttonSaveBMP.Location = new System.Drawing.Point(454, 153);
+            this.buttonSaveBMP.Location = new System.Drawing.Point(144, 286);
             this.buttonSaveBMP.Name = "buttonSaveBMP";
             this.buttonSaveBMP.Size = new System.Drawing.Size(75, 23);
             this.buttonSaveBMP.TabIndex = 18;
@@ -529,13 +566,15 @@
             // 
             // ImageSizeGroupBox
             // 
+            this.ImageSizeGroupBox.Controls.Add(this.label9);
+            this.ImageSizeGroupBox.Controls.Add(this.comboBoxPartialScan);
             this.ImageSizeGroupBox.Controls.Add(this.label8);
             this.ImageSizeGroupBox.Controls.Add(this.label6);
             this.ImageSizeGroupBox.Controls.Add(this.HeightNumericUpDown);
             this.ImageSizeGroupBox.Controls.Add(this.WidthNumericUpDown);
             this.ImageSizeGroupBox.Location = new System.Drawing.Point(12, 90);
             this.ImageSizeGroupBox.Name = "ImageSizeGroupBox";
-            this.ImageSizeGroupBox.Size = new System.Drawing.Size(200, 84);
+            this.ImageSizeGroupBox.Size = new System.Drawing.Size(200, 105);
             this.ImageSizeGroupBox.TabIndex = 16;
             this.ImageSizeGroupBox.TabStop = false;
             this.ImageSizeGroupBox.Text = "Image Size";
@@ -579,9 +618,9 @@
             // buttonCameraStop
             // 
             this.buttonCameraStop.Enabled = false;
-            this.buttonCameraStop.Location = new System.Drawing.Point(454, 125);
+            this.buttonCameraStop.Location = new System.Drawing.Point(78, 286);
             this.buttonCameraStop.Name = "buttonCameraStop";
-            this.buttonCameraStop.Size = new System.Drawing.Size(75, 23);
+            this.buttonCameraStop.Size = new System.Drawing.Size(60, 23);
             this.buttonCameraStop.TabIndex = 15;
             this.buttonCameraStop.Text = "Stop";
             this.buttonCameraStop.UseVisualStyleBackColor = true;
@@ -590,9 +629,9 @@
             // buttonCameraStart
             // 
             this.buttonCameraStart.Enabled = false;
-            this.buttonCameraStart.Location = new System.Drawing.Point(454, 98);
+            this.buttonCameraStart.Location = new System.Drawing.Point(12, 286);
             this.buttonCameraStart.Name = "buttonCameraStart";
-            this.buttonCameraStart.Size = new System.Drawing.Size(75, 23);
+            this.buttonCameraStart.Size = new System.Drawing.Size(60, 23);
             this.buttonCameraStart.TabIndex = 14;
             this.buttonCameraStart.Text = "Start";
             this.buttonCameraStart.UseVisualStyleBackColor = true;
@@ -604,14 +643,14 @@
             this.groupBox2.Controls.Add(this.CameraIDTextBox);
             this.groupBox2.Location = new System.Drawing.Point(6, 18);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(523, 66);
+            this.groupBox2.Size = new System.Drawing.Size(412, 66);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "ID of the first camera found";
             // 
             // SearchButton
             // 
-            this.SearchButton.Location = new System.Drawing.Point(488, 16);
+            this.SearchButton.Location = new System.Drawing.Point(370, 17);
             this.SearchButton.Name = "SearchButton";
             this.SearchButton.Size = new System.Drawing.Size(29, 21);
             this.SearchButton.TabIndex = 6;
@@ -624,7 +663,7 @@
             this.CameraIDTextBox.Location = new System.Drawing.Point(6, 18);
             this.CameraIDTextBox.Multiline = true;
             this.CameraIDTextBox.Name = "CameraIDTextBox";
-            this.CameraIDTextBox.Size = new System.Drawing.Size(476, 42);
+            this.CameraIDTextBox.Size = new System.Drawing.Size(358, 42);
             this.CameraIDTextBox.TabIndex = 0;
             // 
             // matlabTab
@@ -648,13 +687,6 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Basics";
-            // 
-            // textBoxMatlab
-            // 
-            this.textBoxMatlab.Location = new System.Drawing.Point(43, 93);
-            this.textBoxMatlab.Name = "textBoxMatlab";
-            this.textBoxMatlab.Size = new System.Drawing.Size(100, 19);
-            this.textBoxMatlab.TabIndex = 11;
             // 
             // buttonStartMatlab
             // 
@@ -695,7 +727,7 @@
             this.groupBox4.Size = new System.Drawing.Size(212, 332);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Basics";
+            this.groupBox4.Text = "Stop and go";
             // 
             // labelImageNumber
             // 
@@ -796,17 +828,69 @@
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
             // 
-            // comboBoxAcquisitionMode
+            // groupBox7
             // 
-            this.comboBoxAcquisitionMode.FormattingEnabled = true;
-            this.comboBoxAcquisitionMode.Items.AddRange(new object[] {
-            "Continuous",
-            "SingleFrame"});
-            this.comboBoxAcquisitionMode.Location = new System.Drawing.Point(12, 194);
-            this.comboBoxAcquisitionMode.Name = "comboBoxAcquisitionMode";
-            this.comboBoxAcquisitionMode.Size = new System.Drawing.Size(121, 20);
-            this.comboBoxAcquisitionMode.TabIndex = 19;
-            this.comboBoxAcquisitionMode.SelectedIndexChanged += new System.EventHandler(this.comboBoxAcquisitionMode_SelectedIndexChanged);
+            this.groupBox7.Controls.Add(this.swTrigRadio);
+            this.groupBox7.Controls.Add(this.freeRunRadio);
+            this.groupBox7.Location = new System.Drawing.Point(428, 18);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(247, 66);
+            this.groupBox7.TabIndex = 21;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Trigger Settings";
+            // 
+            // swTrigRadio
+            // 
+            this.swTrigRadio.AutoSize = true;
+            this.swTrigRadio.Enabled = false;
+            this.swTrigRadio.Location = new System.Drawing.Point(120, 26);
+            this.swTrigRadio.Name = "swTrigRadio";
+            this.swTrigRadio.Size = new System.Drawing.Size(108, 16);
+            this.swTrigRadio.TabIndex = 23;
+            this.swTrigRadio.TabStop = true;
+            this.swTrigRadio.Text = "Software Trigger";
+            this.swTrigRadio.UseVisualStyleBackColor = true;
+            this.swTrigRadio.Click += new System.EventHandler(this.swTrigRadio_Click);
+            // 
+            // freeRunRadio
+            // 
+            this.freeRunRadio.AutoSize = true;
+            this.freeRunRadio.Enabled = false;
+            this.freeRunRadio.Location = new System.Drawing.Point(23, 26);
+            this.freeRunRadio.Name = "freeRunRadio";
+            this.freeRunRadio.Size = new System.Drawing.Size(91, 16);
+            this.freeRunRadio.TabIndex = 22;
+            this.freeRunRadio.TabStop = true;
+            this.freeRunRadio.Text = "Free Running";
+            this.freeRunRadio.UseVisualStyleBackColor = true;
+            this.freeRunRadio.Click += new System.EventHandler(this.freeRunRadio_Click);
+            // 
+            // buttonTrigger
+            // 
+            this.buttonTrigger.Enabled = false;
+            this.buttonTrigger.Location = new System.Drawing.Point(224, 286);
+            this.buttonTrigger.Name = "buttonTrigger";
+            this.buttonTrigger.Size = new System.Drawing.Size(75, 23);
+            this.buttonTrigger.TabIndex = 22;
+            this.buttonTrigger.Text = "swTrigger";
+            this.buttonTrigger.UseVisualStyleBackColor = true;
+            this.buttonTrigger.Click += new System.EventHandler(this.buttonTrigger_Click);
+            // 
+            // textBoxMatlab
+            // 
+            this.textBoxMatlab.Location = new System.Drawing.Point(43, 93);
+            this.textBoxMatlab.Name = "textBoxMatlab";
+            this.textBoxMatlab.Size = new System.Drawing.Size(100, 19);
+            this.textBoxMatlab.TabIndex = 11;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 72);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(57, 12);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Partial Sc.";
             // 
             // SPRA_Form
             // 
@@ -844,6 +928,8 @@
             this.autImgAcq.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -915,12 +1001,18 @@
         private System.Windows.Forms.Label labelImageNumber;
         private System.Windows.Forms.TextBox textBoxImgNumber;
         private System.Windows.Forms.Button buttonStartMatlab;
-        public System.Windows.Forms.TextBox textBoxMatlab;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label ExposureLabel;
         private System.Windows.Forms.TrackBar ExposureTrackBar;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox comboBoxAcquisitionMode;
+        private System.Windows.Forms.ComboBox comboBoxPartialScan;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.RadioButton swTrigRadio;
+        private System.Windows.Forms.RadioButton freeRunRadio;
+        private System.Windows.Forms.Button buttonTrigger;
+        public System.Windows.Forms.TextBox textBoxMatlab;
+        private System.Windows.Forms.Label label9;
     }
 }
 

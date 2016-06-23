@@ -43,6 +43,8 @@ namespace SPRecordAnalyzer
         private CNode myGainNode;
         private CNode myExposureNode;
         private CNode nodeAcquisitionMode;
+        private CNode myTriggerSoftwareNode;
+        private CNode partialScanNode;
 
         public SPRA_Form()
         {
@@ -410,6 +412,10 @@ namespace SPRecordAnalyzer
         {
             if (myCamera != null)
             {
+                if (swTrigRadio.Checked)
+                {
+                    buttonTrigger.Enabled = true;
+                }
                 myCamera.StartImageAcquisition(true, 5);
             }
         }
@@ -417,7 +423,10 @@ namespace SPRecordAnalyzer
         private void buttonCameraStop_Click(object sender, EventArgs e)
         {
             if (myCamera != null)
+            {
+                buttonTrigger.Enabled = false;
                 myCamera.StopImageAcquisition();
+            }
         }
 
         private void SearchButton_Click(object sender, EventArgs e)
@@ -553,6 +562,71 @@ namespace SPRecordAnalyzer
                     myCamera.AcquisitionCount = UInt32.MaxValue;
                     comboBoxAcquisitionMode.SelectedIndex = 0;
                 }
+                // Get the partialScanNode GenICam Node
+                partialScanNode = myCamera.GetNode("PartialScan");
+                if (null != partialScanNode)
+                {
+                    // This thing can either be "Continuous"
+                    // or: "SingleFrame"
+                    partialScanNode.Value = "Full Frame";
+                    comboBoxPartialScan.SelectedIndex = 0;
+                }
+
+                // .. and remember to set the trigger accordingly
+
+                // But we have 2 ways of setting up triggers: JAI and GenICam SNC
+                // The GenICam SFNC trigger setup is available if a node called
+                // TriggerSelector is available
+                if (myCamera.GetNode("TriggerSelector") != null)
+                {
+                    // Here we assume that this is the GenICam SFNC way of setting up the trigger
+                    // To switch to Continuous the following is required:
+                    // TriggerSelector=FrameStart
+                    // TriggerMode[TriggerSelector]=Off
+                    myCamera.GetNode("TriggerSelector").Value = "FrameStart";
+                    myCamera.GetNode("TriggerMode").Value = "Off";
+
+                    // Does this camera have a "Software Trigger" feature available?
+                    myTriggerSoftwareNode = myCamera.GetNode("TriggerSoftware");
+                    if (myTriggerSoftwareNode == null)
+                    {
+                        swTrigRadio.Enabled = false;
+                        buttonTrigger.Enabled = false;
+                        MessageBox.Show("No GenICam SFNC Software Trigger found!");
+                        return;
+                    }
+                    else
+                    {
+                        swTrigRadio.Enabled = true;
+                        freeRunRadio.Enabled = true;
+                    }
+                }
+                else
+                {
+                    // Here we assume that this is the JAI of setting up the trigger
+                    // To switch to Continuous the following is required:
+                    // ExposureMode=Continuous
+                    myCamera.GetNode("ExposureMode").Value = "Continuous";
+
+                    // Does this camera have a "Software Trigger" feature available?
+                    myTriggerSoftwareNode = myCamera.GetNode("SoftwareTrigger0");
+                    if (myTriggerSoftwareNode == null)
+                    {
+                        swTrigRadio.Enabled = false;
+                        buttonTrigger.Enabled = false;
+                        MessageBox.Show("No Software Trigger found!");
+                        return;
+                    }
+                    else
+                    {
+                        swTrigRadio.Enabled = true;
+                    }
+                }
+
+                // check free running as default
+                freeRunRadio.Checked = true;
+                freeRunRadio.Enabled = true;
+
             }
             else
             {
@@ -726,6 +800,105 @@ namespace SPRecordAnalyzer
                 nodeAcquisitionMode.Value = "SingleFrame"; 
             }
         }
+
+        private void freeRunRadio_Click(object sender, EventArgs e)
+        {
+            // But we have 2 ways of setting up triggers: JAI and GenICam SNC
+            // The GenICam SFNC trigger setup is available if a node called
+            // TriggerSelector is available
+            if (myCamera.GetNode("TriggerSelector") != null)
+            {
+                // Here we assume that this is the GenICam SFNC way of setting up the trigger
+                // To switch to Continuous the following is required:
+                // TriggerSelector=FrameStart
+                // TriggerMode[TriggerSelector]=Off
+                myCamera.GetNode("TriggerSelector").Value = "FrameStart";
+                myCamera.GetNode("TriggerMode").Value = "Off";
+            }
+            else
+            {
+                // Here we assume that this is the JAI of setting up the trigger
+                // To switch to Continuous the following is required:
+                // ExposureMode=Continuous
+                myCamera.GetNode("ExposureMode").Value = "Continuous";
+            }
+        }
+
+        private void swTrigRadio_Click(object sender, EventArgs e)
+        {
+            // Prepare for software trigger:
+
+            // But we have 2 ways of setting up triggers: JAI and GenICam SNC
+            // The GenICam SFNC trigger setup is available if a node called
+            // TriggerSelector is available
+            if (myCamera.GetNode("TriggerSelector") != null)
+            {
+                // Here we assume that this is the GenICam SFNC way of setting up the trigger
+                // To switch to Continuous the following is required:
+                // TriggerSelector=FrameStart
+                // TriggerMode[TriggerSelector]=On
+                // TriggerSource[TriggerSelector]=Software
+                myCamera.GetNode("TriggerSelector").Value = "FrameStart";
+                myCamera.GetNode("TriggerMode").Value = "On";
+                myCamera.GetNode("TriggerSource").Value = "Software";
+            }
+            else
+            {
+                // Select triggered mode (not continuous mode)
+
+                // Here we assume that this is the JAI of setting up the trigger
+                // To switch to Continuous the following is required:
+                // ExposureMode=EdgePreSelect
+                // LineSelector=CameraTrigger0
+                // LineSource=SoftwareTrigger0
+                // LineInverter=ActiveHigh
+                myCamera.GetNode("ExposureMode").Value = "EdgePreSelect";
+
+                // Set Line Selector to "Camera Trigger 0"
+                myCamera.GetNode("LineSelector").Value = "CameraTrigger0";
+
+                // Set Line Source to "Software Trigger 0"
+                myCamera.GetNode("LineSource").Value = "SoftwareTrigger0";
+
+                // .. and finally set the Line Polarity (LineInverter) to "Active High"
+                myCamera.GetNode("LineInverter").Value = "ActiveHigh";
+            }
+        }
+
+        private void buttonTrigger_Click(object sender, EventArgs e)
+        {
+            // But we have 2 ways of sending a software trigger: JAI and GenICam SNC
+            // The GenICam SFNC software trigger is available if a node called
+            // TriggerSoftware is available
+            if (myCamera.GetNode("TriggerSoftware") != null)
+            {
+                // Here we assume that this is the GenICam SFNC way of setting up the trigger
+                // To switch to Continuous the following is required:
+                // TriggerSelector=FrameStart
+                // Execute TriggerSoftware[TriggerSelector] command
+                myCamera.GetNode("TriggerSelector").Value = "FrameStart";
+                myCamera.GetNode("TriggerSoftware").ExecuteCommand();
+            }
+            else
+            {
+                // We need to "pulse" the Software Trigger feature in order to trigger the camera!
+                myCamera.GetNode("SoftwareTrigger0").Value = 0;
+                myCamera.GetNode("SoftwareTrigger0").Value = 1;
+                myCamera.GetNode("SoftwareTrigger0").Value = 0;
+            }
+        }
+        private void comboBoxPartialScan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            partialScanNode.Value = comboBoxPartialScan.SelectedItem;
+            Debug.WriteLine(comboBoxPartialScan.SelectedItem);
+            //Full Frame
+            //Partial 2/3 lines
+            //Partial 1/2 lines
+            //Partial 1/4 lines
+            //Partial 1/8 lines
+            //Variable Partial Scan
+        }
         // - - - - - - - - - - - - - - - - -
         // - - - CAMERA FUNCTIONS STOP - - -
         // - - - - - - - - - - - - - - - - -
@@ -741,6 +914,14 @@ namespace SPRecordAnalyzer
             AIARunning = false;
         }
 
+        private void label9_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

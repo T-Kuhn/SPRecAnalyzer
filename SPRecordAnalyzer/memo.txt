@@ -15,17 +15,22 @@ the form class.
 
 Let's ignore the design issues and just add the exposure time thing!
 
+But wait. There's more.
 
+What kind of funtions have to be added no matter what?
+We are pretty good on the pulsmotor front.
+We are pretty good on the matlab front. not much to do here anyway.
+We got work left to do on the camera front!
+To be precise, it's about the following stuff.
+	1. Get the partial scan settings.
+	2. get the software trigger to work. We need to read the manual to understand this better.
+	3. maybe get the ROI settings, since they seem to get set automatically once the partial scan thing get's set.
 
-
-
-
-
-
-
-
-
-
+What about the report on the light source?
+How could it look like?
+We could show the pictures we made and conclude, that it would be better to use the wide lens.
+let's just do the programming.
+and write some stuff to m. as soon as it is time to do so!
 
 
 
