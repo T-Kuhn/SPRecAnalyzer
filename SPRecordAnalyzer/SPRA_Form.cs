@@ -26,11 +26,17 @@ namespace SPRecordAnalyzer
         private int seqCounter;
         private int imgNmbr;
         private bool busReady;
-        
+        private double currentPosition_mm;
+        private double currentPosition_deg;
+
+        private const double ratio_degPerPulse = 0.0025;
+        private const double ratio_mmPerPulse = 0.002;
+
         delegate void setStatusBoxCallback(string text);
         delegate void setPosTextMotor1Callback(string text);
         delegate void setPosTextMotor2Callback(string text);
         delegate void savebmpCallback();
+
         // Main factory object
         private CFactory myFactory = new CFactory();
 
@@ -45,6 +51,8 @@ namespace SPRecordAnalyzer
         private CNode nodeAcquisitionMode;
         private CNode myTriggerSoftwareNode;
         private CNode partialScanNode;
+        private CNode VariablePartialScanStartLineNode;
+        private CNode VariablePartialScanNumOfLinesNode;
 
         public SPRA_Form()
         {
@@ -61,6 +69,8 @@ namespace SPRecordAnalyzer
 
             // Search for cameras and update all controls
             SearchButton_Click(null, null);
+            currentPosition_mm = 0.0;
+            currentPosition_deg = 0.0;
         }
 
         private void FTV_FormClosed(object sender, FormClosedEventArgs e)
@@ -90,7 +100,9 @@ namespace SPRecordAnalyzer
                     response = readFromStage();
                     responceSplit = response.Split(',');
                     setPosTextMotor1(responceSplit[0]);
+                    setDisplTextMotor1(responceSplit[0]);
                     setPosTextMotor2(responceSplit[1]);
+                    setDisplTextMotor2(responceSplit[1]);
                     writeToStage("!:");
                     Thread.Sleep(5);
                     response = readFromStage();
@@ -265,7 +277,6 @@ namespace SPRecordAnalyzer
             {
                 textBoxMotor1.Text = text;
             }
-            textBoxMotor1.Text = text;
         }
 
         private void setPosTextMotor2(String text)
@@ -279,7 +290,61 @@ namespace SPRecordAnalyzer
             {
                 textBoxMotor2.Text = text;
             }
-            textBoxMotor2.Text = text;
+        }
+
+        private void setDisplTextMotor1(String text)
+        {
+            if (textBoxMotor1Displ.InvokeRequired)
+            {
+                setPosTextMotor2Callback d = new setPosTextMotor2Callback(setDisplTextMotor1);
+                Invoke(d, new object[] {text});
+            }
+            else
+            {
+                int val;
+                if (text.Contains("-"))
+                {
+                    text = text.Remove(0, 1);
+                    val = int.Parse(text);
+                    // 0.002 mm per pulse!
+                    currentPosition_mm = -val * ratio_mmPerPulse;
+                }
+                else
+                {
+                    val = int.Parse(text);
+                    // 0.002 mm per pulse!
+                    currentPosition_mm = val * ratio_mmPerPulse;
+                }
+                textBoxMotor1Displ.Text = currentPosition_mm.ToString();
+                
+            }
+        }
+
+        private void setDisplTextMotor2(String text)
+        {
+            if (textBoxMotor2Displ.InvokeRequired)
+            {
+                setPosTextMotor2Callback d = new setPosTextMotor2Callback(setDisplTextMotor2);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                int val;
+                if (text.Contains("-"))
+                {
+                    text = text.Remove(0, 1);
+                    val = int.Parse(text);
+                    // 0.0025 deg per pulse!
+                    currentPosition_deg = -val * ratio_degPerPulse;
+                }
+                else
+                {
+                    val = int.Parse(text);
+                    // 0.0025 deg per pulse!
+                    currentPosition_deg = val * ratio_degPerPulse;
+                }
+                textBoxMotor2Displ.Text = currentPosition_deg.ToString();
+            }
         }
 
         private string ReplaceCommonEscapeSequences(string s)
@@ -554,7 +619,7 @@ namespace SPRecordAnalyzer
                 }
                 // Get the AcquisitionMode GenICam Node
                 nodeAcquisitionMode = myCamera.GetNode("AcquisitionMode");
-                if (null != nodeAcquisitionMode)
+                if (nodeAcquisitionMode != null)
                 {
                     // This thing can either be "Continuous"
                     // or: "SingleFrame"
@@ -564,12 +629,26 @@ namespace SPRecordAnalyzer
                 }
                 // Get the partialScanNode GenICam Node
                 partialScanNode = myCamera.GetNode("PartialScan");
-                if (null != partialScanNode)
+                if (partialScanNode != null)
                 {
                     // This thing can either be "Continuous"
                     // or: "SingleFrame"
                     partialScanNode.Value = "Full Frame";
                     comboBoxPartialScan.SelectedIndex = 0;
+                }
+
+                VariablePartialScanStartLineNode = myCamera.GetNode("VariablePartialScanStartLine");
+                if (VariablePartialScanStartLineNode != null)
+                {
+                    //Set the Startvalue to 965
+                    VariablePartialScanStartLineNode.Value = "965";
+                }
+
+                VariablePartialScanNumOfLinesNode = myCamera.GetNode("VariablePartialScanNumOfLines");
+                if (VariablePartialScanNumOfLinesNode != null)
+                {
+                    //Set the Startvalue to 128
+                    VariablePartialScanNumOfLinesNode.Value = "128";
                 }
 
                 // .. and remember to set the trigger accordingly
@@ -638,6 +717,8 @@ namespace SPRecordAnalyzer
                 GainTrackBar.Enabled = false;
                 ExposureLabel.Enabled = false;
                 ExposureTrackBar.Enabled = false;
+                numericUpDownVarPartScanStartLine.Enabled = false;
+                numericUpDownVarPartScanNumberOfLines.Enabled = false;
 
                 MessageBox.Show("No Cameras Found!");
             }
@@ -898,6 +979,27 @@ namespace SPRecordAnalyzer
             //Partial 1/4 lines
             //Partial 1/8 lines
             //Variable Partial Scan
+            if (comboBoxPartialScan.SelectedItem == "Variable Partial Scan")
+            {
+                Debug.WriteLine("Variable Partial Scan was selected.");
+                numericUpDownVarPartScanStartLine.Enabled = true;
+                numericUpDownVarPartScanNumberOfLines.Enabled = true;
+            }
+            else
+            {
+                Debug.WriteLine("Variable Partial Scan was deselected.");
+                numericUpDownVarPartScanStartLine.Enabled = false;
+                numericUpDownVarPartScanNumberOfLines.Enabled = false;
+            }
+        }
+        private void numericUpDownVarPartScanStartLine_ValueChanged(object sender, EventArgs e)
+        {
+            VariablePartialScanStartLineNode.Value = int.Parse(numericUpDownVarPartScanStartLine.Value.ToString());
+        }
+
+        private void numericUpDownVarPartScanNumberOfLines_ValueChanged(object sender, EventArgs e)
+        {
+            VariablePartialScanNumOfLinesNode.Value = int.Parse(numericUpDownVarPartScanNumberOfLines.Value.ToString());
         }
         // - - - - - - - - - - - - - - - - -
         // - - - CAMERA FUNCTIONS STOP - - -
@@ -918,10 +1020,6 @@ namespace SPRecordAnalyzer
         {
 
         }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

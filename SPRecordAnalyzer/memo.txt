@@ -1,36 +1,41 @@
-﻿
-This is just a memo.
+﻿Let's see what we got here:
 
-Here's what we're going to try today.
-We will try to improve the camera interface by adding some functionality.
-- Exposure time
-- Acquisition Mode
-- Software Trigger (How do we use this thing even?)
+What needs to happen for us to be able to measure the pixeldistance?
+What kind of ratio do we even want to measure?
+the ratio of the expected distance -> evaluated from the pulseCount and the mm/pulse ratio.
+to 1 pixel?
 
-We got news. After all, it seems like it was a bad idea to have different Classes set textboxes and stuff
-from outside. It seems like form elements shouldn't be set to public no matter what.
-The form class should contain all the logic neccessary to control and change it's components.
-I could let other classes do some work, but the changes in textboxes ect. have to be done within
-the form class.
+we need to know how much we should turn the thing to get exactly one picture and the next one get's smoothly
+to the side of it.
 
-Let's ignore the design issues and just add the exposure time thing!
+We need to know how many micrometer we see with the camera!
 
-But wait. There's more.
+to get that value. we need to move the thing 300 pulses (which is 0.6mm) and see how far the pixel things
+have moved!
 
-What kind of funtions have to be added no matter what?
-We are pretty good on the pulsmotor front.
-We are pretty good on the matlab front. not much to do here anyway.
-We got work left to do on the camera front!
-To be precise, it's about the following stuff.
-	1. Get the partial scan settings.
-	2. get the software trigger to work. We need to read the manual to understand this better.
-	3. maybe get the ROI settings, since they seem to get set automatically once the partial scan thing get's set.
+it could be, for instance, 300 pixels. in this case, we could calculate that the hole picture is
+2456 * (600micrometer/300pixels) = (about) 5000 micrometer = 5mm.
 
-What about the report on the light source?
-How could it look like?
-We could show the pictures we made and conclude, that it would be better to use the wide lens.
-let's just do the programming.
-and write some stuff to m. as soon as it is time to do so!
+We then use this information to calculate the degrees the thing has to move to get the next picture.
+
+We need a new button. some kind of calculate micrometer/pixel ratio button.
+When we click that button:
+	- a picture is taken.
+	- Motor 1 moves 300 pulses
+	- another picture is taken.
+	- the two pictures get processed with matlab.
+	- from the result of each evaluation we get the ratio.
+
+
+	What kind of Matlab Program should this be?
+	- we need to measure the displacement of the pixels in a picture.
+	- one way would be to take just one row of pixels and search for the first big bump of bright pixels.
+	
+	- Another way would be to 2chika the picture and then look for connected pixelsjunks and then
+	  through away every junk which is under 1000 pixels in size.
+    - we do that and save the result:
+	  junkNumber, meanXVal of the pixeljunksignal, StartXVal, EndXVal, 
+
 
 
 

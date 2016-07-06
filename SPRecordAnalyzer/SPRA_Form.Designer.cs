@@ -31,6 +31,9 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.gpibInterfaceTab = new System.Windows.Forms.TabPage();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBoxMotor2Displ = new System.Windows.Forms.TextBox();
+            this.textBoxMotor1Displ = new System.Windows.Forms.TextBox();
             this.textBoxInfo = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -59,7 +62,10 @@
             this.textBoxStringToWrite = new System.Windows.Forms.TextBox();
             this.cameraTab = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.comboBoxPartialScan = new System.Windows.Forms.ComboBox();
+            this.buttonTrigger = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.swTrigRadio = new System.Windows.Forms.RadioButton();
+            this.freeRunRadio = new System.Windows.Forms.RadioButton();
             this.comboBoxAcquisitionMode = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.ExposureLabel = new System.Windows.Forms.Label();
@@ -69,6 +75,12 @@
             this.GainLabel = new System.Windows.Forms.Label();
             this.GainTrackBar = new System.Windows.Forms.TrackBar();
             this.ImageSizeGroupBox = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.numericUpDownVarPartScanNumberOfLines = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.numericUpDownVarPartScanStartLine = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboBoxPartialScan = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.HeightNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -80,6 +92,7 @@
             this.CameraIDTextBox = new System.Windows.Forms.TextBox();
             this.matlabTab = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxMatlab = new System.Windows.Forms.TextBox();
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.autImgAcq = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -94,12 +107,8 @@
             this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.swTrigRadio = new System.Windows.Forms.RadioButton();
-            this.freeRunRadio = new System.Windows.Forms.RadioButton();
-            this.buttonTrigger = new System.Windows.Forms.Button();
-            this.textBoxMatlab = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.label_mm = new System.Windows.Forms.Label();
+            this.degLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
@@ -108,11 +117,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).BeginInit();
             this.cameraTab.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ExposureTrackBar)).BeginInit();
             this.GainGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GainTrackBar)).BeginInit();
             this.ImageSizeGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownVarPartScanNumberOfLines)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownVarPartScanStartLine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HeightNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WidthNumericUpDown)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -120,7 +132,6 @@
             this.groupBox1.SuspendLayout();
             this.autImgAcq.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -150,6 +161,11 @@
             // 
             // groupBoxStatus
             // 
+            this.groupBoxStatus.Controls.Add(this.degLabel);
+            this.groupBoxStatus.Controls.Add(this.label_mm);
+            this.groupBoxStatus.Controls.Add(this.label12);
+            this.groupBoxStatus.Controls.Add(this.textBoxMotor2Displ);
+            this.groupBoxStatus.Controls.Add(this.textBoxMotor1Displ);
             this.groupBoxStatus.Controls.Add(this.textBoxInfo);
             this.groupBoxStatus.Controls.Add(this.label5);
             this.groupBoxStatus.Controls.Add(this.label4);
@@ -165,6 +181,35 @@
             this.groupBoxStatus.TabStop = false;
             this.groupBoxStatus.Text = "Status";
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(146, 74);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(31, 12);
+            this.label12.TabIndex = 19;
+            this.label12.Text = "displ:";
+            // 
+            // textBoxMotor2Displ
+            // 
+            this.textBoxMotor2Displ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.textBoxMotor2Displ.Location = new System.Drawing.Point(143, 120);
+            this.textBoxMotor2Displ.Name = "textBoxMotor2Displ";
+            this.textBoxMotor2Displ.ReadOnly = true;
+            this.textBoxMotor2Displ.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxMotor2Displ.Size = new System.Drawing.Size(71, 19);
+            this.textBoxMotor2Displ.TabIndex = 18;
+            // 
+            // textBoxMotor1Displ
+            // 
+            this.textBoxMotor1Displ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.textBoxMotor1Displ.Location = new System.Drawing.Point(143, 95);
+            this.textBoxMotor1Displ.Name = "textBoxMotor1Displ";
+            this.textBoxMotor1Displ.ReadOnly = true;
+            this.textBoxMotor1Displ.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxMotor1Displ.Size = new System.Drawing.Size(71, 19);
+            this.textBoxMotor1Displ.TabIndex = 17;
+            // 
             // textBoxInfo
             // 
             this.textBoxInfo.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
@@ -175,14 +220,14 @@
             this.textBoxInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxInfo.Size = new System.Drawing.Size(204, 105);
             this.textBoxInfo.TabIndex = 10;
-            this.textBoxInfo.Text = "m. origin:    H:W-\r\nel. origin:   R:W\r\nvelocity:     D:1S100F1000R100\r\nrel. move:" +
+            this.textBoxInfo.Text = "m. origin:    H:W-\r\nres. origin:  R:W\r\nvelocity:     D:1S100F1000R100\r\nrel. move:" +
     "    M:W+P1000+P1000\r\nabs. move:    A:W+P1000+P1000\r\njog move:     J:W++\r\nfree mo" +
     "t:     C:W0 / C:W1\r\nstatus:       Q:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(36, 123);
+            this.label5.Location = new System.Drawing.Point(11, 123);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(42, 12);
             this.label5.TabIndex = 16;
@@ -191,7 +236,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(36, 98);
+            this.label4.Location = new System.Drawing.Point(11, 98);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(42, 12);
             this.label4.TabIndex = 15;
@@ -200,7 +245,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(68, 74);
+            this.label3.Location = new System.Drawing.Point(64, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(67, 12);
             this.label3.TabIndex = 14;
@@ -229,21 +274,21 @@
             // textBoxMotor2
             // 
             this.textBoxMotor2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.textBoxMotor2.Location = new System.Drawing.Point(106, 120);
+            this.textBoxMotor2.Location = new System.Drawing.Point(64, 120);
             this.textBoxMotor2.Name = "textBoxMotor2";
             this.textBoxMotor2.ReadOnly = true;
             this.textBoxMotor2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxMotor2.Size = new System.Drawing.Size(88, 19);
+            this.textBoxMotor2.Size = new System.Drawing.Size(68, 19);
             this.textBoxMotor2.TabIndex = 11;
             // 
             // textBoxMotor1
             // 
             this.textBoxMotor1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.textBoxMotor1.Location = new System.Drawing.Point(106, 95);
+            this.textBoxMotor1.Location = new System.Drawing.Point(64, 95);
             this.textBoxMotor1.Name = "textBoxMotor1";
             this.textBoxMotor1.ReadOnly = true;
             this.textBoxMotor1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxMotor1.Size = new System.Drawing.Size(88, 19);
+            this.textBoxMotor1.Size = new System.Drawing.Size(68, 19);
             this.textBoxMotor1.TabIndex = 10;
             // 
             // groupBoxAdvanced
@@ -319,7 +364,7 @@
             this.textBoxSequencer1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxSequencer1.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer1.TabIndex = 11;
-            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:W+P64300+P0";
+            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:1+P5725\r\nR:1\r\nA:W+P60400+P0";
             // 
             // groupBoxBasics
             // 
@@ -466,21 +511,53 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Basics";
             // 
-            // comboBoxPartialScan
+            // buttonTrigger
             // 
-            this.comboBoxPartialScan.FormattingEnabled = true;
-            this.comboBoxPartialScan.Items.AddRange(new object[] {
-            "Full Frame",
-            "Partial 2/3 lines",
-            "Partial 1/2 lines",
-            "Partial 1/4 lines",
-            "Partial 1/8 lines",
-            "Variable Partial Scan"});
-            this.comboBoxPartialScan.Location = new System.Drawing.Point(74, 69);
-            this.comboBoxPartialScan.Name = "comboBoxPartialScan";
-            this.comboBoxPartialScan.Size = new System.Drawing.Size(120, 20);
-            this.comboBoxPartialScan.TabIndex = 20;
-            this.comboBoxPartialScan.SelectedIndexChanged += new System.EventHandler(this.comboBoxPartialScan_SelectedIndexChanged);
+            this.buttonTrigger.Enabled = false;
+            this.buttonTrigger.Location = new System.Drawing.Point(224, 286);
+            this.buttonTrigger.Name = "buttonTrigger";
+            this.buttonTrigger.Size = new System.Drawing.Size(75, 23);
+            this.buttonTrigger.TabIndex = 22;
+            this.buttonTrigger.Text = "swTrigger";
+            this.buttonTrigger.UseVisualStyleBackColor = true;
+            this.buttonTrigger.Click += new System.EventHandler(this.buttonTrigger_Click);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.swTrigRadio);
+            this.groupBox7.Controls.Add(this.freeRunRadio);
+            this.groupBox7.Location = new System.Drawing.Point(428, 18);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(247, 66);
+            this.groupBox7.TabIndex = 21;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Trigger Settings";
+            // 
+            // swTrigRadio
+            // 
+            this.swTrigRadio.AutoSize = true;
+            this.swTrigRadio.Enabled = false;
+            this.swTrigRadio.Location = new System.Drawing.Point(120, 26);
+            this.swTrigRadio.Name = "swTrigRadio";
+            this.swTrigRadio.Size = new System.Drawing.Size(108, 16);
+            this.swTrigRadio.TabIndex = 23;
+            this.swTrigRadio.TabStop = true;
+            this.swTrigRadio.Text = "Software Trigger";
+            this.swTrigRadio.UseVisualStyleBackColor = true;
+            this.swTrigRadio.Click += new System.EventHandler(this.swTrigRadio_Click);
+            // 
+            // freeRunRadio
+            // 
+            this.freeRunRadio.AutoSize = true;
+            this.freeRunRadio.Enabled = false;
+            this.freeRunRadio.Location = new System.Drawing.Point(23, 26);
+            this.freeRunRadio.Name = "freeRunRadio";
+            this.freeRunRadio.Size = new System.Drawing.Size(91, 16);
+            this.freeRunRadio.TabIndex = 22;
+            this.freeRunRadio.TabStop = true;
+            this.freeRunRadio.Text = "Free Running";
+            this.freeRunRadio.UseVisualStyleBackColor = true;
+            this.freeRunRadio.Click += new System.EventHandler(this.freeRunRadio_Click);
             // 
             // comboBoxAcquisitionMode
             // 
@@ -566,6 +643,10 @@
             // 
             // ImageSizeGroupBox
             // 
+            this.ImageSizeGroupBox.Controls.Add(this.label11);
+            this.ImageSizeGroupBox.Controls.Add(this.numericUpDownVarPartScanNumberOfLines);
+            this.ImageSizeGroupBox.Controls.Add(this.label10);
+            this.ImageSizeGroupBox.Controls.Add(this.numericUpDownVarPartScanStartLine);
             this.ImageSizeGroupBox.Controls.Add(this.label9);
             this.ImageSizeGroupBox.Controls.Add(this.comboBoxPartialScan);
             this.ImageSizeGroupBox.Controls.Add(this.label8);
@@ -574,10 +655,91 @@
             this.ImageSizeGroupBox.Controls.Add(this.WidthNumericUpDown);
             this.ImageSizeGroupBox.Location = new System.Drawing.Point(12, 90);
             this.ImageSizeGroupBox.Name = "ImageSizeGroupBox";
-            this.ImageSizeGroupBox.Size = new System.Drawing.Size(200, 105);
+            this.ImageSizeGroupBox.Size = new System.Drawing.Size(200, 178);
             this.ImageSizeGroupBox.TabIndex = 16;
             this.ImageSizeGroupBox.TabStop = false;
             this.ImageSizeGroupBox.Text = "Image Size";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(7, 126);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(103, 12);
+            this.label11.TabIndex = 25;
+            this.label11.Text = "V. Part. N. Of Lines";
+            // 
+            // numericUpDownVarPartScanNumberOfLines
+            // 
+            this.numericUpDownVarPartScanNumberOfLines.Enabled = false;
+            this.numericUpDownVarPartScanNumberOfLines.Location = new System.Drawing.Point(116, 124);
+            this.numericUpDownVarPartScanNumberOfLines.Maximum = new decimal(new int[] {
+            2058,
+            0,
+            0,
+            0});
+            this.numericUpDownVarPartScanNumberOfLines.Name = "numericUpDownVarPartScanNumberOfLines";
+            this.numericUpDownVarPartScanNumberOfLines.Size = new System.Drawing.Size(78, 19);
+            this.numericUpDownVarPartScanNumberOfLines.TabIndex = 24;
+            this.numericUpDownVarPartScanNumberOfLines.Value = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+            this.numericUpDownVarPartScanNumberOfLines.ValueChanged += new System.EventHandler(this.numericUpDownVarPartScanNumberOfLines_ValueChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(7, 99);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(103, 12);
+            this.label10.TabIndex = 23;
+            this.label10.Text = "V. Part. Sc. St. Line";
+            // 
+            // numericUpDownVarPartScanStartLine
+            // 
+            this.numericUpDownVarPartScanStartLine.Enabled = false;
+            this.numericUpDownVarPartScanStartLine.Location = new System.Drawing.Point(116, 97);
+            this.numericUpDownVarPartScanStartLine.Maximum = new decimal(new int[] {
+            2058,
+            0,
+            0,
+            0});
+            this.numericUpDownVarPartScanStartLine.Name = "numericUpDownVarPartScanStartLine";
+            this.numericUpDownVarPartScanStartLine.Size = new System.Drawing.Size(78, 19);
+            this.numericUpDownVarPartScanStartLine.TabIndex = 22;
+            this.numericUpDownVarPartScanStartLine.Value = new decimal(new int[] {
+            965,
+            0,
+            0,
+            0});
+            this.numericUpDownVarPartScanStartLine.ValueChanged += new System.EventHandler(this.numericUpDownVarPartScanStartLine_ValueChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 73);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(57, 12);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Partial Sc.";
+            // 
+            // comboBoxPartialScan
+            // 
+            this.comboBoxPartialScan.FormattingEnabled = true;
+            this.comboBoxPartialScan.Items.AddRange(new object[] {
+            "Full Frame",
+            "Partial 2/3 lines",
+            "Partial 1/2 lines",
+            "Partial 1/4 lines",
+            "Partial 1/8 lines",
+            "Variable Partial Scan"});
+            this.comboBoxPartialScan.Location = new System.Drawing.Point(74, 70);
+            this.comboBoxPartialScan.Name = "comboBoxPartialScan";
+            this.comboBoxPartialScan.Size = new System.Drawing.Size(120, 20);
+            this.comboBoxPartialScan.TabIndex = 20;
+            this.comboBoxPartialScan.SelectedIndexChanged += new System.EventHandler(this.comboBoxPartialScan_SelectedIndexChanged);
             // 
             // label8
             // 
@@ -687,6 +849,13 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Basics";
+            // 
+            // textBoxMatlab
+            // 
+            this.textBoxMatlab.Location = new System.Drawing.Point(43, 93);
+            this.textBoxMatlab.Name = "textBoxMatlab";
+            this.textBoxMatlab.Size = new System.Drawing.Size(100, 19);
+            this.textBoxMatlab.TabIndex = 11;
             // 
             // buttonStartMatlab
             // 
@@ -828,69 +997,25 @@
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
             // 
-            // groupBox7
+            // label_mm
             // 
-            this.groupBox7.Controls.Add(this.swTrigRadio);
-            this.groupBox7.Controls.Add(this.freeRunRadio);
-            this.groupBox7.Location = new System.Drawing.Point(428, 18);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(247, 66);
-            this.groupBox7.TabIndex = 21;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Trigger Settings";
+            this.label_mm.AutoSize = true;
+            this.label_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.label_mm.Location = new System.Drawing.Point(190, 98);
+            this.label_mm.Name = "label_mm";
+            this.label_mm.Size = new System.Drawing.Size(23, 12);
+            this.label_mm.TabIndex = 10;
+            this.label_mm.Text = "mm";
             // 
-            // swTrigRadio
+            // degLabel
             // 
-            this.swTrigRadio.AutoSize = true;
-            this.swTrigRadio.Enabled = false;
-            this.swTrigRadio.Location = new System.Drawing.Point(120, 26);
-            this.swTrigRadio.Name = "swTrigRadio";
-            this.swTrigRadio.Size = new System.Drawing.Size(108, 16);
-            this.swTrigRadio.TabIndex = 23;
-            this.swTrigRadio.TabStop = true;
-            this.swTrigRadio.Text = "Software Trigger";
-            this.swTrigRadio.UseVisualStyleBackColor = true;
-            this.swTrigRadio.Click += new System.EventHandler(this.swTrigRadio_Click);
-            // 
-            // freeRunRadio
-            // 
-            this.freeRunRadio.AutoSize = true;
-            this.freeRunRadio.Enabled = false;
-            this.freeRunRadio.Location = new System.Drawing.Point(23, 26);
-            this.freeRunRadio.Name = "freeRunRadio";
-            this.freeRunRadio.Size = new System.Drawing.Size(91, 16);
-            this.freeRunRadio.TabIndex = 22;
-            this.freeRunRadio.TabStop = true;
-            this.freeRunRadio.Text = "Free Running";
-            this.freeRunRadio.UseVisualStyleBackColor = true;
-            this.freeRunRadio.Click += new System.EventHandler(this.freeRunRadio_Click);
-            // 
-            // buttonTrigger
-            // 
-            this.buttonTrigger.Enabled = false;
-            this.buttonTrigger.Location = new System.Drawing.Point(224, 286);
-            this.buttonTrigger.Name = "buttonTrigger";
-            this.buttonTrigger.Size = new System.Drawing.Size(75, 23);
-            this.buttonTrigger.TabIndex = 22;
-            this.buttonTrigger.Text = "swTrigger";
-            this.buttonTrigger.UseVisualStyleBackColor = true;
-            this.buttonTrigger.Click += new System.EventHandler(this.buttonTrigger_Click);
-            // 
-            // textBoxMatlab
-            // 
-            this.textBoxMatlab.Location = new System.Drawing.Point(43, 93);
-            this.textBoxMatlab.Name = "textBoxMatlab";
-            this.textBoxMatlab.Size = new System.Drawing.Size(100, 19);
-            this.textBoxMatlab.TabIndex = 11;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 72);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(57, 12);
-            this.label9.TabIndex = 21;
-            this.label9.Text = "Partial Sc.";
+            this.degLabel.AutoSize = true;
+            this.degLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.degLabel.Location = new System.Drawing.Point(191, 122);
+            this.degLabel.Name = "degLabel";
+            this.degLabel.Size = new System.Drawing.Size(23, 12);
+            this.degLabel.TabIndex = 20;
+            this.degLabel.Text = "deg";
             // 
             // SPRA_Form
             // 
@@ -910,6 +1035,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAdress)).EndInit();
             this.cameraTab.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ExposureTrackBar)).EndInit();
@@ -918,6 +1045,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.GainTrackBar)).EndInit();
             this.ImageSizeGroupBox.ResumeLayout(false);
             this.ImageSizeGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownVarPartScanNumberOfLines)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownVarPartScanStartLine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.HeightNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WidthNumericUpDown)).EndInit();
             this.groupBox2.ResumeLayout(false);
@@ -928,8 +1057,6 @@
             this.autImgAcq.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1013,6 +1140,15 @@
         private System.Windows.Forms.Button buttonTrigger;
         public System.Windows.Forms.TextBox textBoxMatlab;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown numericUpDownVarPartScanNumberOfLines;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown numericUpDownVarPartScanStartLine;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBoxMotor2Displ;
+        private System.Windows.Forms.TextBox textBoxMotor1Displ;
+        private System.Windows.Forms.Label label_mm;
+        private System.Windows.Forms.Label degLabel;
     }
 }
 
