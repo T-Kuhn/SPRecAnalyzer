@@ -2,7 +2,6 @@
 X = TwoValImg;
 [m,n] = size(X);
 
-% 枠沿いのピクセルを０にしておく
 X(1,:) = 0;
 X(m,:) = 0;
 X(:,1) = 0;
@@ -27,7 +26,7 @@ figure(4);
 imagesc(X); axis image;
 % colormap(gray);
 
-% 重複ラベルを削除
+% delete overlapping labels
 while 1
     kk = 0;
     for kx = 2:m-1;
