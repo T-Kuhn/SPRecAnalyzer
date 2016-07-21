@@ -38,30 +38,33 @@ classdef PixelObject < handle
             % end when there are no more points in the Buffer!
             while obj.Buffer.NmbrOfEntries > 0 
                 tmpPoint = obj.Buffer.dequeue(); 
+                %if imgData.pointCheck(tmpPoint);
+                %    obj.addPoint(tmpPoint);
+                %end
 
                 % Look at the Point above the tmpPoint 
-                checkPoint = Point(tmpPoint.X + 0, tmpPoint.Y + 1);
+                checkPoint = Point(tmpPoint.X, tmpPoint.Y + 1);
                 if imgData.pointCheck(checkPoint) 
                     obj.addPoint(imgData, checkPoint);
                     obj.Buffer.queue(checkPoint);
                 end
             
                 % Look at the Point under the tmpPoint 
-                checkPoint = Point(tmpPoint.X + 0, tmpPoint.Y -1);
+                checkPoint = Point(tmpPoint.X, tmpPoint.Y -1);
                 if imgData.pointCheck(checkPoint) 
                     obj.addPoint(imgData, checkPoint);
                     obj.Buffer.queue(checkPoint);
                 end
 
                 % Look at the Point on the right of the tmpPoint 
-                checkPoint = Point(tmpPoint.X + 1, tmpPoint.Y + 0);
+                checkPoint = Point(tmpPoint.X + 1, tmpPoint.Y);
                 if imgData.pointCheck(checkPoint) 
                     obj.addPoint(imgData, checkPoint);
                     obj.Buffer.queue(checkPoint);
                 end
                 
                 % Look at the Point on the left of the tmpPoint
-                checkPoint = Point(tmpPoint.X - 0, tmpPoint.Y + 0);
+                checkPoint = Point(tmpPoint.X - 1, tmpPoint.Y);
                 if imgData.pointCheck(checkPoint) 
                     obj.addPoint(imgData, checkPoint);
                     obj.Buffer.queue(checkPoint);

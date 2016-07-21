@@ -1,4 +1,14 @@
 % use the "TwoValImg" matrix as data
+tic
+TwoValImg = uint16(zeros(imgHeight, imgWidth));
+for pixel = 1:imgHeight*imgWidth   % loop through all the pixels. The Pixels values go from 0 to 255*3
+    if grayImg(pixel) > threshold
+        TwoValImg(pixel) = 1;
+    else
+        TwoValImg(pixel) = 0;
+    end
+end
+
 X = TwoValImg;
 [m,n] = size(X);
 
@@ -24,7 +34,7 @@ for kx = 2:m-1;
 end
 figure(4);
 imagesc(X); axis image;
-% colormap(gray);
+colormap(gray);
 
 % delete overlapping labels
 while 1
@@ -47,6 +57,7 @@ while 1
         end
     end
 end
+toc
 figure(5);
 imagesc(X); axis image;
 

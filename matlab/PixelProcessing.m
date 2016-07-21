@@ -1,11 +1,10 @@
 % - - - - - - - - - - - - - - - - 
 % - - - - Load Image Data - - - -
 % - - - - - - - - - - - - - - - -
-imgOriginal = imread('img/SmallP60400FL.bmp', 'bmp'); % load the original image
+imgOriginal = imread('img/SmallP59000FL.bmp', 'bmp'); % load the original image
+%imgOriginal = imread('img/P60400FL.bmp', 'bmp'); % load the original image
 img = uint16(imgOriginal); 
-imgWidth = length(img(1,:,1));
-imgHeight = length(img(:,1,1));
-
+[imgHeight, imgWidth] = size(img(:,:,1));
 % - - - - - - - - - - - - - - - - 
 % - - -  GrayScale Bitmap - - - -
 % - - - - - - - - - - - - - - - -
@@ -35,11 +34,9 @@ figure(3);
 imagesc(imageData.MapArr); colormap(gray); % display the image in matlab
 axis image;
 
-
 % - - - - - - - - - - - - - - - - 
 % - - -  Pixel Processing - - - -
 % - - - - - - - - - - - - - - - -
-
 PixelProcessing_ObjectExtraction();
 
 

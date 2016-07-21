@@ -44,6 +44,8 @@ classdef ImageDataClass < handle
                 else
                     r = false;
                 end
+            else
+                r = false;
             end
         end
     end
