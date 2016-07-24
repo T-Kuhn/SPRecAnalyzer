@@ -1,6 +1,7 @@
 % - - - - - - - - - - - - - - - - 
 % - - - - Load Image Data - - - -
 % - - - - - - - - - - - - - - - -
+profile on
 imgOriginal = imread('img/SmallP59000FL.bmp', 'bmp'); % load the original image
 %imgOriginal = imread('img/P60400FL.bmp', 'bmp'); % load the original image
 img = uint16(imgOriginal); 
