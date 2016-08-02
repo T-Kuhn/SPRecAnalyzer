@@ -1,7 +1,7 @@
 % - - - - - - - - - - - - - - - - 
 % - - - - Load Image Data - - - -
 % - - - - - - - - - - - - - - - -
-profile on
+tic
 imgOriginal = imread('img/SmallP59000FL.bmp', 'bmp'); % load the original image
 %imgOriginal = imread('img/P60400FL.bmp', 'bmp'); % load the original image
 img = uint16(imgOriginal); 
@@ -17,8 +17,18 @@ imgNmbrOfPixels = length(grayImg(:));
 % - - - - create TwoValImg  - - -
 % - - - - - - - - - - - - - - - -
 threshold = 80;
-imageData = ImageDataClass(imgWidth, imgHeight);
-imageData.setup(grayImg, threshold);
+TwoValImg = uint16(zeros(imgHeight, imgWidth));
+for pixel = 1:imgHeight*imgWidth   % loop through all the pixels. The Pixels values go from 0 to 255*3
+    if grayImg(pixel) > threshold
+        TwoValImg(pixel) = 1;
+    else
+        TwoValImg(pixel) = 0;
+    end
+end
+
+
+%imageData = ImageDataClass(imgWidth, imgHeight);
+%imageData.setup(grayImg, threshold);
 
 % - - - - - - - - - - - - - - - - 
 % - - - -  Show Results - - - - -
@@ -32,13 +42,13 @@ imagesc(grayImg); colormap(gray); % display the image in matlab
 axis image;
 
 figure(3);
-imagesc(imageData.MapArr); colormap(gray); % display the image in matlab
+imagesc(TwoValImg); colormap(gray); % display the image in matlab
 axis image;
 
 % - - - - - - - - - - - - - - - - 
 % - - -  Pixel Processing - - - -
 % - - - - - - - - - - - - - - - -
-PixelProcessing_ObjectExtraction();
+PixelProcessing_ObjectExtraction11_1();
 
 
 

@@ -1,22 +1,17 @@
-% use the "TwoValImg" matrix as data
-tic
-TwoValImg = uint16(zeros(imgHeight, imgWidth));
-for pixel = 1:imgHeight*imgWidth   % loop through all the pixels. The Pixels values go from 0 to 255*3
-    if grayImg(pixel) > threshold
-        TwoValImg(pixel) = 1;
-    else
-        TwoValImg(pixel) = 0;
-    end
-end
-
 X = TwoValImg;
 [m,n] = size(X);
 
+% - - - - - - - - - - - - - - - - 
+% - - - DELETE FRAME PIXELS - - -
+% - - - - - - - - - - - - - - - -
 X(1,:) = 0;
 X(m,:) = 0;
 X(:,1) = 0;
 X(:,n) = 0;
 
+% - - - - - - - - - - - - - - - - 
+% - - - - - - LABELING  - - - - -
+% - - - - - - - - - - - - - - - -
 label = 0;
 for kx = 2:m-1;
     for ky = 2:n-1;
@@ -36,7 +31,9 @@ figure(4);
 imagesc(X); axis image;
 colormap(gray);
 
-% delete overlapping labels
+% - - - - - - - - - - - - - - - - 
+% - DELETE OVERLAPPING LABELS - -
+% - - - - - - - - - - - - - - - -
 while 1
     kk = 0;
     for kx = 2:m-1;
@@ -59,6 +56,70 @@ while 1
 end
 toc
 figure(5);
-imagesc(X); axis image;
+imagesc(X); axis image
+
+% - - - - - - - - - - - - - - - - 
+% - - - OBJECT EXTRACTION - - - -
+% - - - - - - - - - - - - - - - -
+
+indexCounter = 0;
+existingPixelObjects = [0];
+PixelObjects = PixelObject_.empty(0, 0);
+map = [];
+for kx = 2:m-1;
+    for ky = 2:n-1;
+        tmp = X(kx, ky);
+        if tmp ~= 0;
+            ex = false;
+            for ent = existingPixelObjects;
+                if ent == tmp;
+                    ex = true;
+                    break;    
+                end 
+            end
+            if ex ~= 0;
+                % The thing already exists!
+                PixelObjects(map(tmp)).addPoint([kx, ky]);
+            else
+                % The thing didn't exist!
+                indexCounter = indexCounter + 1;
+                existingPixelObjects(indexCounter) = tmp;            
+                % Here we need to add another entry to the map!
+                map(tmp) = indexCounter;
+                PixelObjects(indexCounter) = PixelObject_(indexCounter);
+                PixelObjects(indexCounter).addPoint([kx, ky]);
+            end
+        end
+    end
+end
+
+% - - - - - - - - - - - - - - - - 
+%  PRINT NMBR OF BIG PIXELOBJTS -
+% - - - - - - - - - - - - - - - -
+
+pixelThreshold = 1000;
+nmbrOfObjects = 0;
+
+for ent = PixelObjects;
+    if ent.EntryIndex > pixelThreshold;
+        ent.EntryIndex
+        nmbrOfObjects = nmbrOfObjects + 1;
+    end
+end
+
+nmbrOfObjects
+
+% one of the next things would be to calculate the centerPositions of all those things
+% with more than pixelThreshold pixels!
+
+% Then, last but not least, we could return the center position of the thing
+% most to the left!
+
+% after getting that data to the good old c# thing we could try to make the position calculations.
+% that shouldn't be that hard actually.
+
+
+
+
 
 
