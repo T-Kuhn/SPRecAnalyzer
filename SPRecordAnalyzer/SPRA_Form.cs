@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -12,13 +14,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jai_FactoryDotNET;
 using NationalInstruments.NI4882;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using static System.IO.File;
 
 namespace SPRecordAnalyzer
 {
     public partial class SPRA_Form : Form
     {
         private Thread stageComThread;
+        private Thread imageThread;
         private bool seqRunning;
+        private bool calibRunning;
         private bool AIARunning;
         private bool AIAinit;
         private string[] splittedString;
@@ -58,10 +65,12 @@ namespace SPRecordAnalyzer
         {
             InitializeComponent();
             stageComThread = new Thread(sCT);
+            imageThread = new Thread(imgThread);
             seqRunning = false;
             imgNmbr = 0;
             // start thread
             stageComThread.Start();
+            imageThread.Start();
             Jai_FactoryWrapper.EFactoryError error = Jai_FactoryWrapper.EFactoryError.Success;
 
             // Open the factory with the default Registry database
@@ -77,6 +86,7 @@ namespace SPRecordAnalyzer
         {
             // Stage
             stageComThread.Abort();
+            imageThread.Abort();
             // Camera
             if (myCamera != null)
             {
@@ -135,34 +145,84 @@ namespace SPRecordAnalyzer
                         setStatusBox("Busy");
                     }
                 }
-
-                // Automatic Image Acquisition
-                if (device != null && myCamera != null)
-                {
-                    if (busReady && AIARunning)
-                    {
-                        if (!AIAinit)
-                        {
-                            writeToStage(textBoxAIAinitInstr.Text);
-                            Thread.Sleep(5);
-                            AIAinit = false;
-                        }
-                        else
-                        {
-                            writeToStage(textBoxAIAloopInstr.Text);
-                            Thread.Sleep(5);
-                            writeToStage("G:");
-                            int i;
-                            Int32.TryParse(textBoxAIAwaitBefImage.Text, out i);
-                            Thread.Sleep(i);
-                            if(checkBoxSaveImages.Checked)
-                                Savebmp();
-                        }
-                    }
-                        
-                }
                 Thread.Sleep(5);
             }
+        }
+
+
+        private void imgThread()
+        {
+            while (true)
+            {
+                if (calibRunning)
+                {
+                    Thread.Sleep(20000);
+                    Point point1 = helperFunction();
+
+                    seqRunning = true;
+                    seqCounter = 0;
+                    string str = "D:2S500F15000R1200" + '\n' +
+                                 "M:1-P400";
+                    splittedString = str.Split('\n');
+
+                    Thread.Sleep(1000);
+
+                    Point point2 = helperFunction();
+                    calibRunning = false;
+
+                    // 1.   take a picture:
+                    //          using code from softwaretriggerbutton!
+                    // 2.   use the picture and do some calculations with matlab!
+                    // 3.   look at the center pos of the outher most thing
+                    // 4. move for some pulses
+                    // 1 more time 1 to 3
+                }
+                Thread.Sleep(100);
+            }
+        }
+
+
+        private Point helperFunction()
+        {
+            takePicture();
+
+            Thread.Sleep(100);
+
+            // Create the MATLAB instance 
+            MLApp.MLApp matlab = new MLApp.MLApp();
+
+            // Change to the directory where the function is located 
+            matlab.Execute(@"cd d:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData");
+
+            //textBoxMatlab.Text = "";
+
+            matlab.Execute(@"PixelProcessing");
+            
+            // Define the output
+            //object result = null;
+
+            // Call the MATLAB function 
+            //matlab.Feval("gcaEx", 0, out result);
+
+            // Display result
+            //object[] res = result as object[];
+
+
+            // read file into a string and deserialize JSON to a type
+            PixelObjectArr pixelObjectArr = JsonConvert.DeserializeObject<PixelObjectArr>(ReadAllText(@"D:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData\PixelObjectArr.json"));
+
+            // deserialize JSON directly from a file
+            using (StreamReader file = OpenText(@"D:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData\PixelObjectArr.json"))
+            {
+                var serializer = new JsonSerializer();
+                var pixelObjectArr2 = (RootObject)serializer.Deserialize(file, typeof(RootObject));
+                //textBoxMatlab1.Text = pixelObjectArr2.PixelObjectArr.PixelObjects[1].CenterPos[1].ToString();
+            }
+
+
+            //textBoxMatlab.Text = pixelObjectArr.PixelObjects[1].EntryIndex.ToString();
+
+            return new Point(1,2);
         }
 
         private void buttonOpenGPIB_Click(object sender, EventArgs e)
@@ -397,26 +457,42 @@ namespace SPRecordAnalyzer
         // - - - - - - - - - - - - - - - - -
         private void buttonStartMatlab_Click(object sender, EventArgs e)
         {
+            
             // Create the MATLAB instance 
             MLApp.MLApp matlab = new MLApp.MLApp();
 
             // Change to the directory where the function is located 
-            matlab.Execute(@"cd d:\KT\Matlab");
+            matlab.Execute(@"cd d:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData");
 
             //textBoxMatlab.Text = "";
 
-            matlab.Execute(@"gcaEx");
+            matlab.Execute(@"PixelProcessing");
 
-            textBoxMatlab.Text = "it works!";
+            textBoxMatlab1.Text = "it works!";
 
             // Define the output
             //object result = null;
 
-            // Call the MATLAB function myfunc
+            // Call the MATLAB function 
             //matlab.Feval("gcaEx", 0, out result);
 
             // Display result
             //object[] res = result as object[];
+
+
+            // read file into a string and deserialize JSON to a type
+            PixelObjectArr pixelObjectArr = JsonConvert.DeserializeObject<PixelObjectArr>(ReadAllText(@"D:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData\PixelObjectArr.json"));
+
+            // deserialize JSON directly from a file
+            using(StreamReader file = OpenText(@"D:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData\PixelObjectArr.json"))
+            {
+                var serializer = new JsonSerializer();
+                var pixelObjectArr2 = (RootObject)serializer.Deserialize(file, typeof(RootObject));
+                textBoxMatlab1.Text = pixelObjectArr2.PixelObjectArr.PixelObjects[1].CenterPos[1].ToString();
+            }
+
+
+            //textBoxMatlab.Text = pixelObjectArr.PixelObjects[1].EntryIndex.ToString();
         }
         // - - - - - - - - - - - - - - - - -
         // - - - MATLAB FUNCTIONS STOP - - -
@@ -702,7 +778,7 @@ namespace SPRecordAnalyzer
                     }
                 }
 
-                // check free running as default
+                // check swTrigRadio as default
                 freeRunRadio.Checked = true;
                 freeRunRadio.Enabled = true;
 
@@ -948,6 +1024,11 @@ namespace SPRecordAnalyzer
 
         private void buttonTrigger_Click(object sender, EventArgs e)
         {
+            takePicture();
+        }
+
+        private void takePicture()
+        {
             // But we have 2 ways of sending a software trigger: JAI and GenICam SNC
             // The GenICam SFNC software trigger is available if a node called
             // TriggerSoftware is available
@@ -967,7 +1048,10 @@ namespace SPRecordAnalyzer
                 myCamera.GetNode("SoftwareTrigger0").Value = 1;
                 myCamera.GetNode("SoftwareTrigger0").Value = 0;
             }
+            Thread.Sleep(100);
+            myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPixelPerPulseData/img/tmp.bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
         }
+
         private void comboBoxPartialScan_SelectedIndexChanged(object sender, EventArgs e)
         {
             
@@ -1016,10 +1100,21 @@ namespace SPRecordAnalyzer
             AIARunning = false;
         }
 
-        private void label9_Click(object sender, EventArgs e)
+        private void buttonStartCalib_Click(object sender, EventArgs e)
         {
+            //INIT SEQUENCE (SEQUENCER1)
+            string str = textBoxSequencer1.Text;
+            splittedString = str.Split('\n');
+            for (int i = 0; i < splittedString.Length; i++)
+            {
+                splittedString[i] = splittedString[i].Replace("\r", "");
+                splittedString[i] = splittedString[i].Replace("\n", "");
+                Debug.WriteLine("String entry : " + splittedString[i]);
+            }
+            seqRunning = true;
+            seqCounter = 0;
 
+            calibRunning = true;
         }
-        
     }
 }

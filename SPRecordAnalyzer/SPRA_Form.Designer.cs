@@ -31,6 +31,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.gpibInterfaceTab = new System.Windows.Forms.TabPage();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
+            this.degLabel = new System.Windows.Forms.Label();
+            this.label_mm = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.textBoxMotor2Displ = new System.Windows.Forms.TextBox();
             this.textBoxMotor1Displ = new System.Windows.Forms.TextBox();
@@ -92,7 +94,7 @@
             this.CameraIDTextBox = new System.Windows.Forms.TextBox();
             this.matlabTab = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxMatlab = new System.Windows.Forms.TextBox();
+            this.textBoxMatlab1 = new System.Windows.Forms.TextBox();
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.autImgAcq = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -107,8 +109,9 @@
             this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.label_mm = new System.Windows.Forms.Label();
-            this.degLabel = new System.Windows.Forms.Label();
+            this.textBoxMatlab2 = new System.Windows.Forms.TextBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.buttonStartCalib = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
@@ -132,6 +135,7 @@
             this.groupBox1.SuspendLayout();
             this.autImgAcq.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -143,19 +147,20 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(698, 364);
+            this.tabControl1.Size = new System.Drawing.Size(924, 364);
             this.tabControl1.TabIndex = 0;
             // 
             // gpibInterfaceTab
             // 
             this.gpibInterfaceTab.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.gpibInterfaceTab.Controls.Add(this.groupBox6);
             this.gpibInterfaceTab.Controls.Add(this.groupBoxStatus);
             this.gpibInterfaceTab.Controls.Add(this.groupBoxAdvanced);
             this.gpibInterfaceTab.Controls.Add(this.groupBoxBasics);
             this.gpibInterfaceTab.Location = new System.Drawing.Point(4, 22);
             this.gpibInterfaceTab.Name = "gpibInterfaceTab";
             this.gpibInterfaceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.gpibInterfaceTab.Size = new System.Drawing.Size(690, 338);
+            this.gpibInterfaceTab.Size = new System.Drawing.Size(916, 338);
             this.gpibInterfaceTab.TabIndex = 0;
             this.gpibInterfaceTab.Text = "GPIB Interface";
             // 
@@ -180,6 +185,26 @@
             this.groupBoxStatus.TabIndex = 13;
             this.groupBoxStatus.TabStop = false;
             this.groupBoxStatus.Text = "Status";
+            // 
+            // degLabel
+            // 
+            this.degLabel.AutoSize = true;
+            this.degLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.degLabel.Location = new System.Drawing.Point(191, 122);
+            this.degLabel.Name = "degLabel";
+            this.degLabel.Size = new System.Drawing.Size(23, 12);
+            this.degLabel.TabIndex = 20;
+            this.degLabel.Text = "deg";
+            // 
+            // label_mm
+            // 
+            this.label_mm.AutoSize = true;
+            this.label_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.label_mm.Location = new System.Drawing.Point(190, 98);
+            this.label_mm.Name = "label_mm";
+            this.label_mm.Size = new System.Drawing.Size(23, 12);
+            this.label_mm.TabIndex = 10;
+            this.label_mm.Text = "mm";
             // 
             // label12
             // 
@@ -217,7 +242,6 @@
             this.textBoxInfo.Multiline = true;
             this.textBoxInfo.Name = "textBoxInfo";
             this.textBoxInfo.ReadOnly = true;
-            this.textBoxInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxInfo.Size = new System.Drawing.Size(204, 105);
             this.textBoxInfo.TabIndex = 10;
             this.textBoxInfo.Text = "m. origin:    H:W-\r\nres. origin:  R:W\r\nvelocity:     D:1S100F1000R100\r\nrel. move:" +
@@ -331,7 +355,6 @@
             this.textBoxSequencer2.Location = new System.Drawing.Point(17, 195);
             this.textBoxSequencer2.Multiline = true;
             this.textBoxSequencer2.Name = "textBoxSequencer2";
-            this.textBoxSequencer2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxSequencer2.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer2.TabIndex = 14;
             this.textBoxSequencer2.Text = "D:2S500F15000R1200\r\nJ:2+";
@@ -361,7 +384,6 @@
             this.textBoxSequencer1.Location = new System.Drawing.Point(17, 42);
             this.textBoxSequencer1.Multiline = true;
             this.textBoxSequencer1.Name = "textBoxSequencer1";
-            this.textBoxSequencer1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxSequencer1.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer1.TabIndex = 11;
             this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:1+P5725\r\nR:1\r\nA:W+P60400+P0";
@@ -403,7 +425,6 @@
             this.textBoxStringRead.Multiline = true;
             this.textBoxStringRead.Name = "textBoxStringRead";
             this.textBoxStringRead.ReadOnly = true;
-            this.textBoxStringRead.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxStringRead.Size = new System.Drawing.Size(179, 92);
             this.textBoxStringRead.TabIndex = 9;
             // 
@@ -488,7 +509,7 @@
             this.cameraTab.Controls.Add(this.groupBox3);
             this.cameraTab.Location = new System.Drawing.Point(4, 22);
             this.cameraTab.Name = "cameraTab";
-            this.cameraTab.Size = new System.Drawing.Size(690, 338);
+            this.cameraTab.Size = new System.Drawing.Size(916, 338);
             this.cameraTab.TabIndex = 2;
             this.cameraTab.Text = "Camera";
             // 
@@ -835,13 +856,14 @@
             this.matlabTab.Location = new System.Drawing.Point(4, 22);
             this.matlabTab.Name = "matlabTab";
             this.matlabTab.Padding = new System.Windows.Forms.Padding(3);
-            this.matlabTab.Size = new System.Drawing.Size(690, 338);
+            this.matlabTab.Size = new System.Drawing.Size(916, 338);
             this.matlabTab.TabIndex = 1;
             this.matlabTab.Text = "Matlab";
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBoxMatlab);
+            this.groupBox1.Controls.Add(this.textBoxMatlab2);
+            this.groupBox1.Controls.Add(this.textBoxMatlab1);
             this.groupBox1.Controls.Add(this.buttonStartMatlab);
             this.groupBox1.Location = new System.Drawing.Point(6, 3);
             this.groupBox1.Name = "groupBox1";
@@ -850,20 +872,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Basics";
             // 
-            // textBoxMatlab
+            // textBoxMatlab1
             // 
-            this.textBoxMatlab.Location = new System.Drawing.Point(43, 93);
-            this.textBoxMatlab.Name = "textBoxMatlab";
-            this.textBoxMatlab.Size = new System.Drawing.Size(100, 19);
-            this.textBoxMatlab.TabIndex = 11;
+            this.textBoxMatlab1.BackColor = System.Drawing.SystemColors.Menu;
+            this.textBoxMatlab1.Location = new System.Drawing.Point(85, 72);
+            this.textBoxMatlab1.Multiline = true;
+            this.textBoxMatlab1.Name = "textBoxMatlab1";
+            this.textBoxMatlab1.Size = new System.Drawing.Size(62, 26);
+            this.textBoxMatlab1.TabIndex = 11;
             // 
             // buttonStartMatlab
             // 
-            this.buttonStartMatlab.Location = new System.Drawing.Point(56, 42);
+            this.buttonStartMatlab.Location = new System.Drawing.Point(17, 29);
             this.buttonStartMatlab.Name = "buttonStartMatlab";
             this.buttonStartMatlab.Size = new System.Drawing.Size(75, 23);
             this.buttonStartMatlab.TabIndex = 10;
-            this.buttonStartMatlab.Text = "Start";
+            this.buttonStartMatlab.Text = "Start Calib";
             this.buttonStartMatlab.UseVisualStyleBackColor = true;
             this.buttonStartMatlab.Click += new System.EventHandler(this.buttonStartMatlab_Click);
             // 
@@ -997,29 +1021,38 @@
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
             // 
-            // label_mm
+            // textBoxMatlab2
             // 
-            this.label_mm.AutoSize = true;
-            this.label_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.label_mm.Location = new System.Drawing.Point(190, 98);
-            this.label_mm.Name = "label_mm";
-            this.label_mm.Size = new System.Drawing.Size(23, 12);
-            this.label_mm.TabIndex = 10;
-            this.label_mm.Text = "mm";
+            this.textBoxMatlab2.Location = new System.Drawing.Point(17, 72);
+            this.textBoxMatlab2.Multiline = true;
+            this.textBoxMatlab2.Name = "textBoxMatlab2";
+            this.textBoxMatlab2.ReadOnly = true;
+            this.textBoxMatlab2.Size = new System.Drawing.Size(62, 26);
+            this.textBoxMatlab2.TabIndex = 12;
             // 
-            // degLabel
+            // groupBox6
             // 
-            this.degLabel.AutoSize = true;
-            this.degLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.degLabel.Location = new System.Drawing.Point(191, 122);
-            this.degLabel.Name = "degLabel";
-            this.degLabel.Size = new System.Drawing.Size(23, 12);
-            this.degLabel.TabIndex = 20;
-            this.degLabel.Text = "deg";
+            this.groupBox6.Controls.Add(this.buttonStartCalib);
+            this.groupBox6.Location = new System.Drawing.Point(687, 3);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(221, 330);
+            this.groupBox6.TabIndex = 14;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Calibration";
+            // 
+            // buttonStartCalib
+            // 
+            this.buttonStartCalib.Location = new System.Drawing.Point(17, 293);
+            this.buttonStartCalib.Name = "buttonStartCalib";
+            this.buttonStartCalib.Size = new System.Drawing.Size(75, 23);
+            this.buttonStartCalib.TabIndex = 10;
+            this.buttonStartCalib.Text = "Start Calib";
+            this.buttonStartCalib.UseVisualStyleBackColor = true;
+            this.buttonStartCalib.Click += new System.EventHandler(this.buttonStartCalib_Click);
             // 
             // SPRA_Form
             // 
-            this.ClientSize = new System.Drawing.Size(740, 388);
+            this.ClientSize = new System.Drawing.Size(1000, 388);
             this.Controls.Add(this.tabControl1);
             this.Name = "SPRA_Form";
             this.Text = "SP Record Analyzer";
@@ -1057,6 +1090,7 @@
             this.autImgAcq.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1138,7 +1172,6 @@
         private System.Windows.Forms.RadioButton swTrigRadio;
         private System.Windows.Forms.RadioButton freeRunRadio;
         private System.Windows.Forms.Button buttonTrigger;
-        public System.Windows.Forms.TextBox textBoxMatlab;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown numericUpDownVarPartScanNumberOfLines;
@@ -1149,6 +1182,10 @@
         private System.Windows.Forms.TextBox textBoxMotor1Displ;
         private System.Windows.Forms.Label label_mm;
         private System.Windows.Forms.Label degLabel;
+        private System.Windows.Forms.TextBox textBoxMatlab2;
+        private System.Windows.Forms.TextBox textBoxMatlab1;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button buttonStartCalib;
     }
 }
 
