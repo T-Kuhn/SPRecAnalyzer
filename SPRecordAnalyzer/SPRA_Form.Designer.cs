@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.gpibInterfaceTab = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.buttonStartCalib = new System.Windows.Forms.Button();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
             this.degLabel = new System.Windows.Forms.Label();
             this.label_mm = new System.Windows.Forms.Label();
@@ -94,6 +96,7 @@
             this.CameraIDTextBox = new System.Windows.Forms.TextBox();
             this.matlabTab = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxMatlab2 = new System.Windows.Forms.TextBox();
             this.textBoxMatlab1 = new System.Windows.Forms.TextBox();
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.autImgAcq = new System.Windows.Forms.TabPage();
@@ -109,11 +112,32 @@
             this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.textBoxMatlab2 = new System.Windows.Forms.TextBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.buttonStartCalib = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBoxWidth_mm = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBoxHeight_mm = new System.Windows.Forms.TextBox();
+            this.textBoxHeight = new System.Windows.Forms.TextBox();
+            this.textBoxWidth = new System.Windows.Forms.TextBox();
+            this.textBoxpppratio = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBoxCalib2ndmm = new System.Windows.Forms.TextBox();
+            this.textBoxCalib1stmm = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.textBoxCalibAbsDiff = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxAdvanced.SuspendLayout();
             this.groupBoxBasics.SuspendLayout();
@@ -135,7 +159,6 @@
             this.groupBox1.SuspendLayout();
             this.autImgAcq.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -163,6 +186,49 @@
             this.gpibInterfaceTab.Size = new System.Drawing.Size(916, 338);
             this.gpibInterfaceTab.TabIndex = 0;
             this.gpibInterfaceTab.Text = "GPIB Interface";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.label27);
+            this.groupBox6.Controls.Add(this.label26);
+            this.groupBox6.Controls.Add(this.label25);
+            this.groupBox6.Controls.Add(this.label24);
+            this.groupBox6.Controls.Add(this.label23);
+            this.groupBox6.Controls.Add(this.label22);
+            this.groupBox6.Controls.Add(this.label20);
+            this.groupBox6.Controls.Add(this.label21);
+            this.groupBox6.Controls.Add(this.textBoxCalibAbsDiff);
+            this.groupBox6.Controls.Add(this.label19);
+            this.groupBox6.Controls.Add(this.label18);
+            this.groupBox6.Controls.Add(this.label17);
+            this.groupBox6.Controls.Add(this.label16);
+            this.groupBox6.Controls.Add(this.textBoxCalib2ndmm);
+            this.groupBox6.Controls.Add(this.textBoxCalib1stmm);
+            this.groupBox6.Controls.Add(this.label15);
+            this.groupBox6.Controls.Add(this.textBoxpppratio);
+            this.groupBox6.Controls.Add(this.textBoxHeight);
+            this.groupBox6.Controls.Add(this.label14);
+            this.groupBox6.Controls.Add(this.textBoxHeight_mm);
+            this.groupBox6.Controls.Add(this.textBoxWidth);
+            this.groupBox6.Controls.Add(this.label13);
+            this.groupBox6.Controls.Add(this.buttonStartCalib);
+            this.groupBox6.Controls.Add(this.textBoxWidth_mm);
+            this.groupBox6.Location = new System.Drawing.Point(687, 3);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(221, 330);
+            this.groupBox6.TabIndex = 14;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Calibration";
+            // 
+            // buttonStartCalib
+            // 
+            this.buttonStartCalib.Location = new System.Drawing.Point(17, 293);
+            this.buttonStartCalib.Name = "buttonStartCalib";
+            this.buttonStartCalib.Size = new System.Drawing.Size(75, 23);
+            this.buttonStartCalib.TabIndex = 10;
+            this.buttonStartCalib.Text = "Start Calib";
+            this.buttonStartCalib.UseVisualStyleBackColor = true;
+            this.buttonStartCalib.Click += new System.EventHandler(this.buttonStartCalib_Click);
             // 
             // groupBoxStatus
             // 
@@ -872,6 +938,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Basics";
             // 
+            // textBoxMatlab2
+            // 
+            this.textBoxMatlab2.Location = new System.Drawing.Point(17, 72);
+            this.textBoxMatlab2.Multiline = true;
+            this.textBoxMatlab2.Name = "textBoxMatlab2";
+            this.textBoxMatlab2.ReadOnly = true;
+            this.textBoxMatlab2.Size = new System.Drawing.Size(62, 26);
+            this.textBoxMatlab2.TabIndex = 12;
+            // 
             // textBoxMatlab1
             // 
             this.textBoxMatlab1.BackColor = System.Drawing.SystemColors.Menu;
@@ -898,7 +973,7 @@
             this.autImgAcq.ForeColor = System.Drawing.SystemColors.ControlText;
             this.autImgAcq.Location = new System.Drawing.Point(4, 22);
             this.autImgAcq.Name = "autImgAcq";
-            this.autImgAcq.Size = new System.Drawing.Size(690, 338);
+            this.autImgAcq.Size = new System.Drawing.Size(916, 338);
             this.autImgAcq.TabIndex = 3;
             this.autImgAcq.Text = "Automatic Image Acq.";
             // 
@@ -1021,44 +1096,239 @@
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
             // 
-            // textBoxMatlab2
+            // label13
             // 
-            this.textBoxMatlab2.Location = new System.Drawing.Point(17, 72);
-            this.textBoxMatlab2.Multiline = true;
-            this.textBoxMatlab2.Name = "textBoxMatlab2";
-            this.textBoxMatlab2.ReadOnly = true;
-            this.textBoxMatlab2.Size = new System.Drawing.Size(62, 26);
-            this.textBoxMatlab2.TabIndex = 12;
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.label13.Location = new System.Drawing.Point(179, 154);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(23, 12);
+            this.label13.TabIndex = 21;
+            this.label13.Text = "mm";
             // 
-            // groupBox6
+            // textBoxWidth_mm
             // 
-            this.groupBox6.Controls.Add(this.buttonStartCalib);
-            this.groupBox6.Location = new System.Drawing.Point(687, 3);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(221, 330);
-            this.groupBox6.TabIndex = 14;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Calibration";
+            this.textBoxWidth_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.textBoxWidth_mm.Location = new System.Drawing.Point(132, 151);
+            this.textBoxWidth_mm.Name = "textBoxWidth_mm";
+            this.textBoxWidth_mm.ReadOnly = true;
+            this.textBoxWidth_mm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxWidth_mm.Size = new System.Drawing.Size(71, 19);
+            this.textBoxWidth_mm.TabIndex = 22;
             // 
-            // buttonStartCalib
+            // label14
             // 
-            this.buttonStartCalib.Location = new System.Drawing.Point(17, 293);
-            this.buttonStartCalib.Name = "buttonStartCalib";
-            this.buttonStartCalib.Size = new System.Drawing.Size(75, 23);
-            this.buttonStartCalib.TabIndex = 10;
-            this.buttonStartCalib.Text = "Start Calib";
-            this.buttonStartCalib.UseVisualStyleBackColor = true;
-            this.buttonStartCalib.Click += new System.EventHandler(this.buttonStartCalib_Click);
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.label14.Location = new System.Drawing.Point(178, 179);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(23, 12);
+            this.label14.TabIndex = 24;
+            this.label14.Text = "mm";
+            // 
+            // textBoxHeight_mm
+            // 
+            this.textBoxHeight_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.textBoxHeight_mm.Location = new System.Drawing.Point(131, 176);
+            this.textBoxHeight_mm.Name = "textBoxHeight_mm";
+            this.textBoxHeight_mm.ReadOnly = true;
+            this.textBoxHeight_mm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxHeight_mm.Size = new System.Drawing.Size(71, 19);
+            this.textBoxHeight_mm.TabIndex = 25;
+            // 
+            // textBoxHeight
+            // 
+            this.textBoxHeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBoxHeight.Location = new System.Drawing.Point(50, 176);
+            this.textBoxHeight.Name = "textBoxHeight";
+            this.textBoxHeight.ReadOnly = true;
+            this.textBoxHeight.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxHeight.Size = new System.Drawing.Size(56, 19);
+            this.textBoxHeight.TabIndex = 23;
+            // 
+            // textBoxWidth
+            // 
+            this.textBoxWidth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBoxWidth.Location = new System.Drawing.Point(50, 151);
+            this.textBoxWidth.Name = "textBoxWidth";
+            this.textBoxWidth.ReadOnly = true;
+            this.textBoxWidth.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxWidth.Size = new System.Drawing.Size(56, 19);
+            this.textBoxWidth.TabIndex = 21;
+            // 
+            // textBoxpppratio
+            // 
+            this.textBoxpppratio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.textBoxpppratio.Location = new System.Drawing.Point(130, 119);
+            this.textBoxpppratio.Name = "textBoxpppratio";
+            this.textBoxpppratio.ReadOnly = true;
+            this.textBoxpppratio.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxpppratio.Size = new System.Drawing.Size(71, 19);
+            this.textBoxpppratio.TabIndex = 26;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 122);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(116, 12);
+            this.label15.TabIndex = 21;
+            this.label15.Text = "Pulses per pixel ratio:";
+            // 
+            // textBoxCalib2ndmm
+            // 
+            this.textBoxCalib2ndmm.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBoxCalib2ndmm.Location = new System.Drawing.Point(107, 58);
+            this.textBoxCalib2ndmm.Name = "textBoxCalib2ndmm";
+            this.textBoxCalib2ndmm.ReadOnly = true;
+            this.textBoxCalib2ndmm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxCalib2ndmm.Size = new System.Drawing.Size(68, 19);
+            this.textBoxCalib2ndmm.TabIndex = 28;
+            // 
+            // textBoxCalib1stmm
+            // 
+            this.textBoxCalib1stmm.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBoxCalib1stmm.Location = new System.Drawing.Point(107, 33);
+            this.textBoxCalib1stmm.Name = "textBoxCalib1stmm";
+            this.textBoxCalib1stmm.ReadOnly = true;
+            this.textBoxCalib1stmm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxCalib1stmm.Size = new System.Drawing.Size(68, 19);
+            this.textBoxCalib1stmm.TabIndex = 27;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 36);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(95, 12);
+            this.label16.TabIndex = 29;
+            this.label16.Text = "1st measurement:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 61);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(97, 12);
+            this.label17.TabIndex = 30;
+            this.label17.Text = "2nd measurement:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label18.Location = new System.Drawing.Point(154, 36);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(20, 12);
+            this.label18.TabIndex = 31;
+            this.label18.Text = "pxl";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label19.Location = new System.Drawing.Point(154, 61);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(20, 12);
+            this.label19.TabIndex = 32;
+            this.label19.Text = "pxl";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label20.Location = new System.Drawing.Point(154, 86);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(20, 12);
+            this.label20.TabIndex = 35;
+            this.label20.Text = "pxl";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(55, 86);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(48, 12);
+            this.label21.TabIndex = 34;
+            this.label21.Text = "abs. diff:";
+            // 
+            // textBoxCalibAbsDiff
+            // 
+            this.textBoxCalibAbsDiff.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBoxCalibAbsDiff.Location = new System.Drawing.Point(107, 83);
+            this.textBoxCalibAbsDiff.Name = "textBoxCalibAbsDiff";
+            this.textBoxCalibAbsDiff.ReadOnly = true;
+            this.textBoxCalibAbsDiff.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxCalibAbsDiff.Size = new System.Drawing.Size(68, 19);
+            this.textBoxCalibAbsDiff.TabIndex = 33;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(111, 154);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(17, 12);
+            this.label22.TabIndex = 36;
+            this.label22.Text = "→";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(111, 179);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(17, 12);
+            this.label23.TabIndex = 37;
+            this.label23.Text = "→";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(11, 154);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(34, 12);
+            this.label24.TabIndex = 39;
+            this.label24.Text = "width:";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(7, 179);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(38, 12);
+            this.label25.TabIndex = 40;
+            this.label25.Text = "height:";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label26.Location = new System.Drawing.Point(83, 154);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(20, 12);
+            this.label26.TabIndex = 41;
+            this.label26.Text = "pxl";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label27.Location = new System.Drawing.Point(83, 179);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(20, 12);
+            this.label27.TabIndex = 42;
+            this.label27.Text = "pxl";
             // 
             // SPRA_Form
             // 
-            this.ClientSize = new System.Drawing.Size(1000, 388);
+            this.ClientSize = new System.Drawing.Size(947, 385);
             this.Controls.Add(this.tabControl1);
             this.Name = "SPRA_Form";
             this.Text = "SP Record Analyzer";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FTV_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.gpibInterfaceTab.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
             this.groupBoxAdvanced.ResumeLayout(false);
@@ -1090,7 +1360,6 @@
             this.autImgAcq.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1186,6 +1455,29 @@
         private System.Windows.Forms.TextBox textBoxMatlab1;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button buttonStartCalib;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox textBoxCalib2ndmm;
+        private System.Windows.Forms.TextBox textBoxCalib1stmm;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBoxpppratio;
+        private System.Windows.Forms.TextBox textBoxHeight;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBoxHeight_mm;
+        private System.Windows.Forms.TextBox textBoxWidth;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox textBoxWidth_mm;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox textBoxCalibAbsDiff;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label26;
     }
 }
 

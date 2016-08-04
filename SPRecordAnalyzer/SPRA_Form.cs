@@ -35,14 +35,27 @@ namespace SPRecordAnalyzer
         private bool busReady;
         private double currentPosition_mm;
         private double currentPosition_deg;
+        private double pulsesPerPixelRatio;
+        private int imgWidth;
+        private int imgHeight;
 
         private const double ratio_degPerPulse = 0.0025;
         private const double ratio_mmPerPulse = 0.002;
 
-        delegate void setStatusBoxCallback(string text);
-        delegate void setPosTextMotor1Callback(string text);
-        delegate void setPosTextMotor2Callback(string text);
-        delegate void savebmpCallback();
+        private delegate void setStatusBoxCallback(string text);
+        private delegate void setPosTextMotor1Callback(string text);
+        private delegate void setPosTextMotor2Callback(string text);
+        private delegate void savebmpCallback();
+        private delegate void setDispTextMotor1Callback(string text);
+        private delegate void setDispTextMotor2Callback(string text);
+        private delegate void setBox1stmeasurmentCallback(string text);
+        private delegate void setBox2ndmeasurmentCallback(string text);
+        private delegate void setBoxCalibAbsDiffCallback(string text);
+        private delegate void setBoxpppratioCallback(string text);
+        private delegate void setBoxWidthCallback(string text);
+        private delegate void setBoxHeightCallback(string text);
+        private delegate void setBoxWidth_mmCallback(string text);
+        private delegate void setBoxHeight_mmCallback(string text);
 
         // Main factory object
         private CFactory myFactory = new CFactory();
@@ -67,6 +80,7 @@ namespace SPRecordAnalyzer
             stageComThread = new Thread(sCT);
             imageThread = new Thread(imgThread);
             seqRunning = false;
+            pulsesPerPixelRatio = 0.0;
             imgNmbr = 0;
             // start thread
             stageComThread.Start();
@@ -149,15 +163,16 @@ namespace SPRecordAnalyzer
             }
         }
 
-
         private void imgThread()
         {
             while (true)
             {
                 if (calibRunning)
                 {
-                    Thread.Sleep(20000);
-                    Point point1 = helperFunction();
+                    Thread.Sleep(22000);
+                    Point point1 = getCoordsOfOutermostLine();
+                    setBox1stmeasurment(point1.X.ToString());
+                    
 
                     seqRunning = true;
                     seqCounter = 0;
@@ -167,62 +182,67 @@ namespace SPRecordAnalyzer
 
                     Thread.Sleep(1000);
 
-                    Point point2 = helperFunction();
-                    calibRunning = false;
+                    Point point2 = getCoordsOfOutermostLine();
 
-                    // 1.   take a picture:
-                    //          using code from softwaretriggerbutton!
-                    // 2.   use the picture and do some calculations with matlab!
-                    // 3.   look at the center pos of the outher most thing
-                    // 4. move for some pulses
-                    // 1 more time 1 to 3
+                    setBox2ndmeasurment(point2.X.ToString());
+                    var absdiff = Math.Abs(point2.X - point1.X);
+
+                    //write the Points to the Interface & calculate the PulsePerPixel value
+                    setBoxCalibAbsDiff(absdiff.ToString());
+                    pulsesPerPixelRatio = (400.0f/absdiff);
+                    setBoxpppratio(pulsesPerPixelRatio.ToString().Remove(6));
+                    setBoxHeight_mm((imgHeight * pulsesPerPixelRatio * ratio_mmPerPulse).ToString().Remove(6));
+                    setBoxWidth_mm((imgWidth * pulsesPerPixelRatio * ratio_mmPerPulse).ToString().Remove(6));
+
+                    calibRunning = false;
                 }
                 Thread.Sleep(100);
             }
         }
-
-
-        private Point helperFunction()
+        
+        private Point getCoordsOfOutermostLine()
         {
             takePicture();
 
             Thread.Sleep(100);
 
+            helperFunctionMatlab();
+            
+            return helperFunctionJson();
+        }
+
+        private void helperFunctionMatlab()
+        {
             // Create the MATLAB instance 
             MLApp.MLApp matlab = new MLApp.MLApp();
 
             // Change to the directory where the function is located 
-            matlab.Execute(@"cd d:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData");
+            matlab.Execute(@"cd d:\KT\SPRecordAnalyzer\matlab\getPulsePerPixelData");
 
             //textBoxMatlab.Text = "";
 
             matlab.Execute(@"PixelProcessing");
-            
-            // Define the output
-            //object result = null;
+        }
 
-            // Call the MATLAB function 
-            //matlab.Feval("gcaEx", 0, out result);
-
-            // Display result
-            //object[] res = result as object[];
-
-
-            // read file into a string and deserialize JSON to a type
-            PixelObjectArr pixelObjectArr = JsonConvert.DeserializeObject<PixelObjectArr>(ReadAllText(@"D:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData\PixelObjectArr.json"));
-
+        private Point helperFunctionJson()
+        {
+            RootObject pixelObjectArr;
             // deserialize JSON directly from a file
-            using (StreamReader file = OpenText(@"D:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData\PixelObjectArr.json"))
+            using (StreamReader file = OpenText(@"D:\KT\SPRecordAnalyzer\matlab\getPulsePerPixelData\PixelObjectArr.json"))
             {
                 var serializer = new JsonSerializer();
-                var pixelObjectArr2 = (RootObject)serializer.Deserialize(file, typeof(RootObject));
+                pixelObjectArr = (RootObject)serializer.Deserialize(file, typeof(RootObject));
                 //textBoxMatlab1.Text = pixelObjectArr2.PixelObjectArr.PixelObjects[1].CenterPos[1].ToString();
             }
 
+            var query =
+                (from obj in pixelObjectArr.PixelObjectArr.PixelObjects
+                    orderby obj.CenterPos[1] descending
+                    select obj).ToList();
 
-            //textBoxMatlab.Text = pixelObjectArr.PixelObjects[1].EntryIndex.ToString();
-
-            return new Point(1,2);
+            Debug.WriteLine(query[0].CenterPos[1]);
+            // Here comes the LINQ code to get the outermost thing.
+            return new Point(query[0].CenterPos[1], query[0].CenterPos[0]);
         }
 
         private void buttonOpenGPIB_Click(object sender, EventArgs e)
@@ -304,6 +324,110 @@ namespace SPRecordAnalyzer
             return retStr;
         }
 
+        private void setBoxHeight_mm(String text)
+        {
+            if (textBoxHeight_mm.InvokeRequired)
+            {
+                setBoxHeight_mmCallback d = new setBoxHeight_mmCallback(setBoxHeight_mm);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxHeight_mm.Text = text;
+            }
+        }
+
+        private void setBoxWidth_mm(String text)
+        {
+            if (textBoxWidth_mm.InvokeRequired)
+            {
+                setBoxWidth_mmCallback d = new setBoxWidth_mmCallback(setBoxWidth_mm);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxWidth_mm.Text = text;
+            }
+        }
+
+        private void setBoxHeight(String text)
+        {
+            if (textBoxHeight.InvokeRequired)
+            {
+                setBoxHeightCallback d = new setBoxHeightCallback(setBoxHeight);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxHeight.Text = text;
+            }
+        }
+
+        private void setBoxWidth(String text)
+        {
+            if (textBoxWidth.InvokeRequired)
+            {
+                setBoxWidthCallback d = new setBoxWidthCallback(setBoxWidth);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxWidth.Text = text;
+            }
+        }
+
+        private void setBox1stmeasurment(String text)
+        {
+            if (textBoxCalib1stmm.InvokeRequired)
+            {
+                setBox1stmeasurmentCallback d = new setBox1stmeasurmentCallback(setBox1stmeasurment);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxCalib1stmm.Text = text;
+            }
+        }
+
+        private void setBox2ndmeasurment(String text)
+        {
+            if (textBoxCalib2ndmm.InvokeRequired)
+            {
+                setBox2ndmeasurmentCallback d = new setBox2ndmeasurmentCallback(setBox2ndmeasurment);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxCalib2ndmm.Text = text;
+            }
+        }
+
+        private void setBoxCalibAbsDiff(String text)
+        {
+            if (textBoxCalibAbsDiff.InvokeRequired)
+            {
+                setBoxCalibAbsDiffCallback d = new setBoxCalibAbsDiffCallback(setBoxCalibAbsDiff);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxCalibAbsDiff.Text = text;
+            }
+        }
+
+        private void setBoxpppratio(String text)
+        {
+            if (textBoxpppratio.InvokeRequired)
+            {
+                setBoxpppratioCallback d = new setBoxpppratioCallback(setBoxpppratio);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxpppratio.Text = text;
+            }
+        }
+
         private void setStatusBox(String text)
         {
             if (textBoxStatus.InvokeRequired)
@@ -356,7 +480,7 @@ namespace SPRecordAnalyzer
         {
             if (textBoxMotor1Displ.InvokeRequired)
             {
-                setPosTextMotor2Callback d = new setPosTextMotor2Callback(setDisplTextMotor1);
+                setDispTextMotor1Callback d = new setDispTextMotor1Callback(setDisplTextMotor1);
                 Invoke(d, new object[] {text});
             }
             else
@@ -384,7 +508,7 @@ namespace SPRecordAnalyzer
         {
             if (textBoxMotor2Displ.InvokeRequired)
             {
-                setPosTextMotor2Callback d = new setPosTextMotor2Callback(setDisplTextMotor2);
+                setDispTextMotor2Callback d = new setDispTextMotor2Callback(setDisplTextMotor2);
                 Invoke(d, new object[] { text });
             }
             else
@@ -462,7 +586,7 @@ namespace SPRecordAnalyzer
             MLApp.MLApp matlab = new MLApp.MLApp();
 
             // Change to the directory where the function is located 
-            matlab.Execute(@"cd d:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData");
+            matlab.Execute(@"cd d:\KT\SPRecordAnalyzer\matlab\getPulsePerPixelData");
 
             //textBoxMatlab.Text = "";
 
@@ -481,10 +605,10 @@ namespace SPRecordAnalyzer
 
 
             // read file into a string and deserialize JSON to a type
-            PixelObjectArr pixelObjectArr = JsonConvert.DeserializeObject<PixelObjectArr>(ReadAllText(@"D:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData\PixelObjectArr.json"));
+            PixelObjectArr pixelObjectArr = JsonConvert.DeserializeObject<PixelObjectArr>(ReadAllText(@"D:\KT\SPRecordAnalyzer\matlab\getPulsePerPixelData\PixelObjectArr.json"));
 
             // deserialize JSON directly from a file
-            using(StreamReader file = OpenText(@"D:\KT\SPRecordAnalyzer\matlab\getPixelPerPulseData\PixelObjectArr.json"))
+            using(StreamReader file = OpenText(@"D:\KT\SPRecordAnalyzer\matlab\getPulsePerPixelData\PixelObjectArr.json"))
             {
                 var serializer = new JsonSerializer();
                 var pixelObjectArr2 = (RootObject)serializer.Deserialize(file, typeof(RootObject));
@@ -1049,7 +1173,20 @@ namespace SPRecordAnalyzer
                 myCamera.GetNode("SoftwareTrigger0").Value = 0;
             }
             Thread.Sleep(100);
-            myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPixelPerPulseData/img/tmp.bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
+            // save the image for matlab
+            myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/tmp.bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
+            // update width and height
+            // we also want to get the img width and height here.
+            if (myWidthNode != null)
+            {
+                imgWidth = Int32.Parse(myWidthNode.Value.ToString());
+                setBoxWidth(imgWidth.ToString());
+            }
+            if (myHeightNode != null)
+            {
+                imgHeight = Int32.Parse(myHeightNode.Value.ToString());
+                setBoxHeight(imgHeight.ToString());
+            }
         }
 
         private void comboBoxPartialScan_SelectedIndexChanged(object sender, EventArgs e)
