@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jai_FactoryDotNET;
 using NationalInstruments.NI4882;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using static System.IO.File;
 
 namespace SPRecordAnalyzer
@@ -27,6 +20,7 @@ namespace SPRecordAnalyzer
         private bool seqRunning;
         private bool calibRunning;
         private bool AIARunning;
+        private int AIApulsesTriggerVal;
         private bool AIAinit;
         private string[] splittedString;
         private Device device;
@@ -35,9 +29,16 @@ namespace SPRecordAnalyzer
         private bool busReady;
         private double currentPosition_mm;
         private double currentPosition_deg;
+        private int currentPosMotor1_pulses;
+        private int currentPosMotor2_pulses;
+        private string currentPosMotor2_pulses_text;
         private double pulsesPerPixelRatio;
+        private int pulsesPerImage;  
+        private float betaAngle;
         private int imgWidth;
         private int imgHeight;
+        private float imgWidth_mm;
+        private float imgHeight_mm;
 
         private const double ratio_degPerPulse = 0.0025;
         private const double ratio_mmPerPulse = 0.002;
@@ -56,6 +57,11 @@ namespace SPRecordAnalyzer
         private delegate void setBoxHeightCallback(string text);
         private delegate void setBoxWidth_mmCallback(string text);
         private delegate void setBoxHeight_mmCallback(string text);
+        private delegate void setBoxPulsesPerImageCallback(string text);
+        private delegate void setBoxBetaAngleCallback(string text);
+        private delegate void setBoxAIAPulseCountM2Callback(string text);
+        private delegate void setBoxAIAimageNmbrCallback(string text);
+
 
         // Main factory object
         private CFactory myFactory = new CFactory();
@@ -82,10 +88,12 @@ namespace SPRecordAnalyzer
             seqRunning = false;
             pulsesPerPixelRatio = 0.0;
             imgNmbr = 0;
+            AIAinit = false;
             // start thread
             stageComThread.Start();
             imageThread.Start();
             Jai_FactoryWrapper.EFactoryError error = Jai_FactoryWrapper.EFactoryError.Success;
+            
 
             // Open the factory with the default Registry database
             error = myFactory.Open("");
@@ -120,15 +128,27 @@ namespace SPRecordAnalyzer
                 if (device != null)
                 {
                     writeToStage("Q:");
-                    Thread.Sleep(5);
+                    //Thread.Sleep(1);
                     response = readFromStage();
                     responceSplit = response.Split(',');
                     setPosTextMotor1(responceSplit[0]);
                     setDisplTextMotor1(responceSplit[0]);
                     setPosTextMotor2(responceSplit[1]);
                     setDisplTextMotor2(responceSplit[1]);
+                    // DIRTY CODE START
+                    int val;
+                    
+                    if (responceSplit[1].Contains("-"))
+                    {
+                        currentPosMotor2_pulses = -int.Parse(responceSplit[1].Remove(0, 1));
+                    }
+                    else
+                    {
+                        currentPosMotor2_pulses = int.Parse(responceSplit[1]);
+                    }
+                    // DIRTY CODE END
                     writeToStage("!:");
-                    Thread.Sleep(5);
+                    //Thread.Sleep(1);
                     response = readFromStage();
                     busReady = response.Contains("R");
                 }
@@ -159,7 +179,6 @@ namespace SPRecordAnalyzer
                         setStatusBox("Busy");
                     }
                 }
-                Thread.Sleep(5);
             }
         }
 
@@ -191,13 +210,45 @@ namespace SPRecordAnalyzer
                     setBoxCalibAbsDiff(absdiff.ToString());
                     pulsesPerPixelRatio = (400.0f/absdiff);
                     setBoxpppratio(pulsesPerPixelRatio.ToString().Remove(6));
-                    setBoxHeight_mm((imgHeight * pulsesPerPixelRatio * ratio_mmPerPulse).ToString().Remove(6));
-                    setBoxWidth_mm((imgWidth * pulsesPerPixelRatio * ratio_mmPerPulse).ToString().Remove(6));
+
+                    imgHeight_mm = (float)(imgHeight*pulsesPerPixelRatio*ratio_mmPerPulse);
+                    imgWidth_mm = (float)(imgWidth * pulsesPerPixelRatio * ratio_mmPerPulse);
+
+                    // because of the black pixel frame: imgWidth_mm-2
+                    float tmp = (float)(Math.Atan2(imgHeight_mm, (currentPosition_mm + (imgWidth_mm-2) / 2.0)));
+                    betaAngle = (float)(tmp*(180.0 / Math.PI));
+
+                    setBoxBetaAngle(betaAngle.ToString().Remove(6));
+
+                    pulsesPerImage = (int)(betaAngle * 1 / ratio_degPerPulse);
+                    setBoxPulsesPerImage(pulsesPerImage.ToString());
+
+                    setBoxHeight_mm(imgHeight_mm.ToString().Remove(6));
+                    setBoxWidth_mm(imgWidth_mm.ToString().Remove(6));
 
                     calibRunning = false;
                 }
-                Thread.Sleep(100);
+                if (AIARunning)
+                {
+                    setBoxAIAPulseCountM2(currentPosMotor2_pulses_text);
+                    if (AIAinit)
+                    {
+                        imgNmbr = 0;
+                        AIApulsesTriggerVal = currentPosMotor2_pulses + pulsesPerImage;
+                        AIAinit = false;
+                    }
+                    else if (currentPosMotor2_pulses > AIApulsesTriggerVal)
+                    {
+                        AIApulsesTriggerVal += pulsesPerImage;
+                        imgNmbr++;
+                        setBoxAIAimageNmbr(imgNmbr.ToString());
+                        takePicture("AIA" + imgNmbr);
+                    }
+                    
+                    
+                }
             }
+
         }
         
         private Point getCoordsOfOutermostLine()
@@ -322,6 +373,58 @@ namespace SPRecordAnalyzer
                 Cursor.Current = Cursors.Default;
             }
             return retStr;
+        }
+
+        private void setBoxAIAimageNmbr(String text)
+        {
+            if (textBoxAIAImgNumber.InvokeRequired)
+            {
+                setBoxAIAimageNmbrCallback d = new setBoxAIAimageNmbrCallback(setBoxAIAimageNmbr);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxAIAImgNumber.Text = text;
+            }
+        }
+
+        private void setBoxAIAPulseCountM2(string text)
+        {
+            if (textBoxAIAPulseCountM2.InvokeRequired)
+            {
+                setBoxAIAPulseCountM2Callback d = new setBoxAIAPulseCountM2Callback(setBoxAIAPulseCountM2);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxAIAPulseCountM2.Text = text;
+            }
+        }
+
+        private void setBoxBetaAngle(string text)
+        {
+            if (textBoxBetaAngle.InvokeRequired)
+            {
+                setBoxBetaAngleCallback d = new setBoxBetaAngleCallback(setBoxBetaAngle);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxBetaAngle.Text = text;
+            }
+        }
+
+        private void setBoxPulsesPerImage(string text)
+        {
+            if (textBoxPulsesPerImage.InvokeRequired)
+            {
+                setBoxPulsesPerImageCallback d = new setBoxPulsesPerImageCallback(setBoxPulsesPerImage);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                textBoxPulsesPerImage.Text = text;
+            }
         }
 
         private void setBoxHeight_mm(String text)
@@ -492,15 +595,16 @@ namespace SPRecordAnalyzer
                     val = int.Parse(text);
                     // 0.002 mm per pulse!
                     currentPosition_mm = -val * ratio_mmPerPulse;
+                    currentPosMotor1_pulses = -val;
                 }
                 else
                 {
                     val = int.Parse(text);
                     // 0.002 mm per pulse!
                     currentPosition_mm = val * ratio_mmPerPulse;
+                    currentPosMotor1_pulses = val;
                 }
                 textBoxMotor1Displ.Text = currentPosition_mm.ToString();
-                
             }
         }
 
@@ -520,12 +624,14 @@ namespace SPRecordAnalyzer
                     val = int.Parse(text);
                     // 0.0025 deg per pulse!
                     currentPosition_deg = -val * ratio_degPerPulse;
+                    currentPosMotor2_pulses_text = text;
                 }
                 else
                 {
                     val = int.Parse(text);
                     // 0.0025 deg per pulse!
                     currentPosition_deg = val * ratio_degPerPulse;
+                    currentPosMotor2_pulses_text = text;
                 }
                 textBoxMotor2Displ.Text = currentPosition_deg.ToString();
             }
@@ -654,23 +760,6 @@ namespace SPRecordAnalyzer
         private void buttonSaveBMP_Click(object sender, EventArgs e)
         {
             myCamera.SaveLastRawFrame("D:/KT/img/tmp.bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
-        }
-
-        private void Savebmp()
-        {
-            String text = imgNmbr.ToString();
-            myCamera.SaveLastRawFrame("D:/KT/img/Image" + imgNmbr + ".bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
-            if (textBoxImgNumber.InvokeRequired)
-            {
-                savebmpCallback d = new savebmpCallback(Savebmp);
-                Invoke(d);
-            }
-            else
-            {
-                textBoxImgNumber.Text = text;
-                imgNmbr++;
-            }
-            
         }
 
         private void buttonCameraStart_Click(object sender, EventArgs e)
@@ -1151,6 +1240,9 @@ namespace SPRecordAnalyzer
             takePicture();
         }
 
+        // - - - - - - - - - - - - - - - - -
+        // - - - - TAKE PICTURE  - - - - - -
+        // - - - - - - - - - - - - - - - - -
         private void takePicture()
         {
             // But we have 2 ways of sending a software trigger: JAI and GenICam SNC
@@ -1175,6 +1267,48 @@ namespace SPRecordAnalyzer
             Thread.Sleep(100);
             // save the image for matlab
             myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/tmp.bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
+            // update width and height
+            // we also want to get the img width and height here.
+            if (myWidthNode != null)
+            {
+                imgWidth = Int32.Parse(myWidthNode.Value.ToString());
+                setBoxWidth(imgWidth.ToString());
+            }
+            if (myHeightNode != null)
+            {
+                imgHeight = Int32.Parse(myHeightNode.Value.ToString());
+                setBoxHeight(imgHeight.ToString());
+            }
+        }
+
+        // - - - - - - - - - - - - - - - - -
+        // - - - - TAKE PICTURE  - - - - - - Version with stringparameter for image name
+        // - - - - - - - - - - - - - - - - -
+        private void takePicture(string str)
+        {
+            // But we have 2 ways of sending a software trigger: JAI and GenICam SNC
+            // The GenICam SFNC software trigger is available if a node called
+            // TriggerSoftware is available
+            if (myCamera.GetNode("TriggerSoftware") != null)
+            {
+                // Here we assume that this is the GenICam SFNC way of setting up the trigger
+                // To switch to Continuous the following is required:
+                // TriggerSelector=FrameStart
+                // Execute TriggerSoftware[TriggerSelector] command
+                myCamera.GetNode("TriggerSelector").Value = "FrameStart";
+                myCamera.GetNode("TriggerSoftware").ExecuteCommand();
+            }
+            else
+            {
+                // We need to "pulse" the Software Trigger feature in order to trigger the camera!
+                myCamera.GetNode("SoftwareTrigger0").Value = 0;
+                myCamera.GetNode("SoftwareTrigger0").Value = 1;
+                myCamera.GetNode("SoftwareTrigger0").Value = 0;
+            }
+            Thread.Sleep(20);
+            // save the image for matlab
+            myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/" + str + ".bmp" , 
+                Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
             // update width and height
             // we also want to get the img width and height here.
             if (myWidthNode != null)
@@ -1252,6 +1386,17 @@ namespace SPRecordAnalyzer
             seqCounter = 0;
 
             calibRunning = true;
+        }
+
+        private void buttonUpdateBetaAngle_Click(object sender, EventArgs e)
+        {
+            float tmp = (float)(Math.Atan2(imgHeight_mm, (currentPosition_mm + imgWidth_mm / 2)));
+            betaAngle = (float)(tmp * (180.0 / Math.PI));
+
+            setBoxBetaAngle(betaAngle.ToString().Remove(6));
+
+            pulsesPerImage = (int)(betaAngle * 1 / ratio_degPerPulse);
+            setBoxPulsesPerImage(pulsesPerImage.ToString());
         }
     }
 }

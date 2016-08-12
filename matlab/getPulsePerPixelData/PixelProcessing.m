@@ -6,6 +6,7 @@ imgOriginal = imread('img/tmp.bmp', 'bmp'); % load the original image
 %imgOriginal = imread('img/big.bmp', 'bmp'); % load the original image
 img = uint16(imgOriginal); 
 [imgHeight, imgWidth] = size(img(:,:,1));
+
 % - - - - - - - - - - - - - - - - 
 % - - -  GrayScale Bitmap - - - -
 % - - - - - - - - - - - - - - - -
@@ -16,7 +17,7 @@ imgNmbrOfPixels = length(grayImg(:));
 % - - - - - - - - - - - - - - - - 
 % - - - - create TwoValImg  - - -
 % - - - - - - - - - - - - - - - -
-threshold = 80;
+threshold = 100;
 TwoValImg = uint16(zeros(imgHeight, imgWidth));
 for pixel = 1:imgHeight*imgWidth   % loop through all the pixels. The Pixels values go from 0 to 255*3
     if grayImg(pixel) > threshold

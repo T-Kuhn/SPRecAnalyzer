@@ -31,7 +31,34 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.gpibInterfaceTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.textBoxPulsesPerImage = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBoxBetaAngle = new System.Windows.Forms.TextBox();
+            this.labelBetaAngle = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.textBoxCalibAbsDiff = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBoxCalib2ndmm = new System.Windows.Forms.TextBox();
+            this.textBoxCalib1stmm = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBoxpppratio = new System.Windows.Forms.TextBox();
+            this.textBoxHeight = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBoxHeight_mm = new System.Windows.Forms.TextBox();
+            this.textBoxWidth = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.buttonStartCalib = new System.Windows.Forms.Button();
+            this.textBoxWidth_mm = new System.Windows.Forms.TextBox();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
             this.degLabel = new System.Windows.Forms.Label();
             this.label_mm = new System.Windows.Forms.Label();
@@ -102,39 +129,12 @@
             this.autImgAcq = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.labelImageNumber = new System.Windows.Forms.Label();
-            this.textBoxImgNumber = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBoxAIAwaitBefImage = new System.Windows.Forms.TextBox();
-            this.checkBoxSaveImages = new System.Windows.Forms.CheckBox();
-            this.labelAIAloopinstr = new System.Windows.Forms.Label();
-            this.textBoxAIAloopInstr = new System.Windows.Forms.TextBox();
-            this.labelAIAinit = new System.Windows.Forms.Label();
-            this.textBoxAIAinitInstr = new System.Windows.Forms.TextBox();
+            this.textBoxAIAImgNumber = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
-            this.textBoxWidth_mm = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBoxHeight_mm = new System.Windows.Forms.TextBox();
-            this.textBoxHeight = new System.Windows.Forms.TextBox();
-            this.textBoxWidth = new System.Windows.Forms.TextBox();
-            this.textBoxpppratio = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.textBoxCalib2ndmm = new System.Windows.Forms.TextBox();
-            this.textBoxCalib1stmm = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.textBoxCalibAbsDiff = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.textBoxAIAPulseCountM2 = new System.Windows.Forms.TextBox();
+            this.buttonUpdateBetaAngle = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -189,6 +189,11 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.buttonUpdateBetaAngle);
+            this.groupBox6.Controls.Add(this.textBoxPulsesPerImage);
+            this.groupBox6.Controls.Add(this.label7);
+            this.groupBox6.Controls.Add(this.textBoxBetaAngle);
+            this.groupBox6.Controls.Add(this.labelBetaAngle);
             this.groupBox6.Controls.Add(this.label27);
             this.groupBox6.Controls.Add(this.label26);
             this.groupBox6.Controls.Add(this.label25);
@@ -220,6 +225,256 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Calibration";
             // 
+            // textBoxPulsesPerImage
+            // 
+            this.textBoxPulsesPerImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.textBoxPulsesPerImage.Location = new System.Drawing.Point(107, 240);
+            this.textBoxPulsesPerImage.Name = "textBoxPulsesPerImage";
+            this.textBoxPulsesPerImage.ReadOnly = true;
+            this.textBoxPulsesPerImage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxPulsesPerImage.Size = new System.Drawing.Size(68, 19);
+            this.textBoxPulsesPerImage.TabIndex = 46;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(11, 243);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(87, 12);
+            this.label7.TabIndex = 45;
+            this.label7.Text = "pulsesPerImage:";
+            // 
+            // textBoxBetaAngle
+            // 
+            this.textBoxBetaAngle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.textBoxBetaAngle.Location = new System.Drawing.Point(107, 214);
+            this.textBoxBetaAngle.Name = "textBoxBetaAngle";
+            this.textBoxBetaAngle.ReadOnly = true;
+            this.textBoxBetaAngle.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxBetaAngle.Size = new System.Drawing.Size(68, 19);
+            this.textBoxBetaAngle.TabIndex = 44;
+            // 
+            // labelBetaAngle
+            // 
+            this.labelBetaAngle.AutoSize = true;
+            this.labelBetaAngle.Location = new System.Drawing.Point(28, 217);
+            this.labelBetaAngle.Name = "labelBetaAngle";
+            this.labelBetaAngle.Size = new System.Drawing.Size(64, 12);
+            this.labelBetaAngle.TabIndex = 43;
+            this.labelBetaAngle.Text = "Beta Angle:";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label27.Location = new System.Drawing.Point(83, 179);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(20, 12);
+            this.label27.TabIndex = 42;
+            this.label27.Text = "pxl";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label26.Location = new System.Drawing.Point(83, 154);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(20, 12);
+            this.label26.TabIndex = 41;
+            this.label26.Text = "pxl";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(7, 179);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(38, 12);
+            this.label25.TabIndex = 40;
+            this.label25.Text = "height:";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(11, 154);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(34, 12);
+            this.label24.TabIndex = 39;
+            this.label24.Text = "width:";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(111, 179);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(17, 12);
+            this.label23.TabIndex = 37;
+            this.label23.Text = "→";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(111, 154);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(17, 12);
+            this.label22.TabIndex = 36;
+            this.label22.Text = "→";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label20.Location = new System.Drawing.Point(154, 86);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(20, 12);
+            this.label20.TabIndex = 35;
+            this.label20.Text = "pxl";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(55, 86);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(48, 12);
+            this.label21.TabIndex = 34;
+            this.label21.Text = "abs. diff:";
+            // 
+            // textBoxCalibAbsDiff
+            // 
+            this.textBoxCalibAbsDiff.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBoxCalibAbsDiff.Location = new System.Drawing.Point(107, 83);
+            this.textBoxCalibAbsDiff.Name = "textBoxCalibAbsDiff";
+            this.textBoxCalibAbsDiff.ReadOnly = true;
+            this.textBoxCalibAbsDiff.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxCalibAbsDiff.Size = new System.Drawing.Size(68, 19);
+            this.textBoxCalibAbsDiff.TabIndex = 33;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label19.Location = new System.Drawing.Point(154, 61);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(20, 12);
+            this.label19.TabIndex = 32;
+            this.label19.Text = "pxl";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label18.Location = new System.Drawing.Point(154, 36);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(20, 12);
+            this.label18.TabIndex = 31;
+            this.label18.Text = "pxl";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 61);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(97, 12);
+            this.label17.TabIndex = 30;
+            this.label17.Text = "2nd measurement:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 36);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(95, 12);
+            this.label16.TabIndex = 29;
+            this.label16.Text = "1st measurement:";
+            // 
+            // textBoxCalib2ndmm
+            // 
+            this.textBoxCalib2ndmm.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBoxCalib2ndmm.Location = new System.Drawing.Point(107, 58);
+            this.textBoxCalib2ndmm.Name = "textBoxCalib2ndmm";
+            this.textBoxCalib2ndmm.ReadOnly = true;
+            this.textBoxCalib2ndmm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxCalib2ndmm.Size = new System.Drawing.Size(68, 19);
+            this.textBoxCalib2ndmm.TabIndex = 28;
+            // 
+            // textBoxCalib1stmm
+            // 
+            this.textBoxCalib1stmm.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBoxCalib1stmm.Location = new System.Drawing.Point(107, 33);
+            this.textBoxCalib1stmm.Name = "textBoxCalib1stmm";
+            this.textBoxCalib1stmm.ReadOnly = true;
+            this.textBoxCalib1stmm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxCalib1stmm.Size = new System.Drawing.Size(68, 19);
+            this.textBoxCalib1stmm.TabIndex = 27;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 122);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(116, 12);
+            this.label15.TabIndex = 21;
+            this.label15.Text = "Pulses per pixel ratio:";
+            // 
+            // textBoxpppratio
+            // 
+            this.textBoxpppratio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.textBoxpppratio.Location = new System.Drawing.Point(130, 119);
+            this.textBoxpppratio.Name = "textBoxpppratio";
+            this.textBoxpppratio.ReadOnly = true;
+            this.textBoxpppratio.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxpppratio.Size = new System.Drawing.Size(71, 19);
+            this.textBoxpppratio.TabIndex = 26;
+            // 
+            // textBoxHeight
+            // 
+            this.textBoxHeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBoxHeight.Location = new System.Drawing.Point(50, 176);
+            this.textBoxHeight.Name = "textBoxHeight";
+            this.textBoxHeight.ReadOnly = true;
+            this.textBoxHeight.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxHeight.Size = new System.Drawing.Size(56, 19);
+            this.textBoxHeight.TabIndex = 23;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.label14.Location = new System.Drawing.Point(178, 179);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(23, 12);
+            this.label14.TabIndex = 24;
+            this.label14.Text = "mm";
+            // 
+            // textBoxHeight_mm
+            // 
+            this.textBoxHeight_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.textBoxHeight_mm.Location = new System.Drawing.Point(131, 176);
+            this.textBoxHeight_mm.Name = "textBoxHeight_mm";
+            this.textBoxHeight_mm.ReadOnly = true;
+            this.textBoxHeight_mm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxHeight_mm.Size = new System.Drawing.Size(71, 19);
+            this.textBoxHeight_mm.TabIndex = 25;
+            // 
+            // textBoxWidth
+            // 
+            this.textBoxWidth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBoxWidth.Location = new System.Drawing.Point(50, 151);
+            this.textBoxWidth.Name = "textBoxWidth";
+            this.textBoxWidth.ReadOnly = true;
+            this.textBoxWidth.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxWidth.Size = new System.Drawing.Size(56, 19);
+            this.textBoxWidth.TabIndex = 21;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.label13.Location = new System.Drawing.Point(179, 154);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(23, 12);
+            this.label13.TabIndex = 21;
+            this.label13.Text = "mm";
+            // 
             // buttonStartCalib
             // 
             this.buttonStartCalib.Location = new System.Drawing.Point(17, 293);
@@ -229,6 +484,16 @@
             this.buttonStartCalib.Text = "Start Calib";
             this.buttonStartCalib.UseVisualStyleBackColor = true;
             this.buttonStartCalib.Click += new System.EventHandler(this.buttonStartCalib_Click);
+            // 
+            // textBoxWidth_mm
+            // 
+            this.textBoxWidth_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.textBoxWidth_mm.Location = new System.Drawing.Point(132, 151);
+            this.textBoxWidth_mm.Name = "textBoxWidth_mm";
+            this.textBoxWidth_mm.ReadOnly = true;
+            this.textBoxWidth_mm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxWidth_mm.Size = new System.Drawing.Size(71, 19);
+            this.textBoxWidth_mm.TabIndex = 22;
             // 
             // groupBoxStatus
             // 
@@ -423,7 +688,7 @@
             this.textBoxSequencer2.Name = "textBoxSequencer2";
             this.textBoxSequencer2.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer2.TabIndex = 14;
-            this.textBoxSequencer2.Text = "D:2S500F15000R1200\r\nJ:2+";
+            this.textBoxSequencer2.Text = "D:2S500F15000R1200\r\nM:2+P57";
             // 
             // labelSequencer1
             // 
@@ -452,7 +717,7 @@
             this.textBoxSequencer1.Name = "textBoxSequencer1";
             this.textBoxSequencer1.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer1.TabIndex = 11;
-            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:1+P5725\r\nR:1\r\nA:W+P60400+P0";
+            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:1+P5932\r\nR:1\r\nA:W+P60400+P0";
             // 
             // groupBoxBasics
             // 
@@ -979,15 +1244,10 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label28);
+            this.groupBox4.Controls.Add(this.textBoxAIAPulseCountM2);
             this.groupBox4.Controls.Add(this.labelImageNumber);
-            this.groupBox4.Controls.Add(this.textBoxImgNumber);
-            this.groupBox4.Controls.Add(this.label7);
-            this.groupBox4.Controls.Add(this.textBoxAIAwaitBefImage);
-            this.groupBox4.Controls.Add(this.checkBoxSaveImages);
-            this.groupBox4.Controls.Add(this.labelAIAloopinstr);
-            this.groupBox4.Controls.Add(this.textBoxAIAloopInstr);
-            this.groupBox4.Controls.Add(this.labelAIAinit);
-            this.groupBox4.Controls.Add(this.textBoxAIAinitInstr);
+            this.groupBox4.Controls.Add(this.textBoxAIAImgNumber);
             this.groupBox4.Controls.Add(this.buttonAIAStop);
             this.groupBox4.Controls.Add(this.buttonAIAStart);
             this.groupBox4.Location = new System.Drawing.Point(6, 3);
@@ -995,90 +1255,29 @@
             this.groupBox4.Size = new System.Drawing.Size(212, 332);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Stop and go";
+            this.groupBox4.Text = "AIA";
             // 
             // labelImageNumber
             // 
             this.labelImageNumber.AutoSize = true;
-            this.labelImageNumber.Location = new System.Drawing.Point(17, 154);
+            this.labelImageNumber.Location = new System.Drawing.Point(17, 54);
             this.labelImageNumber.Name = "labelImageNumber";
             this.labelImageNumber.Size = new System.Drawing.Size(80, 12);
             this.labelImageNumber.TabIndex = 30;
             this.labelImageNumber.Text = "Image Number:";
             // 
-            // textBoxImgNumber
+            // textBoxAIAImgNumber
             // 
-            this.textBoxImgNumber.Location = new System.Drawing.Point(108, 151);
-            this.textBoxImgNumber.Name = "textBoxImgNumber";
-            this.textBoxImgNumber.ReadOnly = true;
-            this.textBoxImgNumber.Size = new System.Drawing.Size(79, 19);
-            this.textBoxImgNumber.TabIndex = 29;
-            this.textBoxImgNumber.Text = "0";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(17, 186);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(84, 12);
-            this.label7.TabIndex = 28;
-            this.label7.Text = "wait time in ms";
-            // 
-            // textBoxAIAwaitBefImage
-            // 
-            this.textBoxAIAwaitBefImage.Location = new System.Drawing.Point(108, 183);
-            this.textBoxAIAwaitBefImage.Name = "textBoxAIAwaitBefImage";
-            this.textBoxAIAwaitBefImage.Size = new System.Drawing.Size(79, 19);
-            this.textBoxAIAwaitBefImage.TabIndex = 27;
-            this.textBoxAIAwaitBefImage.Text = "1200";
-            // 
-            // checkBoxSaveImages
-            // 
-            this.checkBoxSaveImages.AutoSize = true;
-            this.checkBoxSaveImages.Location = new System.Drawing.Point(22, 122);
-            this.checkBoxSaveImages.Name = "checkBoxSaveImages";
-            this.checkBoxSaveImages.Size = new System.Drawing.Size(88, 16);
-            this.checkBoxSaveImages.TabIndex = 25;
-            this.checkBoxSaveImages.Text = "save Images";
-            this.checkBoxSaveImages.UseVisualStyleBackColor = true;
-            // 
-            // labelAIAloopinstr
-            // 
-            this.labelAIAloopinstr.AutoSize = true;
-            this.labelAIAloopinstr.Location = new System.Drawing.Point(17, 79);
-            this.labelAIAloopinstr.Name = "labelAIAloopinstr";
-            this.labelAIAloopinstr.Size = new System.Drawing.Size(86, 12);
-            this.labelAIAloopinstr.TabIndex = 23;
-            this.labelAIAloopinstr.Text = "loop instruction:";
-            // 
-            // textBoxAIAloopInstr
-            // 
-            this.textBoxAIAloopInstr.Location = new System.Drawing.Point(19, 94);
-            this.textBoxAIAloopInstr.Name = "textBoxAIAloopInstr";
-            this.textBoxAIAloopInstr.Size = new System.Drawing.Size(156, 19);
-            this.textBoxAIAloopInstr.TabIndex = 24;
-            this.textBoxAIAloopInstr.Text = "M:2+P600";
-            // 
-            // labelAIAinit
-            // 
-            this.labelAIAinit.AutoSize = true;
-            this.labelAIAinit.Location = new System.Drawing.Point(17, 28);
-            this.labelAIAinit.Name = "labelAIAinit";
-            this.labelAIAinit.Size = new System.Drawing.Size(93, 12);
-            this.labelAIAinit.TabIndex = 21;
-            this.labelAIAinit.Text = "initial instruction:";
-            // 
-            // textBoxAIAinitInstr
-            // 
-            this.textBoxAIAinitInstr.Location = new System.Drawing.Point(19, 43);
-            this.textBoxAIAinitInstr.Name = "textBoxAIAinitInstr";
-            this.textBoxAIAinitInstr.Size = new System.Drawing.Size(156, 19);
-            this.textBoxAIAinitInstr.TabIndex = 22;
-            this.textBoxAIAinitInstr.Text = "D:2S800F10000R100";
+            this.textBoxAIAImgNumber.Location = new System.Drawing.Point(108, 51);
+            this.textBoxAIAImgNumber.Name = "textBoxAIAImgNumber";
+            this.textBoxAIAImgNumber.ReadOnly = true;
+            this.textBoxAIAImgNumber.Size = new System.Drawing.Size(79, 19);
+            this.textBoxAIAImgNumber.TabIndex = 29;
+            this.textBoxAIAImgNumber.Text = "0";
             // 
             // buttonAIAStop
             // 
-            this.buttonAIAStop.Location = new System.Drawing.Point(112, 218);
+            this.buttonAIAStop.Location = new System.Drawing.Point(110, 91);
             this.buttonAIAStop.Name = "buttonAIAStop";
             this.buttonAIAStop.Size = new System.Drawing.Size(75, 23);
             this.buttonAIAStop.TabIndex = 20;
@@ -1088,7 +1287,7 @@
             // 
             // buttonAIAStart
             // 
-            this.buttonAIAStart.Location = new System.Drawing.Point(21, 218);
+            this.buttonAIAStart.Location = new System.Drawing.Point(19, 91);
             this.buttonAIAStart.Name = "buttonAIAStart";
             this.buttonAIAStart.Size = new System.Drawing.Size(75, 23);
             this.buttonAIAStart.TabIndex = 19;
@@ -1096,227 +1295,34 @@
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
             // 
-            // label13
+            // label28
             // 
-            this.label13.AutoSize = true;
-            this.label13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.label13.Location = new System.Drawing.Point(179, 154);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(23, 12);
-            this.label13.TabIndex = 21;
-            this.label13.Text = "mm";
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(6, 25);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(86, 12);
+            this.label28.TabIndex = 32;
+            this.label28.Text = "Pulse count M2:";
             // 
-            // textBoxWidth_mm
+            // textBoxAIAPulseCountM2
             // 
-            this.textBoxWidth_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.textBoxWidth_mm.Location = new System.Drawing.Point(132, 151);
-            this.textBoxWidth_mm.Name = "textBoxWidth_mm";
-            this.textBoxWidth_mm.ReadOnly = true;
-            this.textBoxWidth_mm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxWidth_mm.Size = new System.Drawing.Size(71, 19);
-            this.textBoxWidth_mm.TabIndex = 22;
+            this.textBoxAIAPulseCountM2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBoxAIAPulseCountM2.Location = new System.Drawing.Point(108, 23);
+            this.textBoxAIAPulseCountM2.Name = "textBoxAIAPulseCountM2";
+            this.textBoxAIAPulseCountM2.ReadOnly = true;
+            this.textBoxAIAPulseCountM2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxAIAPulseCountM2.Size = new System.Drawing.Size(79, 19);
+            this.textBoxAIAPulseCountM2.TabIndex = 31;
             // 
-            // label14
+            // buttonUpdateBetaAngle
             // 
-            this.label14.AutoSize = true;
-            this.label14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.label14.Location = new System.Drawing.Point(178, 179);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(23, 12);
-            this.label14.TabIndex = 24;
-            this.label14.Text = "mm";
-            // 
-            // textBoxHeight_mm
-            // 
-            this.textBoxHeight_mm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.textBoxHeight_mm.Location = new System.Drawing.Point(131, 176);
-            this.textBoxHeight_mm.Name = "textBoxHeight_mm";
-            this.textBoxHeight_mm.ReadOnly = true;
-            this.textBoxHeight_mm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxHeight_mm.Size = new System.Drawing.Size(71, 19);
-            this.textBoxHeight_mm.TabIndex = 25;
-            // 
-            // textBoxHeight
-            // 
-            this.textBoxHeight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.textBoxHeight.Location = new System.Drawing.Point(50, 176);
-            this.textBoxHeight.Name = "textBoxHeight";
-            this.textBoxHeight.ReadOnly = true;
-            this.textBoxHeight.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxHeight.Size = new System.Drawing.Size(56, 19);
-            this.textBoxHeight.TabIndex = 23;
-            // 
-            // textBoxWidth
-            // 
-            this.textBoxWidth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.textBoxWidth.Location = new System.Drawing.Point(50, 151);
-            this.textBoxWidth.Name = "textBoxWidth";
-            this.textBoxWidth.ReadOnly = true;
-            this.textBoxWidth.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxWidth.Size = new System.Drawing.Size(56, 19);
-            this.textBoxWidth.TabIndex = 21;
-            // 
-            // textBoxpppratio
-            // 
-            this.textBoxpppratio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.textBoxpppratio.Location = new System.Drawing.Point(130, 119);
-            this.textBoxpppratio.Name = "textBoxpppratio";
-            this.textBoxpppratio.ReadOnly = true;
-            this.textBoxpppratio.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxpppratio.Size = new System.Drawing.Size(71, 19);
-            this.textBoxpppratio.TabIndex = 26;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 122);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(116, 12);
-            this.label15.TabIndex = 21;
-            this.label15.Text = "Pulses per pixel ratio:";
-            // 
-            // textBoxCalib2ndmm
-            // 
-            this.textBoxCalib2ndmm.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxCalib2ndmm.Location = new System.Drawing.Point(107, 58);
-            this.textBoxCalib2ndmm.Name = "textBoxCalib2ndmm";
-            this.textBoxCalib2ndmm.ReadOnly = true;
-            this.textBoxCalib2ndmm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxCalib2ndmm.Size = new System.Drawing.Size(68, 19);
-            this.textBoxCalib2ndmm.TabIndex = 28;
-            // 
-            // textBoxCalib1stmm
-            // 
-            this.textBoxCalib1stmm.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxCalib1stmm.Location = new System.Drawing.Point(107, 33);
-            this.textBoxCalib1stmm.Name = "textBoxCalib1stmm";
-            this.textBoxCalib1stmm.ReadOnly = true;
-            this.textBoxCalib1stmm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxCalib1stmm.Size = new System.Drawing.Size(68, 19);
-            this.textBoxCalib1stmm.TabIndex = 27;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 36);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(95, 12);
-            this.label16.TabIndex = 29;
-            this.label16.Text = "1st measurement:";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 61);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(97, 12);
-            this.label17.TabIndex = 30;
-            this.label17.Text = "2nd measurement:";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label18.Location = new System.Drawing.Point(154, 36);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(20, 12);
-            this.label18.TabIndex = 31;
-            this.label18.Text = "pxl";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label19.Location = new System.Drawing.Point(154, 61);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(20, 12);
-            this.label19.TabIndex = 32;
-            this.label19.Text = "pxl";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label20.Location = new System.Drawing.Point(154, 86);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(20, 12);
-            this.label20.TabIndex = 35;
-            this.label20.Text = "pxl";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(55, 86);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(48, 12);
-            this.label21.TabIndex = 34;
-            this.label21.Text = "abs. diff:";
-            // 
-            // textBoxCalibAbsDiff
-            // 
-            this.textBoxCalibAbsDiff.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxCalibAbsDiff.Location = new System.Drawing.Point(107, 83);
-            this.textBoxCalibAbsDiff.Name = "textBoxCalibAbsDiff";
-            this.textBoxCalibAbsDiff.ReadOnly = true;
-            this.textBoxCalibAbsDiff.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxCalibAbsDiff.Size = new System.Drawing.Size(68, 19);
-            this.textBoxCalibAbsDiff.TabIndex = 33;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(111, 154);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(17, 12);
-            this.label22.TabIndex = 36;
-            this.label22.Text = "→";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(111, 179);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(17, 12);
-            this.label23.TabIndex = 37;
-            this.label23.Text = "→";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(11, 154);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(34, 12);
-            this.label24.TabIndex = 39;
-            this.label24.Text = "width:";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(7, 179);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(38, 12);
-            this.label25.TabIndex = 40;
-            this.label25.Text = "height:";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.label26.Location = new System.Drawing.Point(83, 154);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(20, 12);
-            this.label26.TabIndex = 41;
-            this.label26.Text = "pxl";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.label27.Location = new System.Drawing.Point(83, 179);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(20, 12);
-            this.label27.TabIndex = 42;
-            this.label27.Text = "pxl";
+            this.buttonUpdateBetaAngle.Location = new System.Drawing.Point(107, 293);
+            this.buttonUpdateBetaAngle.Name = "buttonUpdateBetaAngle";
+            this.buttonUpdateBetaAngle.Size = new System.Drawing.Size(96, 23);
+            this.buttonUpdateBetaAngle.TabIndex = 47;
+            this.buttonUpdateBetaAngle.Text = "Update Beta A.";
+            this.buttonUpdateBetaAngle.UseVisualStyleBackColor = true;
+            this.buttonUpdateBetaAngle.Click += new System.EventHandler(this.buttonUpdateBetaAngle_Click);
             // 
             // SPRA_Form
             // 
@@ -1421,15 +1427,8 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button buttonAIAStop;
         private System.Windows.Forms.Button buttonAIAStart;
-        private System.Windows.Forms.Label labelAIAinit;
-        private System.Windows.Forms.TextBox textBoxAIAinitInstr;
-        private System.Windows.Forms.Label labelAIAloopinstr;
-        private System.Windows.Forms.TextBox textBoxAIAloopInstr;
-        private System.Windows.Forms.CheckBox checkBoxSaveImages;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBoxAIAwaitBefImage;
         private System.Windows.Forms.Label labelImageNumber;
-        private System.Windows.Forms.TextBox textBoxImgNumber;
+        private System.Windows.Forms.TextBox textBoxAIAImgNumber;
         private System.Windows.Forms.Button buttonStartMatlab;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label ExposureLabel;
@@ -1478,6 +1477,13 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label labelBetaAngle;
+        private System.Windows.Forms.TextBox textBoxBetaAngle;
+        private System.Windows.Forms.TextBox textBoxPulsesPerImage;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox textBoxAIAPulseCountM2;
+        private System.Windows.Forms.Button buttonUpdateBetaAngle;
     }
 }
 

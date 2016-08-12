@@ -1,41 +1,13 @@
-﻿Let's see what we got here:
+﻿
+Some new memos:
 
-What needs to happen for us to be able to measure the pixeldistance?
-What kind of ratio do we even want to measure?
-the ratio of the expected distance -> evaluated from the pulseCount and the mm/pulse ratio.
-to 1 pixel?
+Let's see what we've got here.
+The thing is working to a certain degree.
+How ever, some times, we get some pretty ugly stuff. we might want to look at a way to get the images while moving at a
+constant speed.
 
-we need to know how much we should turn the thing to get exactly one picture and the next one get's smoothly
-to the side of it.
+How should this thing work?
+How about this:
 
-We need to know how many micrometer we see with the camera!
-
-to get that value. we need to move the thing 300 pulses (which is 0.6mm) and see how far the pixel things
-have moved!
-
-it could be, for instance, 300 pixels. in this case, we could calculate that the hole picture is
-2456 * (600micrometer/300pixels) = (about) 5000 micrometer = 5mm.
-
-We then use this information to calculate the degrees the thing has to move to get the next picture.
-
-We need a new button. some kind of calculate micrometer/pixel ratio button.
-When we click that button:
-	- a picture is taken.
-	- Motor 1 moves 300 pulses
-	- another picture is taken.
-	- the two pictures get processed with matlab.
-	- from the result of each evaluation we get the ratio.
-
-
-	What kind of Matlab Program should this be?
-	- we need to measure the displacement of the pixels in a picture.
-	- one way would be to take just one row of pixels and search for the first big bump of bright pixels.
-	
-	- Another way would be to 2chika the picture and then look for connected pixelsjunks and then
-	  through away every junk which is under 1000 pixels in size.
-    - we do that and save the result:
-	  junkNumber, meanXVal of the pixeljunksignal, StartXVal, EndXVal, 
-
-
-
-
+we start moving. we take first picture at 100 pulses.
+we take other pictures after that.
