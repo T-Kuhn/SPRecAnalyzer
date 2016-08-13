@@ -215,7 +215,7 @@ namespace SPRecordAnalyzer
                     imgWidth_mm = (float)(imgWidth * pulsesPerPixelRatio * ratio_mmPerPulse);
 
                     // because of the black pixel frame: imgWidth_mm-2
-                    float tmp = (float)(Math.Atan2(imgHeight_mm, (currentPosition_mm + (imgWidth_mm-2) / 2.0)));
+                    float tmp = (float)(Math.Atan2(imgHeight_mm, (currentPosition_mm + imgWidth_mm / 2.0)));
                     betaAngle = (float)(tmp*(180.0 / Math.PI));
 
                     setBoxBetaAngle(betaAngle.ToString().Remove(6));
@@ -244,8 +244,6 @@ namespace SPRecordAnalyzer
                         setBoxAIAimageNmbr(imgNmbr.ToString());
                         takePicture("AIA" + imgNmbr);
                     }
-                    
-                    
                 }
             }
 
@@ -255,7 +253,7 @@ namespace SPRecordAnalyzer
         {
             takePicture();
 
-            Thread.Sleep(100);
+            Thread.Sleep(500);
 
             helperFunctionMatlab();
             
@@ -1264,19 +1262,32 @@ namespace SPRecordAnalyzer
                 myCamera.GetNode("SoftwareTrigger0").Value = 1;
                 myCamera.GetNode("SoftwareTrigger0").Value = 0;
             }
-            Thread.Sleep(100);
+
+            //Thread.Sleep(10);
+
+            int waitcycleCounter = 0;
+            ulong nmbr = myCamera.NumFramesDelivered;
+            while (nmbr == myCamera.NumFramesDelivered)
+            {
+                waitcycleCounter++;
+                Debug.WriteLine("Waiting: " + waitcycleCounter.ToString());
+                // loop until frame available
+            }
+            Thread.Sleep(10);
             // save the image for matlab
             myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/tmp.bmp", Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
+
+            
             // update width and height
             // we also want to get the img width and height here.
             if (myWidthNode != null)
             {
-                imgWidth = Int32.Parse(myWidthNode.Value.ToString());
+                imgWidth = Int32.Parse(myWidthNode.Value.ToString())-2; // -2 because there is a black pixel frame of size 1 left and right
                 setBoxWidth(imgWidth.ToString());
             }
             if (myHeightNode != null)
             {
-                imgHeight = Int32.Parse(myHeightNode.Value.ToString());
+                imgHeight = Int32.Parse(myHeightNode.Value.ToString())-2; // -2 because there is a black pixel frame of size 1 top and bottom
                 setBoxHeight(imgHeight.ToString());
             }
         }
@@ -1305,7 +1316,18 @@ namespace SPRecordAnalyzer
                 myCamera.GetNode("SoftwareTrigger0").Value = 1;
                 myCamera.GetNode("SoftwareTrigger0").Value = 0;
             }
-            Thread.Sleep(20);
+
+            //Thread.Sleep(10);
+
+            int waitcycleCounter = 0;
+            ulong nmbr = myCamera.NumFramesDelivered;
+            while (nmbr == myCamera.NumFramesDelivered)
+            {
+                waitcycleCounter++;
+                Debug.WriteLine("Waiting: " + waitcycleCounter.ToString());
+                // loop until frame available
+            }
+            Thread.Sleep(10);
             // save the image for matlab
             myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/" + str + ".bmp" , 
                 Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
@@ -1313,12 +1335,12 @@ namespace SPRecordAnalyzer
             // we also want to get the img width and height here.
             if (myWidthNode != null)
             {
-                imgWidth = Int32.Parse(myWidthNode.Value.ToString());
+                imgWidth = Int32.Parse(myWidthNode.Value.ToString()) - 2; // -2 because there is a black pixel frame of size 1 left and right
                 setBoxWidth(imgWidth.ToString());
             }
             if (myHeightNode != null)
             {
-                imgHeight = Int32.Parse(myHeightNode.Value.ToString());
+                imgHeight = Int32.Parse(myHeightNode.Value.ToString()) - 2; // -2 because there is a black pixel frame of size 1 top and bottom
                 setBoxHeight(imgHeight.ToString());
             }
         }
