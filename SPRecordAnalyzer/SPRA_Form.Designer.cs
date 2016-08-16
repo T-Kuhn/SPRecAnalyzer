@@ -135,6 +135,8 @@
             this.textBoxAIAImgNumber = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
+            this.label29 = new System.Windows.Forms.Label();
+            this.textBoxTotalImgNmbr = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -1254,6 +1256,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label29);
+            this.groupBox4.Controls.Add(this.textBoxTotalImgNmbr);
             this.groupBox4.Controls.Add(this.label28);
             this.groupBox4.Controls.Add(this.textBoxAIAPulseCountM2);
             this.groupBox4.Controls.Add(this.labelImageNumber);
@@ -1306,7 +1310,7 @@
             // 
             // buttonAIAStop
             // 
-            this.buttonAIAStop.Location = new System.Drawing.Point(110, 91);
+            this.buttonAIAStop.Location = new System.Drawing.Point(110, 133);
             this.buttonAIAStop.Name = "buttonAIAStop";
             this.buttonAIAStop.Size = new System.Drawing.Size(75, 23);
             this.buttonAIAStop.TabIndex = 20;
@@ -1316,13 +1320,31 @@
             // 
             // buttonAIAStart
             // 
-            this.buttonAIAStart.Location = new System.Drawing.Point(19, 91);
+            this.buttonAIAStart.Location = new System.Drawing.Point(19, 133);
             this.buttonAIAStart.Name = "buttonAIAStart";
             this.buttonAIAStart.Size = new System.Drawing.Size(75, 23);
             this.buttonAIAStart.TabIndex = 19;
             this.buttonAIAStart.Text = "Start";
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(17, 82);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(76, 12);
+            this.label29.TabIndex = 34;
+            this.label29.Text = "total # of Img.";
+            // 
+            // textBoxTotalImgNmbr
+            // 
+            this.textBoxTotalImgNmbr.Location = new System.Drawing.Point(108, 79);
+            this.textBoxTotalImgNmbr.Name = "textBoxTotalImgNmbr";
+            this.textBoxTotalImgNmbr.ReadOnly = true;
+            this.textBoxTotalImgNmbr.Size = new System.Drawing.Size(79, 19);
+            this.textBoxTotalImgNmbr.TabIndex = 33;
+            this.textBoxTotalImgNmbr.Text = "0";
             // 
             // SPRA_Form
             // 
@@ -1484,6 +1506,8 @@
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.TextBox textBoxAIAPulseCountM2;
         private System.Windows.Forms.Button buttonUpdateBetaAngle;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox textBoxTotalImgNmbr;
     }
 }
 

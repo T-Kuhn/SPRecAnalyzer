@@ -1,4 +1,4 @@
-tmp1 = imread('img/Round1/AIA1.bmp', 'bmp');
+tmp1 = imread('img/Round1/AIA10251.bmp', 'bmp');
 
 % crop the black pixels!
 tmp1(end,:,:) = [];
@@ -10,7 +10,7 @@ tmp1 = flipud(tmp1);
 tmp1 = rot90(tmp1);
 tmp1 = flipud(tmp1);
     
-for i = 2 : 100;
+for i = 10252 : 10285;
     tmp = imread(sprintf('img/Round1/AIA%d.bmp',i));
     % crop the black pixels!
     tmp(end,:,:) = [];
@@ -26,4 +26,4 @@ for i = 2 : 100;
     i
 end
 
-imwrite(tmp1,'splicedImage1.bmp');
+imwrite(tmp1,'splicedImage206.bmp');

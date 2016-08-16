@@ -33,7 +33,8 @@ namespace SPRecordAnalyzer
         private int currentPosMotor2_pulses;
         private string currentPosMotor2_pulses_text;
         private double pulsesPerPixelRatio;
-        private int pulsesPerImage;  
+        private int pulsesPerImage;
+        private int nmbrOfImagesPerRound;  
         private double betaAngle;
         private int imgWidth;
         private int imgHeight;
@@ -239,13 +240,6 @@ namespace SPRecordAnalyzer
                     setBoxAIAPulseCountM2(currentPosMotor2_pulses_text);
                     if (AIAinit)
                     {
-                        // NEW START
-                        //string str = textBoxSequencer2.Text;
-                        //splittedString = str.Split('\n');
-                        //seqRunning = true;
-                        //seqCounter = 0;
-                        // NEW END
-                    
                         string str = "D:2S200F200R200" + '\n' + "J:2+";
                         splittedString = str.Split('\n');
                         seqRunning = true;
@@ -254,27 +248,25 @@ namespace SPRecordAnalyzer
                         AIApulsesTriggerVal = currentPosMotor2_pulses + pulsesPerImage;
                         AIAinit = false;
                     }
+                    else if(nmbrOfImagesPerRound <= imgNmbr)
+                    {
+                        AIARunning = false;
+                        string str = "D:2S200F200R200" + '\n' + "L:2";
+                        splittedString = str.Split('\n');
+                        seqRunning = true;
+                        seqCounter = 0;
+                        imgNmbr = 0;
+                        AIAinit = false;
+                    }
                     else if (currentPosMotor2_pulses >= AIApulsesTriggerVal)
                     {
                         AIApulsesTriggerVal += pulsesPerImage;
                         imgNmbr++;
                         setBoxAIAimageNmbr(imgNmbr.ToString());
-                        // NEW START
-                        //Thread.Sleep(100);
-
-                        //takePicture("AIA" + imgNmbr);
-
-                        //string str = textBoxSequencer2.Text;
-                        //splittedString = str.Split('\n');
-                        //seqRunning = true;
-                        //seqCounter = 0;
-
-                        // NEW END
                         takePicture("AIA" + imgNmbr);
                     }
                 }
             }
-
         }
         
         private Point getCoordsOfOutermostLine()
@@ -821,6 +813,7 @@ namespace SPRecordAnalyzer
                 myCamera = null;
             }
 
+
             // Discover GigE and/or generic GenTL devices using myFactory.UpdateCameraList(in this case specifying Filter Driver for GigE cameras).
             myFactory.UpdateCameraList(Jai_FactoryDotNET.CFactory.EDriverType.FilterDriver);
 
@@ -850,6 +843,11 @@ namespace SPRecordAnalyzer
                 }
 
                 int currentValue = 0;
+
+
+                // Rotating the Image 90 degree. doesn't work.
+                //myCamera.ImageRotateType = 0;
+                //myCamera.RotateImage = true;
 
                 // Get the Width GenICam Node
                 myWidthNode = myCamera.GetNode("Width");
@@ -1354,6 +1352,11 @@ namespace SPRecordAnalyzer
                 waitcycleCounter++;
                 Debug.WriteLine("Waiting: " + waitcycleCounter.ToString());
                 // loop until frame available
+                if (waitcycleCounter > 200)
+                {
+                    break;
+                }
+                // or we are above 200
             }
             Thread.Sleep(10);
             // save the image for matlab
@@ -1414,11 +1417,19 @@ namespace SPRecordAnalyzer
         {
             AIARunning = true;
             AIAinit = true;
+            nmbrOfImagesPerRound = 144000 / pulsesPerImage;
+            textBoxTotalImgNmbr.Text = nmbrOfImagesPerRound.ToString();
         }
 
         private void buttonAIAStop_Click(object sender, EventArgs e)
         {
             AIARunning = false;
+            string str = "D:2S200F200R200" + '\n' + "L:2";
+            splittedString = str.Split('\n');
+            seqRunning = true;
+            seqCounter = 0;
+            imgNmbr = 0;
+            AIAinit = false;
         }
 
         private void buttonStartCalib_Click(object sender, EventArgs e)
