@@ -159,7 +159,7 @@ end
 % - - - - - - - - - - - - - - - -
 
 PixelObjArrFiltered = PixelObjectArr();
-pixelThreshold = 1000;
+pixelThreshold = 500;
 indexCounter = 0;
 for ent = PixelObjArr.PixelObjects;
     if ent.EntryIndex > pixelThreshold;

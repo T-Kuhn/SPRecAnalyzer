@@ -34,11 +34,11 @@ namespace SPRecordAnalyzer
         private string currentPosMotor2_pulses_text;
         private double pulsesPerPixelRatio;
         private int pulsesPerImage;  
-        private float betaAngle;
+        private double betaAngle;
         private int imgWidth;
         private int imgHeight;
-        private float imgWidth_mm;
-        private float imgHeight_mm;
+        private double imgWidth_mm;
+        private double imgHeight_mm;
 
         private const double ratio_degPerPulse = 0.0025;
         private const double ratio_mmPerPulse = 0.002;
@@ -191,7 +191,7 @@ namespace SPRecordAnalyzer
                     Thread.Sleep(22000);
                     Point point1 = getCoordsOfOutermostLine();
                     setBox1stmeasurment(point1.X.ToString());
-                    
+
 
                     seqRunning = true;
                     seqCounter = 0;
@@ -211,21 +211,27 @@ namespace SPRecordAnalyzer
                     pulsesPerPixelRatio = (400.0f/absdiff);
                     setBoxpppratio(pulsesPerPixelRatio.ToString().Remove(6));
 
-                    imgHeight_mm = (float)(imgHeight*pulsesPerPixelRatio*ratio_mmPerPulse);
-                    imgWidth_mm = (float)(imgWidth * pulsesPerPixelRatio * ratio_mmPerPulse);
+                    imgHeight_mm = (imgHeight*pulsesPerPixelRatio*ratio_mmPerPulse);
+                    imgWidth_mm = (imgWidth*pulsesPerPixelRatio*ratio_mmPerPulse);
 
-                    // because of the black pixel frame: imgWidth_mm-2
-                    float tmp = (float)(Math.Atan2(imgHeight_mm, (currentPosition_mm + imgWidth_mm / 2.0)));
-                    betaAngle = (float)(tmp*(180.0 / Math.PI));
+                    SetupPPIandBA();
 
-                    setBoxBetaAngle(betaAngle.ToString().Remove(6));
-
-                    pulsesPerImage = (int)(betaAngle * 1 / ratio_degPerPulse);
-                    setBoxPulsesPerImage(pulsesPerImage.ToString());
-
-                    setBoxHeight_mm(imgHeight_mm.ToString().Remove(6));
-                    setBoxWidth_mm(imgWidth_mm.ToString().Remove(6));
-
+                    if (imgHeight_mm.ToString().Length > 9)
+                    {
+                        setBoxHeight_mm(imgHeight_mm.ToString().Remove(6));
+                    }
+                    else
+                    {
+                        setBoxHeight_mm(imgHeight_mm.ToString());
+                    }
+                    if (imgWidth_mm.ToString().Length > 9)
+                    {
+                        setBoxWidth_mm(imgWidth_mm.ToString().Remove(6));
+                    }
+                    else
+                    {
+                        setBoxWidth_mm(imgWidth_mm.ToString());
+                    }
                     calibRunning = false;
                 }
                 if (AIARunning)
@@ -233,15 +239,37 @@ namespace SPRecordAnalyzer
                     setBoxAIAPulseCountM2(currentPosMotor2_pulses_text);
                     if (AIAinit)
                     {
+                        // NEW START
+                        //string str = textBoxSequencer2.Text;
+                        //splittedString = str.Split('\n');
+                        //seqRunning = true;
+                        //seqCounter = 0;
+                        // NEW END
+                    
+                        string str = "D:2S200F200R200" + '\n' + "J:2+";
+                        splittedString = str.Split('\n');
+                        seqRunning = true;
+                        seqCounter = 0;
                         imgNmbr = 0;
                         AIApulsesTriggerVal = currentPosMotor2_pulses + pulsesPerImage;
                         AIAinit = false;
                     }
-                    else if (currentPosMotor2_pulses > AIApulsesTriggerVal)
+                    else if (currentPosMotor2_pulses >= AIApulsesTriggerVal)
                     {
                         AIApulsesTriggerVal += pulsesPerImage;
                         imgNmbr++;
                         setBoxAIAimageNmbr(imgNmbr.ToString());
+                        // NEW START
+                        //Thread.Sleep(100);
+
+                        //takePicture("AIA" + imgNmbr);
+
+                        //string str = textBoxSequencer2.Text;
+                        //splittedString = str.Split('\n');
+                        //seqRunning = true;
+                        //seqCounter = 0;
+
+                        // NEW END
                         takePicture("AIA" + imgNmbr);
                     }
                 }
@@ -1412,12 +1440,17 @@ namespace SPRecordAnalyzer
 
         private void buttonUpdateBetaAngle_Click(object sender, EventArgs e)
         {
-            float tmp = (float)(Math.Atan2(imgHeight_mm, (currentPosition_mm + imgWidth_mm / 2)));
-            betaAngle = (float)(tmp * (180.0 / Math.PI));
+            SetupPPIandBA();
+        }
+
+        private void SetupPPIandBA()
+        {
+            double tmp = (Math.Atan2(imgHeight_mm, (currentPosition_mm + imgWidth_mm / 2)));
+            betaAngle = (tmp * (180.0 / Math.PI));
 
             setBoxBetaAngle(betaAngle.ToString().Remove(6));
 
-            pulsesPerImage = (int)(betaAngle * 1 / ratio_degPerPulse);
+            pulsesPerImage = (int)Math.Round((betaAngle / ratio_degPerPulse), 0);
             setBoxPulsesPerImage(pulsesPerImage.ToString());
         }
     }

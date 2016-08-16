@@ -31,6 +31,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.gpibInterfaceTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.buttonUpdateBetaAngle = new System.Windows.Forms.Button();
             this.textBoxPulsesPerImage = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxBetaAngle = new System.Windows.Forms.TextBox();
@@ -128,13 +129,12 @@
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.autImgAcq = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.textBoxAIAPulseCountM2 = new System.Windows.Forms.TextBox();
             this.labelImageNumber = new System.Windows.Forms.Label();
             this.textBoxAIAImgNumber = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.label28 = new System.Windows.Forms.Label();
-            this.textBoxAIAPulseCountM2 = new System.Windows.Forms.TextBox();
-            this.buttonUpdateBetaAngle = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -224,6 +224,16 @@
             this.groupBox6.TabIndex = 14;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Calibration";
+            // 
+            // buttonUpdateBetaAngle
+            // 
+            this.buttonUpdateBetaAngle.Location = new System.Drawing.Point(107, 293);
+            this.buttonUpdateBetaAngle.Name = "buttonUpdateBetaAngle";
+            this.buttonUpdateBetaAngle.Size = new System.Drawing.Size(96, 23);
+            this.buttonUpdateBetaAngle.TabIndex = 47;
+            this.buttonUpdateBetaAngle.Text = "Update Beta A.";
+            this.buttonUpdateBetaAngle.UseVisualStyleBackColor = true;
+            this.buttonUpdateBetaAngle.Click += new System.EventHandler(this.buttonUpdateBetaAngle_Click);
             // 
             // textBoxPulsesPerImage
             // 
@@ -717,7 +727,7 @@
             this.textBoxSequencer1.Name = "textBoxSequencer1";
             this.textBoxSequencer1.Size = new System.Drawing.Size(179, 92);
             this.textBoxSequencer1.TabIndex = 11;
-            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:1+P5932\r\nR:1\r\nA:W+P60400+P0";
+            this.textBoxSequencer1.Text = "D:1S800F15000R1200\r\nD:2S800F15000R1200\r\nH:W-\r\nA:1+P5932\r\nR:1\r\nA:W+P60000+P0";
             // 
             // groupBoxBasics
             // 
@@ -1257,6 +1267,25 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "AIA";
             // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(6, 25);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(86, 12);
+            this.label28.TabIndex = 32;
+            this.label28.Text = "Pulse count M2:";
+            // 
+            // textBoxAIAPulseCountM2
+            // 
+            this.textBoxAIAPulseCountM2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBoxAIAPulseCountM2.Location = new System.Drawing.Point(108, 23);
+            this.textBoxAIAPulseCountM2.Name = "textBoxAIAPulseCountM2";
+            this.textBoxAIAPulseCountM2.ReadOnly = true;
+            this.textBoxAIAPulseCountM2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxAIAPulseCountM2.Size = new System.Drawing.Size(79, 19);
+            this.textBoxAIAPulseCountM2.TabIndex = 31;
+            // 
             // labelImageNumber
             // 
             this.labelImageNumber.AutoSize = true;
@@ -1294,35 +1323,6 @@
             this.buttonAIAStart.Text = "Start";
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(6, 25);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(86, 12);
-            this.label28.TabIndex = 32;
-            this.label28.Text = "Pulse count M2:";
-            // 
-            // textBoxAIAPulseCountM2
-            // 
-            this.textBoxAIAPulseCountM2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.textBoxAIAPulseCountM2.Location = new System.Drawing.Point(108, 23);
-            this.textBoxAIAPulseCountM2.Name = "textBoxAIAPulseCountM2";
-            this.textBoxAIAPulseCountM2.ReadOnly = true;
-            this.textBoxAIAPulseCountM2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxAIAPulseCountM2.Size = new System.Drawing.Size(79, 19);
-            this.textBoxAIAPulseCountM2.TabIndex = 31;
-            // 
-            // buttonUpdateBetaAngle
-            // 
-            this.buttonUpdateBetaAngle.Location = new System.Drawing.Point(107, 293);
-            this.buttonUpdateBetaAngle.Name = "buttonUpdateBetaAngle";
-            this.buttonUpdateBetaAngle.Size = new System.Drawing.Size(96, 23);
-            this.buttonUpdateBetaAngle.TabIndex = 47;
-            this.buttonUpdateBetaAngle.Text = "Update Beta A.";
-            this.buttonUpdateBetaAngle.UseVisualStyleBackColor = true;
-            this.buttonUpdateBetaAngle.Click += new System.EventHandler(this.buttonUpdateBetaAngle_Click);
             // 
             // SPRA_Form
             // 
