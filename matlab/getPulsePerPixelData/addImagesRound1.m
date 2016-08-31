@@ -1,5 +1,9 @@
-for p = 0 : 204;
-    tmp1 = imread(sprintf('img/Round1/AIA%d.bmp',p*50 +1), 'bmp');
+roundNmbr = 6;
+nmbrOfImages = 9000;
+splicedFullImages = floor(nmbrOfImages/50);
+
+for p = 0 : splicedFullImages-1;
+    tmp1 = imread(sprintf('img/Round%d/AIA%d.bmp',roundNmbr,p*50 +1), 'bmp');
 
     % crop the black pixels!
     tmp1(end,:,:) = [];
@@ -12,7 +16,7 @@ for p = 0 : 204;
     tmp1 = flipud(tmp1);
 
     for i = p*50 +2 : (p+1)*50;
-        tmp = imread(sprintf('img/Round1/AIA%d.bmp',i));
+        tmp = imread(sprintf('img/Round%d/AIA%d.bmp',roundNmbr,i));
         % crop the black pixels!
         tmp(end,:,:) = [];
         tmp(:,end,:) = [];
@@ -24,8 +28,7 @@ for p = 0 : 204;
         tmp = flipud(tmp);
 
         tmp1 = cat(2,tmp1,tmp);
-        i
     end
-
-    imwrite(tmp1,sprintf('img/Round1/splicedImage%d.bmp',p));
+    p
+    imwrite(tmp1,sprintf('img/Round%d/splicedImages/splicedImage%d.bmp',roundNmbr,p));
 end

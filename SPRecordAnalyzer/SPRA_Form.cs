@@ -240,7 +240,7 @@ namespace SPRecordAnalyzer
                     setBoxAIAPulseCountM2(currentPosMotor2_pulses_text);
                     if (AIAinit)
                     {
-                        string str = "D:2S200F200R200" + '\n' + "J:2+";
+                        string str = "D:2S200F200R200" + '\n' + "M:2+P144000";
                         splittedString = str.Split('\n');
                         seqRunning = true;
                         seqCounter = 0;

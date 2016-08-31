@@ -51,7 +51,7 @@ classdef SigExBot < handle
         % - - - - - - - - - - - - - - - -
         function LoadImagesIntoRAM(obj)
             for p = 1 : obj.MaxImgNmbr;  
-                obj.Img(p) = {imread(sprintf('splicedImagesGrayscale/splicedImage%d.bmp',p), 'bmp')};
+                obj.Img(p) = {imread(sprintf('Round%d/splicedImages/splicedImage%d.bmp',1,p), 'bmp')};
             end
         end
         % - - - - - - - - - - - - - - - - 
@@ -61,8 +61,12 @@ classdef SigExBot < handle
             tmpSize = size(obj.Img{nmbr});
             obj.ImgHeight = tmpSize(1);
             obj.ImgWidth = tmpSize(2);
+            if nmbr == 1 & (obj.ImgHeight - 2000) > obj.CurrentY;
+                obj.SaveMarkedImages();
+                obj.TrackFollowing = false;
+            end
         end
-        % - - - - - - - - - - - - - - - - 
+        % - - - - - - - - - - - - - - 1- - 
         % - - - - - Next Step - - - - - -
         % - - - - - - - - - - - - - - - -
         function NextStep(obj)
@@ -127,10 +131,6 @@ classdef SigExBot < handle
         % - - - - - - - - - - - - - - - -
         function CenterOnCurrentPos(obj)
             if obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), obj.CurrentX) >= obj.PixelThreshold;
-                if round(obj.CurrentY) < 100
-                    obj.SaveMarkedImages();
-                    obj.TrackFollowing = false;
-                end
                 obj.StrangeThingCounter = 0;
                 % How far up can we go?
                 % - - - - - - - - - - - -
