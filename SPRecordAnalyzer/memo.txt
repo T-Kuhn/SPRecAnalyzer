@@ -1,13 +1,7 @@
 ﻿
 Some new memos:
 
-Let's see what we've got here.
-The thing is working to a certain degree.
-How ever, some times, we get some pretty ugly stuff. we might want to look at a way to get the images while moving at a
-constant speed.
-
-How should this thing work?
-How about this:
-
-we start moving. we take first picture at 100 pulses.
-we take other pictures after that.
+About the Automatic Image Acquisition:
+This thing has to do the thing for 1 round. then move Motor1 some 1500 Pixels [THIS SHOULD BE A FIELD!]
+and then the hole thing has to start over [IN A NEW FOLDER]
+There has to be a ROUNDCOUNT!

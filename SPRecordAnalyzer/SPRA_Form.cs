@@ -22,6 +22,7 @@ namespace SPRecordAnalyzer
         private bool AIARunning;
         private int AIApulsesTriggerVal;
         private bool AIAinit;
+        private int RoundCounter;
         private string[] splittedString;
         private Device device;
         private int seqCounter;
@@ -89,6 +90,7 @@ namespace SPRecordAnalyzer
             seqRunning = false;
             pulsesPerPixelRatio = 0.0;
             imgNmbr = 0;
+            RoundCounter = 1;
             AIAinit = false;
             // start thread
             stageComThread.Start();
@@ -250,20 +252,27 @@ namespace SPRecordAnalyzer
                     }
                     else if(nmbrOfImagesPerRound <= imgNmbr)
                     {
-                        AIARunning = false;
-                        string str = "D:2S200F200R200" + '\n' + "L:2";
+                        string str = "M:1-P1768";  // Here comes the code for moving 1500 px in
+                        RoundCounter++;
                         splittedString = str.Split('\n');
                         seqRunning = true;
                         seqCounter = 0;
                         imgNmbr = 0;
-                        AIAinit = false;
+                        Thread.Sleep(5000);
+                        AIAinit = true;
+                        SetupPPIandBA();
+                        nmbrOfImagesPerRound = 144000 / pulsesPerImage;
+                        if (currentPosition_mm < 44) 
+                        {
+                            AIARunning = false;
+                        }
                     }
                     else if (currentPosMotor2_pulses >= AIApulsesTriggerVal)
                     {
                         AIApulsesTriggerVal += pulsesPerImage;
                         imgNmbr++;
                         setBoxAIAimageNmbr(imgNmbr.ToString());
-                        takePicture("AIA" + imgNmbr);
+                        takePicture("Round" + RoundCounter, "AIA" + imgNmbr); // Change save target folder using the RoundCounter
                     }
                 }
             }
@@ -1321,7 +1330,7 @@ namespace SPRecordAnalyzer
         // - - - - - - - - - - - - - - - - -
         // - - - - TAKE PICTURE  - - - - - - Version with stringparameter for image name
         // - - - - - - - - - - - - - - - - -
-        private void takePicture(string str)
+        private void takePicture(string str, string str2)
         {
             // But we have 2 ways of sending a software trigger: JAI and GenICam SNC
             // The GenICam SFNC software trigger is available if a node called
@@ -1360,7 +1369,12 @@ namespace SPRecordAnalyzer
             }
             Thread.Sleep(10);
             // save the image for matlab
-            myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/" + str + ".bmp" , 
+            bool exists = System.IO.Directory.Exists("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/" + str);
+            if (!exists)
+            {
+                System.IO.Directory.CreateDirectory("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/" + str);
+            }
+            myCamera.SaveLastRawFrame("D:/KT/SPRecordAnalyzer/matlab/getPulsePerPixelData/img/" + str + "/" + str2 + ".bmp" , 
                 Jai_FactoryWrapper.ESaveFileFormat.Bmp, 100);
             // update width and height
             // we also want to get the img width and height here.
@@ -1429,6 +1443,7 @@ namespace SPRecordAnalyzer
             seqRunning = true;
             seqCounter = 0;
             imgNmbr = 0;
+            RoundCounter = 1;
             AIAinit = false;
         }
 
@@ -1463,6 +1478,11 @@ namespace SPRecordAnalyzer
 
             pulsesPerImage = (int)Math.Round((betaAngle / ratio_degPerPulse), 0);
             setBoxPulsesPerImage(pulsesPerImage.ToString());
+        }
+
+        private void buttonTest_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

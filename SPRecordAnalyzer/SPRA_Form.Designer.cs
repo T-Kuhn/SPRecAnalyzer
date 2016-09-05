@@ -129,14 +129,15 @@
             this.buttonStartMatlab = new System.Windows.Forms.Button();
             this.autImgAcq = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.textBoxTotalImgNmbr = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.textBoxAIAPulseCountM2 = new System.Windows.Forms.TextBox();
             this.labelImageNumber = new System.Windows.Forms.Label();
             this.textBoxAIAImgNumber = new System.Windows.Forms.TextBox();
             this.buttonAIAStop = new System.Windows.Forms.Button();
             this.buttonAIAStart = new System.Windows.Forms.Button();
-            this.label29 = new System.Windows.Forms.Label();
-            this.textBoxTotalImgNmbr = new System.Windows.Forms.TextBox();
+            this.buttonTest = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.gpibInterfaceTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -1256,6 +1257,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.buttonTest);
             this.groupBox4.Controls.Add(this.label29);
             this.groupBox4.Controls.Add(this.textBoxTotalImgNmbr);
             this.groupBox4.Controls.Add(this.label28);
@@ -1270,6 +1272,24 @@
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "AIA";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(17, 82);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(76, 12);
+            this.label29.TabIndex = 34;
+            this.label29.Text = "total # of Img.";
+            // 
+            // textBoxTotalImgNmbr
+            // 
+            this.textBoxTotalImgNmbr.Location = new System.Drawing.Point(108, 79);
+            this.textBoxTotalImgNmbr.Name = "textBoxTotalImgNmbr";
+            this.textBoxTotalImgNmbr.ReadOnly = true;
+            this.textBoxTotalImgNmbr.Size = new System.Drawing.Size(79, 19);
+            this.textBoxTotalImgNmbr.TabIndex = 33;
+            this.textBoxTotalImgNmbr.Text = "0";
             // 
             // label28
             // 
@@ -1328,23 +1348,15 @@
             this.buttonAIAStart.UseVisualStyleBackColor = true;
             this.buttonAIAStart.Click += new System.EventHandler(this.buttonAIAStart_Click);
             // 
-            // label29
+            // buttonTest
             // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(17, 82);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(76, 12);
-            this.label29.TabIndex = 34;
-            this.label29.Text = "total # of Img.";
-            // 
-            // textBoxTotalImgNmbr
-            // 
-            this.textBoxTotalImgNmbr.Location = new System.Drawing.Point(108, 79);
-            this.textBoxTotalImgNmbr.Name = "textBoxTotalImgNmbr";
-            this.textBoxTotalImgNmbr.ReadOnly = true;
-            this.textBoxTotalImgNmbr.Size = new System.Drawing.Size(79, 19);
-            this.textBoxTotalImgNmbr.TabIndex = 33;
-            this.textBoxTotalImgNmbr.Text = "0";
+            this.buttonTest.Location = new System.Drawing.Point(19, 294);
+            this.buttonTest.Name = "buttonTest";
+            this.buttonTest.Size = new System.Drawing.Size(75, 23);
+            this.buttonTest.TabIndex = 35;
+            this.buttonTest.Text = "Test";
+            this.buttonTest.UseVisualStyleBackColor = true;
+            this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
             // SPRA_Form
             // 
@@ -1508,6 +1520,7 @@
         private System.Windows.Forms.Button buttonUpdateBetaAngle;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox textBoxTotalImgNmbr;
+        private System.Windows.Forms.Button buttonTest;
     }
 }
 

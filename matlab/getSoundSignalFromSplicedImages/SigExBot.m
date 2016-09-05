@@ -7,14 +7,18 @@ classdef SigExBot < handle
         FirstCycle;
         TrackFollowing;
         StepSize;
+        StartStepSize;
         CurrentX;
         CurrentY;
+        CurrentRoundNmbr;
         Img = {};
         ImgWidth;
         ImgHeight;
         PixelThreshold; % 0 ~ 255
         CurrentImgNmbr;
         MaxImgNmbr;
+        MaxImgNmbrFirstImgSet;
+        MaxRoundNmbr;
         SignalIndex;
         ProcessedSignal = [];
         Signal = [];
@@ -23,57 +27,102 @@ classdef SigExBot < handle
         ChangeInSigWidth;
         StrangeThingCounter;
         Debug;
+        AlgoStopHeight;
+        CorVal;
+        CurrentCorVal;
     end
     methods
         % - - - - - - - - - - - - - - - - 
         % - - - - - Constructor - - - - -
         % - - - - - - - - - - - - - - - -
-        function obj = SigExBot(maxNmbr)
+        function obj = SigExBot()
+            obj.TrackFollowing = false;
+            obj.FirstCycle = false;
             obj.IsOnTrack = false;      % When the Bot is created, it isn't on track
-            obj.StepSize = 2;           % Default StepSize is 2 Pixel on the X Axis!
+            obj.StartStepSize = 2.1;           % Default StepSize is 2 Pixel on the X Axis!
             obj.CurrentX = 1;
             obj.CurrentY = 1;
             obj.ImgWidth = 0;
             obj.ImgHeight = 0;
             obj.PixelThreshold = 250;   % Default Threshold for Pixelregocnition is 250
             obj.CurrentImgNmbr = 1;
-            obj.MaxImgNmbr = maxNmbr;
+            obj.CurrentRoundNmbr = 1;
             obj.StrangeThingCounter = 0;
             obj.SignalIndex = 0;
             obj.Signal(300000) = 0;    % Get some memory for the Signal Array
             obj.ProcessedSignal(300000) = 0;    % Get some memory for the Signal Array
             obj.Debug = true;          % Debug is On by defautlt
-            obj.LoadImagesIntoRAM();
+            obj.AlgoStopHeight = 2000; % Algorithm stops when higher than 2000px at 1st image
+            obj.CorVal = 1500;         % 1500px correction after one full Round
+            obj.CurrentCorVal = 0;
+            obj.GetNmbrOfFolders();
+            obj.GetNmbrOfFiles();
+            obj.LoadImagesIntoRAM(); 
             obj.ChangeCurrentImage(obj.CurrentImgNmbr);
+            obj.SetCurrentStepSize();
         end 
+        % - - - - - - - - - - - - - - - - 
+        % - - Get Number Of folders - - -
+        % - - - - - - - - - - - - - - - -
+        function GetNmbrOfFolders(obj)
+            D = dir(['.', '\Round*']);
+            obj.MaxRoundNmbr = length(D([D.isdir]));
+        end
+        % - - - - - - - - - - - - - - - - 
+        % - - - Get Number Of files - - -
+        % - - - - - - - - - - - - - - - -
+        function GetNmbrOfFiles (obj)
+            D = dir([sprintf('Round%d/splicedImages', obj.CurrentRoundNmbr), '\*.bmp']);
+            obj.MaxImgNmbr = length(D(not([D.isdir])))
+            if ~obj.TrackFollowing;
+                obj.MaxImgNmbrFirstImgSet = obj.MaxImgNmbr;
+            end
+        end
         % - - - - - - - - - - - - - - - - 
         % - - Load Images into RAM  - - -
         % - - - - - - - - - - - - - - - -
         function LoadImagesIntoRAM(obj)
             for p = 1 : obj.MaxImgNmbr;  
-                obj.Img(p) = {imread(sprintf('Round%d/splicedImages/splicedImage%d.bmp',1,p), 'bmp')};
+                obj.Img(p) = {imread(sprintf('Round%d/splicedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p), 'bmp')};
             end
         end
         % - - - - - - - - - - - - - - - - 
-        % - - Change current Image  - - -
+        % - - - Set Current StepSize  - -
+        % - - - - - - - - - - - - - - - -
+        function SetCurrentStepSize(obj)
+            obj.StepSize = obj.StartStepSize * obj.MaxImgNmbr / obj.MaxImgNmbrFirstImgSet; 
+        end
+        % - - - - - - - - - - - - - - - - 
+        % - - Change Current Image  - - -
         % - - - - - - - - - - - - - - - -
         function ChangeCurrentImage(obj, nmbr)
+            if obj.Debug & obj.TrackFollowing;
+                disp(sprintf('processing Round: %d Image: %d', obj.CurrentRoundNmbr, obj.CurrentImgNmbr));
+            end
             tmpSize = size(obj.Img{nmbr});
             obj.ImgHeight = tmpSize(1);
             obj.ImgWidth = tmpSize(2);
-            if nmbr == 1 & (obj.ImgHeight - 2000) > obj.CurrentY;
+            if nmbr == 1 & (obj.ImgHeight - obj.AlgoStopHeight) > obj.CurrentY & obj.TrackFollowing;
                 obj.SaveMarkedImages();
-                obj.TrackFollowing = false;
+                obj.CurrentRoundNmbr = obj.CurrentRoundNmbr + 1;
+                obj.CurrentCorVal = obj.CurrentCorVal - obj.CorVal;
+                obj.CurrentY = obj.CurrentY + obj.CorVal;
+                obj.GetNmbrOfFiles();
+                obj.LoadImagesIntoRAM();
+                obj.SetCurrentStepSize();
+                if obj.CurrentRoundNmbr > obj.MaxRoundNmbr;
+                    obj.TrackFollowing = false;
+                end
             end
         end
-        % - - - - - - - - - - - - - - 1- - 
+        % - - - - - - - - - - - - - - - - 
         % - - - - - Next Step - - - - - -
         % - - - - - - - - - - - - - - - -
         function NextStep(obj)
             obj.CurrentX = obj.CurrentX + obj.StepSize;
             obj.SignalIndex = obj.SignalIndex + 1;
-            obj.Signal(obj.SignalIndex) = obj.CurrentY;
-            if obj.CurrentX > obj.ImgWidth;
+            obj.Signal(obj.SignalIndex) = obj.CurrentY + obj.CurrentCorVal;
+            if round(obj.CurrentX) > obj.ImgWidth;
                 obj.CurrentX = 1;
                 obj.CurrentImgNmbr = obj.CurrentImgNmbr + 1;
                 if obj.CurrentImgNmbr > obj.MaxImgNmbr;
@@ -116,32 +165,36 @@ classdef SigExBot < handle
         % - - - - LeaveBlackMark  - - - -
         % - - - - - - - - - - - - - - - -
         function LeaveBlackMark(obj)
-            obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), obj.CurrentX) = 0;
+            obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) = 0;
         end
         % - - - - - - - - - - - - - - - - 
         % - - - Save Marked Imgages - - -
         % - - - - - - - - - - - - - - - -
         function SaveMarkedImages(obj)
+            obj
+            if obj.Debug;
+                disp('saving marked images');
+            end
             for p = 1 : obj.MaxImgNmbr;  
-                imwrite(obj.Img{p}, sprintf('markedImages/splicedImage%d.bmp',p)); 
+                imwrite(obj.Img{p}, sprintf('Round%d/markedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p)); 
             end
         end
         % - - - - - - - - - - - - - - - - 
         % - - Center On Current Pos - - -
         % - - - - - - - - - - - - - - - -
         function CenterOnCurrentPos(obj)
-            if obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), obj.CurrentX) >= obj.PixelThreshold;
+            if obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) >= obj.PixelThreshold;
                 obj.StrangeThingCounter = 0;
                 % How far up can we go?
                 % - - - - - - - - - - - -
                 incrementerUp = 0;
-                while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerUp, obj.CurrentX) >= obj.PixelThreshold)
+                while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerUp, round(obj.CurrentX)) >= obj.PixelThreshold)
                     incrementerUp = incrementerUp - 1;
                 end
                 % How far down can we go?
                 % - - - - - - - - - - - -
                 incrementerDown = 0;
-                while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerDown, obj.CurrentX) >= obj.PixelThreshold)
+                while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerDown, round(obj.CurrentX)) >= obj.PixelThreshold)
                     incrementerDown = incrementerDown + 1;
                 end
 
@@ -157,13 +210,12 @@ classdef SigExBot < handle
                     obj.CurrentY = obj.CurrentY + changeInY;                    
                 end
 
-
             else
                 % just go straight. Somethings strange happened!     
                 obj.StrangeThingCounter = obj.StrangeThingCounter + 1;
                 if obj.StrangeThingCounter > 100;
                     obj.SaveMarkedImages();
-                    'Something strange happened!'
+                    disp('Something strange happened!');
                     obj.CurrentImgNmbr
                     obj.TrackFollowing = false;
                 end 
@@ -217,7 +269,18 @@ end
 % - - - - - - MEMO  - - - - - - -
 % - - - - - - - - - - - - - - - -
 
-
+% How would we solve that good old problem with the timevariable?
+% it's easy. Or is it?
+% we need to use the following stuff:
+% 
+% 78 rpm
+% How many mm in to the record?
+% How big in mm is the imgheight?
+% How many rotations on one image set?
+% WE NEED TO AD A ROTATIONCOUNTER!
+% How about this:
+% We start with step Counter = 2.
+% 170 / 222 * 2
 
 
 
