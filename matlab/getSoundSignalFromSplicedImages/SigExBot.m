@@ -39,7 +39,7 @@ classdef SigExBot < handle
             obj.TrackFollowing = false;
             obj.FirstCycle = false;
             obj.IsOnTrack = false;      % When the Bot is created, it isn't on track
-            obj.StartStepSize = 2.1;           % Default StepSize is 2 Pixel on the X Axis!
+            obj.StartStepSize = 2.5;           % Default StepSize is 2 Pixel on the X Axis!
             obj.CurrentX = 1;
             obj.CurrentY = 1;
             obj.ImgWidth = 0;
