@@ -22,6 +22,7 @@ classdef SigExBot < handle
         SignalIndex;
         ProcessedSignal = [];
         Signal = [];
+        DebugSignal1 = [];
         SignalWidthArr = [];
         MeanSignalWidth;
         ChangeInSigWidth;
@@ -122,6 +123,7 @@ classdef SigExBot < handle
             obj.CurrentX = obj.CurrentX + obj.StepSize;
             obj.SignalIndex = obj.SignalIndex + 1;
             obj.Signal(obj.SignalIndex) = obj.CurrentY + obj.CurrentCorVal;
+            obj.DebugSignal1(obj.SignalIndex) = obj.ChangeInSigWidth;
             if round(obj.CurrentX) > obj.ImgWidth;
                 obj.CurrentX = 1;
                 obj.CurrentImgNmbr = obj.CurrentImgNmbr + 1;
@@ -200,15 +202,18 @@ classdef SigExBot < handle
 
                 signalWidth = incrementerDown - incrementerUp;
                 obj.CalcMeanSignalWidth(signalWidth);
+
+                changeInY = (incrementerUp + incrementerDown)/2;
                 
-                changeInY = (incrementerUp + incrementerDown)/2 * obj.ChangeInSigWidth;
-                if abs(changeInY) >= 2 & not(obj.FirstCycle);
-                    % make the change smaller.
-                    obj.CurrentY = obj.CurrentY + changeInY/abs(changeInY);                    
-                else
-                    % Center normally
-                    obj.CurrentY = obj.CurrentY + changeInY;                    
+                % make it so the max chaneInY is 1
+                if abs(changeInY) >= 1
+                    changeInY = changeInY/abs(changeInY);
                 end
+                if obj.ChangeInSigWidth >= 5
+                    % IF WE THIS HAPPENS WE NEED TO PROBE FOR END OF GAP!!!
+                    changeInY = 0;
+                end
+                obj.CurrentY = obj.CurrentY + changeInY;                    
 
             else
                 % just go straight. Somethings strange happened!     
@@ -222,19 +227,24 @@ classdef SigExBot < handle
             end
         end
         % - - - - - - - - - - - - - - - - 
+        % - -  Probe For End Of Gap - - -
+        % - - - - - - - - - - - - - - - -
+        function ProbeForEndOfGap(obj)
+            
+        end
+        % - - - - - - - - - - - - - - - - 
         % - - Calc Mean Signal Width  - -
         % - - - - - - - - - - - - - - - -
         function CalcMeanSignalWidth(obj, sigWidth)
             if obj.FirstCycle;
                 obj.MeanSignalWidth = sigWidth;
-                obj.ChangeInSigWidth = 1;
+                obj.ChangeInSigWidth = 0;
             else
                 diff = sigWidth - obj.MeanSignalWidth;
-                obj.MeanSignalWidth = obj.MeanSignalWidth + diff/100;
-                obj.ChangeInSigWidth = 1;
-                if abs(diff) > 1;
-                    obj.ChangeInSigWidth = 1/abs(diff); 
+                if abs(diff) <= 8
+                    obj.MeanSignalWidth = obj.MeanSignalWidth + diff/100;
                 end
+                obj.ChangeInSigWidth = abs(diff); 
             end
         end
         % - - - - - - - - - - - - - - - - 
@@ -269,19 +279,8 @@ end
 % - - - - - - MEMO  - - - - - - -
 % - - - - - - - - - - - - - - - -
 
-% How would we solve that good old problem with the timevariable?
-% it's easy. Or is it?
-% we need to use the following stuff:
-% 
-% 78 rpm
-% How many mm in to the record?
-% How big in mm is the imgheight?
-% How many rotations on one image set?
-% WE NEED TO AD A ROTATIONCOUNTER!
-% How about this:
-% We start with step Counter = 2.
-% 170 / 222 * 2
-
+% WHEN the widths changes:
+%   search ahead straight for the place where things get back to normal for longer than 30 steps.
 
 
 
