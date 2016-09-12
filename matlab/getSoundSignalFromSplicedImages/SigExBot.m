@@ -115,7 +115,7 @@ classdef SigExBot < handle
             obj.StepSize = obj.StartStepSize * obj.MaxImgNmbr / obj.MaxImgNmbrFirstImgSet; 
         end
         % - - - - - - - - - - - - - - - - 
-        % - - - Go Back One Image - - - -
+        % - - - - Go Back Images  - - - -
         % - - - - - - - - - - - - - - - -
         function GoBackImages(obj, nmbr)
             tmp = obj.CurrentImgNmbr + nmbr;
@@ -142,6 +142,7 @@ classdef SigExBot < handle
             obj.ImgHeight = tmpSize(1);
             obj.ImgWidth = tmpSize(2);
             if nmbr == 1 & (obj.ImgHeight - obj.AlgoStopHeight) > obj.CurrentY & obj.TrackFollowing;
+                obj.GapFlag = false;        % even if there is a gap which the program tries to fill, stop it!
                 obj.SaveMarkedImages();
                 obj.CurrentRoundNmbr = obj.CurrentRoundNmbr + 1;
                 obj.CurrentCorVal = obj.CurrentCorVal - obj.CorVal;
