@@ -45,6 +45,8 @@ classdef SigExBot < handle
         ReturnIndex;
         ReturnX;
         ReturnY;
+        TryToRecover;
+        TryToRecoverCounter;
     end
     methods
         % - - - - - - - - - - - - - - - - 
@@ -68,11 +70,13 @@ classdef SigExBot < handle
             obj.ProcessedSignal(300000) = 0;    % Get some memory for the Signal Array
             obj.Debug = true;          % Debug is On by defautlt
             obj.AlgoStopHeight = 2000; % Algorithm stops when higher than 2000px at 1st image
-            obj.CorVal = 1486;         % 1500px correction after one full Round
+            obj.CorVal = 1486;         % 1486px correction after one full Round
             obj.CurrentCorVal = 0;
             obj.GapEndedCounter = 0;
             obj.GapFlag = false;
             obj.GapFillingFlag = false;
+            obj.TryToRecover = false;
+            obj.TryToRecoverCounter = 0;
             obj.GetNmbrOfFolders();
             obj.GetNmbrOfFiles();
             obj.LoadImagesIntoRAM(); 
@@ -274,7 +278,9 @@ classdef SigExBot < handle
                         changeInY = changeInY/abs(changeInY);
                     end
 
-                    if obj.ChangeInSigWidth >= 6;
+                    obj.ResetTryToRecoverFlag();
+
+                    if obj.ChangeInSigWidth >= 6 & ~obj.TryToRecover;
                         if ~obj.GapFlag
                             obj.GapFlag = true;
                             obj.StartOfGapX = obj.CurrentX -4 * obj.StepSize;
@@ -315,11 +321,49 @@ classdef SigExBot < handle
                     % just go straight. Somethings strange happened!     
                     obj.StrangeThingCounter = obj.StrangeThingCounter + 1;
                     if obj.StrangeThingCounter > 100;
-                        obj.SaveMarkedImages();
-                        disp('Something strange happened!');
-                        disp(obj.CurrentImgNmbr);
-                        obj.TrackFollowing = false;
+                        if obj.TryToRecover;
+                            obj.SaveMarkedImages();
+                            disp('Something strange happened!');
+                            disp(obj.CurrentImgNmbr);
+                            obj.TrackFollowing = false;
+                        end
+                        obj.StrangeThingCounter = 0;
+                        disp('Try to recover!');
+                        obj.GapFlag = false;
+                        obj.GapFillingFlag = true;
+                        obj.TryToRecover = true;
+                        obj.EndOfGapIndex = obj.SignalIndex;
+                        obj.EndOfGapImgNmbr = obj.CurrentImgNmbr;
+                        obj.ReturnIndex = obj.SignalIndex;
+                        obj.ReturnX = obj.CurrentX;
+                        obj.CurrentY = obj.Signal(obj.SignalIndex -250) - obj.CurrentCorVal;
+                        obj.ReturnY = obj.CurrentY;
+                        obj.EndOfGapY = obj.CurrentY;
+                        obj.SignalIndex = obj.SignalIndex - 250;
+                        obj.CurrentX = obj.CurrentX - 250 * obj.StepSize;
+                        obj.StartOfGapX = obj.CurrentX;
+                        obj.StartOfGapY = obj.CurrentY;
+                        obj.StartOfGapIndex = obj.SignalIndex;
+                        obj.StartOfGapImgNmbr = obj.CurrentImgNmbr;
+                        obj.CalculateSlope();
+                        if obj.CurrentX < 1;
+                            obj.GoBackOneImg();
+                            obj.StartOfGapImgNmbr = obj.CurrentImgNmbr;
+                            obj.CurrentX = obj.ImgWidth + obj.CurrentX; 
+                        end
                     end 
+                end
+            end
+        end
+        % - - - - - - - - - - - - - - - - 
+        % - - Reset Try To Recover Flag -
+        % - - - - - - - - - - - - - - - -
+        function ResetTryToRecoverFlag(obj)
+            if obj.TryToRecover;
+                obj.TryToRecoverCounter = obj.TryToRecoverCounter + 1;
+                if obj.TryToRecoverCounter > 500;
+                    obj.TryToRecoverCounter = 0;
+                    obj.TryToRecover = false;
                 end
             end
         end
