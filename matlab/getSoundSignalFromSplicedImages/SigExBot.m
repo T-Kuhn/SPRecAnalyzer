@@ -31,6 +31,20 @@ classdef SigExBot < handle
         AlgoStopHeight;
         CorVal;
         CurrentCorVal;
+        GapFlag;
+        GapFillingFlag;
+        GapEndedCounter;
+        GapSlope;
+        StartOfGapX;
+        StartOfGapY;
+        StartOfGapIndex;
+        StartOfGapImgNmbr;
+        EndOfGapImgNmbr;
+        EndOfGapIndex;
+        EndOfGapY;
+        ReturnIndex;
+        ReturnX;
+        ReturnY;
     end
     methods
         % - - - - - - - - - - - - - - - - 
@@ -54,8 +68,11 @@ classdef SigExBot < handle
             obj.ProcessedSignal(300000) = 0;    % Get some memory for the Signal Array
             obj.Debug = true;          % Debug is On by defautlt
             obj.AlgoStopHeight = 2000; % Algorithm stops when higher than 2000px at 1st image
-            obj.CorVal = 1500;         % 1500px correction after one full Round
+            obj.CorVal = 1486;         % 1500px correction after one full Round
             obj.CurrentCorVal = 0;
+            obj.GapEndedCounter = 0;
+            obj.GapFlag = false;
+            obj.GapFillingFlag = false;
             obj.GetNmbrOfFolders();
             obj.GetNmbrOfFiles();
             obj.LoadImagesIntoRAM(); 
@@ -92,6 +109,22 @@ classdef SigExBot < handle
         % - - - - - - - - - - - - - - - -
         function SetCurrentStepSize(obj)
             obj.StepSize = obj.StartStepSize * obj.MaxImgNmbr / obj.MaxImgNmbrFirstImgSet; 
+        end
+        % - - - - - - - - - - - - - - - - 
+        % - - - Go Back One Image - - - -
+        % - - - - - - - - - - - - - - - -
+        function GoBackOneImg(obj)
+            if obj.CurrentImgNmbr - 1 < 1;
+                obj.CurrentImgNmbr = obj.MaxImgNmbr;
+            else
+                obj.CurrentImgNmbr = obj.CurrentImgNmbr - 1;
+            end 
+            if obj.Debug & obj.TrackFollowing;
+                disp(sprintf('Going Back one Image to: %d Image: %d', obj.CurrentRoundNmbr, obj.CurrentImgNmbr));
+            end
+            tmpSize = size(obj.Img{obj.CurrentImgNmbr});
+            obj.ImgHeight = tmpSize(1);
+            obj.ImgWidth = tmpSize(2);
         end
         % - - - - - - - - - - - - - - - - 
         % - - Change Current Image  - - -
@@ -167,7 +200,13 @@ classdef SigExBot < handle
         % - - - - LeaveBlackMark  - - - -
         % - - - - - - - - - - - - - - - -
         function LeaveBlackMark(obj)
-            obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) = 0;
+            if obj.Debug;
+                if obj.GapFlag
+                    obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) = 200;
+                else
+                    obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) = 0;
+                end
+            end
         end
         % - - - - - - - - - - - - - - - - 
         % - - - Save Marked Imgages - - -
@@ -176,61 +215,137 @@ classdef SigExBot < handle
             obj
             if obj.Debug;
                 disp('saving marked images');
+                for p = 1 : obj.MaxImgNmbr;  
+                    imwrite(obj.Img{p}, sprintf('Round%d/markedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p)); 
+                end
             end
-            for p = 1 : obj.MaxImgNmbr;  
-                imwrite(obj.Img{p}, sprintf('Round%d/markedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p)); 
+        end
+        % - - - - - - - - - - - - - - - - 
+        % - - Get Centering Correction  -
+        % - - - - - - - - - - - - - - - -
+        function val = GetCenterOfTrack(obj)
+            % How far up can we go?
+            % - - - - - - - - - - - -
+            incrementerUp = 0;
+            while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerUp, round(obj.CurrentX)) >= obj.PixelThreshold)
+                incrementerUp = incrementerUp - 1;
             end
+            % How far down can we go?
+            % - - - - - - - - - - - -
+            incrementerDown = 0;
+            while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerDown, round(obj.CurrentX)) >= obj.PixelThreshold)
+                incrementerDown = incrementerDown + 1;
+            end
+
+            signalWidth = incrementerDown - incrementerUp;
+            obj.CalcMeanSignalWidth(signalWidth);
+
+            val = (incrementerUp + incrementerDown)/2;
         end
         % - - - - - - - - - - - - - - - - 
         % - - Center On Current Pos - - -
         % - - - - - - - - - - - - - - - -
         function CenterOnCurrentPos(obj)
-            if obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) >= obj.PixelThreshold;
-                obj.StrangeThingCounter = 0;
-                % How far up can we go?
-                % - - - - - - - - - - - -
-                incrementerUp = 0;
-                while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerUp, round(obj.CurrentX)) >= obj.PixelThreshold)
-                    incrementerUp = incrementerUp - 1;
-                end
-                % How far down can we go?
-                % - - - - - - - - - - - -
-                incrementerDown = 0;
-                while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerDown, round(obj.CurrentX)) >= obj.PixelThreshold)
-                    incrementerDown = incrementerDown + 1;
-                end
-
-                signalWidth = incrementerDown - incrementerUp;
-                obj.CalcMeanSignalWidth(signalWidth);
-
-                changeInY = (incrementerUp + incrementerDown)/2;
-                
-                % make it so the max chaneInY is 1
-                if abs(changeInY) >= 1
-                    changeInY = changeInY/abs(changeInY);
-                end
-                if obj.ChangeInSigWidth >= 5
-                    % IF WE THIS HAPPENS WE NEED TO PROBE FOR END OF GAP!!!
-                    changeInY = 0;
-                end
-                obj.CurrentY = obj.CurrentY + changeInY;                    
-
+            if obj.GapFillingFlag == true;
+                obj.GapFilling();
             else
-                % just go straight. Somethings strange happened!     
-                obj.StrangeThingCounter = obj.StrangeThingCounter + 1;
-                if obj.StrangeThingCounter > 100;
-                    obj.SaveMarkedImages();
-                    disp('Something strange happened!');
-                    obj.CurrentImgNmbr
-                    obj.TrackFollowing = false;
-                end 
+                if obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) >= obj.PixelThreshold;
+                    obj.StrangeThingCounter = 0;
+                    % How far up can we go?
+                    % - - - - - - - - - - - -
+                    incrementerUp = 0;
+                    while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerUp, round(obj.CurrentX)) >= obj.PixelThreshold)
+                        incrementerUp = incrementerUp - 1;
+                    end
+                    % How far down can we go?
+                    % - - - - - - - - - - - -
+                    incrementerDown = 0;
+                    while(obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY) + incrementerDown, round(obj.CurrentX)) >= obj.PixelThreshold)
+                        incrementerDown = incrementerDown + 1;
+                    end
+
+                    signalWidth = incrementerDown - incrementerUp;
+                    obj.CalcMeanSignalWidth(signalWidth);
+
+                    changeInY = (incrementerUp + incrementerDown)/2;
+                    
+                    % make it so the max chaneInY is 1
+                    if abs(changeInY) >= 1;
+                        changeInY = changeInY/abs(changeInY);
+                    end
+
+                    if obj.ChangeInSigWidth >= 6;
+                        if ~obj.GapFlag
+                            obj.GapFlag = true;
+                            obj.StartOfGapX = obj.CurrentX -4 * obj.StepSize;
+                            obj.StartOfGapIndex = obj.SignalIndex - 4; 
+                            if obj.StartOfGapX < 1;
+                                obj.StartOfGapX = obj.CurrentX;
+                                obj.StartOfGapIndex = obj.SignalIndex; 
+                            end
+                            obj.StartOfGapY = obj.Signal(obj.StartOfGapIndex) - obj.CurrentCorVal;
+                            obj.StartOfGapImgNmbr = obj.CurrentImgNmbr;
+                        end
+                        obj.GapEndedCounter = 0;
+                        changeInY = 0;
+                    elseif obj.GapFlag;
+                        obj.GapEndedCounter = obj.GapEndedCounter + 1;
+                        if obj.GapEndedCounter > 30;
+                            obj.GapFlag = false;
+                            obj.GapEndedCounter = 0;
+                            obj.EndOfGapIndex = obj.SignalIndex - 26;
+                            obj.ReturnIndex = obj.SignalIndex;
+                            obj.ReturnX = obj.CurrentX;
+                            obj.ReturnY = obj.CurrentY;
+                            obj.EndOfGapY = obj.Signal(obj.EndOfGapIndex) - obj.CurrentCorVal;
+                            obj.CalculateSlope();
+                            obj.GapFillingFlag = true; 
+                            obj.SignalIndex = obj.StartOfGapIndex;
+                            obj.CurrentX = obj.StartOfGapX;
+                            obj.CurrentY = obj.StartOfGapY;
+                            obj.EndOfGapImgNmbr = obj.CurrentImgNmbr;
+                            if ~(obj.StartOfGapImgNmbr == obj.CurrentImgNmbr);
+                                % Start and End on different Images
+                                obj.GoBackOneImg();
+                            end
+                        end
+                    end
+                    obj.CurrentY = obj.CurrentY + changeInY;                    
+                else
+                    % just go straight. Somethings strange happened!     
+                    obj.StrangeThingCounter = obj.StrangeThingCounter + 1;
+                    if obj.StrangeThingCounter > 100;
+                        obj.SaveMarkedImages();
+                        disp('Something strange happened!');
+                        disp(obj.CurrentImgNmbr);
+                        obj.TrackFollowing = false;
+                    end 
+                end
             end
         end
         % - - - - - - - - - - - - - - - - 
-        % - -  Probe For End Of Gap - - -
+        % - - - - - GapFilling  - - - - -
         % - - - - - - - - - - - - - - - -
-        function ProbeForEndOfGap(obj)
-            
+        function GapFilling(obj)
+            if obj.SignalIndex < obj.EndOfGapIndex;
+                % do the gap filling!
+                obj.CurrentY = obj.StartOfGapY + (obj.SignalIndex - obj.StartOfGapIndex) * obj.GapSlope;
+            else
+                % switch back to normal behavior
+                obj.GapFillingFlag = false;
+                obj.SignalIndex = obj.ReturnIndex;
+                obj.CurrentX = obj.ReturnX;
+                obj.CurrentY = obj.ReturnY;
+                obj.CurrentImgNmbr = obj.EndOfGapImgNmbr;
+            end 
+        end
+        % - - - - - - - - - - - - - - - - 
+        % - - - - Calculate Slope - - - -
+        % - - - - - - - - - - - - - - - -
+        function CalculateSlope(obj)
+            length = obj.EndOfGapIndex - obj.StartOfGapIndex;
+            height = obj.EndOfGapY - obj.StartOfGapY;
+            obj.GapSlope = height / length;
         end
         % - - - - - - - - - - - - - - - - 
         % - - Calc Mean Signal Width  - -
@@ -281,9 +396,7 @@ end
 
 % WHEN the widths changes:
 %   search ahead straight for the place where things get back to normal for longer than 30 steps.
-
-
-
+%   
 
 
 
