@@ -381,7 +381,7 @@ classdef SigExBot < handle
                 obj.CurrentX = obj.ReturnX;
                 obj.CurrentY = obj.ReturnY;
                 obj.CurrentImgNmbr = obj.EndOfGapImgNmbr;
-                obj.ChangeCurrentImage();
+                obj.ChangeCurrentImage(obj.CurrentImgNmbr);
             end 
         end
         % - - - - - - - - - - - - - - - - 
