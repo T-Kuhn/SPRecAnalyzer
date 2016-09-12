@@ -141,7 +141,7 @@ classdef SigExBot < handle
             tmpSize = size(obj.Img{nmbr});
             obj.ImgHeight = tmpSize(1);
             obj.ImgWidth = tmpSize(2);
-            if (nmbr == 1 & (obj.ImgHeight - obj.AlgoStopHeight) > obj.CurrentY & obj.TrackFollowing) | 
+            if (nmbr == 1 & (obj.ImgHeight - obj.AlgoStopHeight) > obj.CurrentY & obj.TrackFollowing) | ...
                 (obj.CurrentRoundNmbr == obj.MaxRoundNmbr & (obj.ImgHeight - obj.AlgoStopHeight) > obj.CurrentY); 
                 obj.GapFlag = false;        % even if there is a gap which the program tries to fill, stop it!
                 obj.SaveMarkedImages();
