@@ -117,11 +117,12 @@ classdef SigExBot < handle
         % - - - - - - - - - - - - - - - - 
         % - - - Go Back One Image - - - -
         % - - - - - - - - - - - - - - - -
-        function GoBackOneImg(obj)
-            if obj.CurrentImgNmbr - 1 < 1;
-                obj.CurrentImgNmbr = obj.MaxImgNmbr;
+        function GoBackImages(obj, nmbr)
+            tmp = obj.CurrentImgNmbr + nmbr;
+            if tmp < 1;
+                obj.CurrentImgNmbr = obj.MaxImgNmbr + tmp;
             else
-                obj.CurrentImgNmbr = obj.CurrentImgNmbr - 1;
+                obj.CurrentImgNmbr = tmp;
             end 
             if obj.Debug & obj.TrackFollowing;
                 disp(sprintf('Going Back one Image to: %d Image: %d', obj.CurrentRoundNmbr, obj.CurrentImgNmbr));
@@ -312,7 +313,7 @@ classdef SigExBot < handle
                             obj.EndOfGapImgNmbr = obj.CurrentImgNmbr;
                             if ~(obj.StartOfGapImgNmbr == obj.CurrentImgNmbr);
                                 % Start and End on different Images
-                                obj.GoBackOneImg();
+                                obj.GoBackImages(obj.StartOfGapImgNmbr - obj.CurrentImgNmbr);
                             end
                         end
                     end
@@ -347,7 +348,7 @@ classdef SigExBot < handle
                         obj.StartOfGapImgNmbr = obj.CurrentImgNmbr;
                         obj.CalculateSlope();
                         if obj.CurrentX < 1;
-                            obj.GoBackOneImg();
+                            obj.GoBackImages(-1);
                             obj.StartOfGapImgNmbr = obj.CurrentImgNmbr;
                             obj.CurrentX = obj.ImgWidth + obj.CurrentX; 
                         end
