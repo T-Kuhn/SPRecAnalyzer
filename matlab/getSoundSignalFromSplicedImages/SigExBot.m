@@ -321,7 +321,7 @@ classdef SigExBot < handle
                 else
                     % just go straight. Somethings strange happened!     
                     obj.StrangeThingCounter = obj.StrangeThingCounter + 1;
-                    if obj.StrangeThingCounter > 100;
+                    if obj.StrangeThingCounter > 300;
                         if obj.TryToRecover;
                             obj.SaveMarkedImages();
                             disp('Something strange happened!');
@@ -337,11 +337,11 @@ classdef SigExBot < handle
                         obj.EndOfGapImgNmbr = obj.CurrentImgNmbr;
                         obj.ReturnIndex = obj.SignalIndex;
                         obj.ReturnX = obj.CurrentX;
-                        obj.CurrentY = obj.Signal(obj.SignalIndex -250) - obj.CurrentCorVal;
+                        obj.CurrentY = obj.Signal(obj.SignalIndex -450) - obj.CurrentCorVal;
                         obj.ReturnY = obj.CurrentY;
                         obj.EndOfGapY = obj.CurrentY;
-                        obj.SignalIndex = obj.SignalIndex - 250;
-                        obj.CurrentX = obj.CurrentX - 250 * obj.StepSize;
+                        obj.SignalIndex = obj.SignalIndex - 450;
+                        obj.CurrentX = obj.CurrentX - 450 * obj.StepSize;
                         obj.StartOfGapX = obj.CurrentX;
                         obj.StartOfGapY = obj.CurrentY;
                         obj.StartOfGapIndex = obj.SignalIndex;
