@@ -5,3 +5,6 @@
 *.json
 *.mat
 *.wav
+*.toc
+*.aux
+*.log
