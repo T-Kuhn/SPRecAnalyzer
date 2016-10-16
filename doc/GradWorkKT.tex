@@ -40,13 +40,17 @@ These are the things we need to get done:
         \item 実験環境の図を描く　      [OK]
         \item データの流れ、装置の電気的模式図を描く　[  ]
         \item こんな実験環境でデータを集めると何が問題になるか説明する  [  ]
-        \item 問題を説明する幾何学図を描く                      　      [　]
+        \item 問題を説明する幾何学図を描く                      　      [OK]
 \end{itemize}
 
 \chapter{Document Flow}
 Here some thoughts on the flow of this document:
 \begin{itemize}
     \item explaining the setup.
+    \begin{itemize}
+        \item 物理的配置
+        \item 電気的配線（必要？） 
+    \end{itemize}
     \item explaining the ways of getting the data.
     \item The author chose method 疑似ラインセンサ！
     \item explaining the problems.
@@ -57,14 +61,26 @@ Here some thoughts on the flow of this document:
             音溝が曲がっている。それを直す修正。
         \end{description}
     \item showing the solutions.
+        \begin{description}
+        \item [疑似ラインセンサ]
+            疑似センサの利点について説明する
+        \item [0：ソフトウェアの話]
+            ここでソフトの模式図を挿入
+        \item [１：物理的距離検出]
+            アルゴリズムについて説明する
+        \item [２：ライントレースアルゴリズム]
+            アルゴリズムについて説明する
+        \end{description}
 \end{itemize}
 
 
 
 \chapter{はじめに}
-何をやるかについて説明する。
 
-\chapter{実験環境}
+
+
+
+\chapter{実験}
 具体的な物理的な実験環境について説明する。
 \begin{itemize}
     \item 実験環境の模式図
@@ -72,8 +88,87 @@ Here some thoughts on the flow of this document:
     \item 
 \end{itemize}
 
-ここで使う図：
-\includegraphics[width=0.9\textwidth, clip]{experimentalSetup.eps}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{experimentalSetup.eps}
+        \caption{実験装置の設定}
+        \label{fig:experimentalSetup}
+    \end{center}
+\end{figure}
+
+
+文章の中で（図\ref{fig:experimentalSetup}）ってやればいいのかな。
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ElectricalSetup.eps}
+        \caption{実験装置の設定}
+        \label{fig:ElectricalSetup}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ReflectionOnSPRec.eps}
+        \caption{反射の仕方}
+        \label{fig:ReflectionOnSPRec}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.6\textwidth, clip]{SprecMicroscopeImgLabeled.eps}
+        \caption{SprecMicroscopeImgLabaled}
+        \label{fig:SprecMicroscopeImgLabeled}
+    \end{center}
+\end{figure}
+
+\chapter{問題分析}
+
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_1.eps}
+        \caption{Overlap Problem 1}
+        \label{fig:OverlapProblem_1}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_2.eps}
+        \caption{Overlap Problem 2}
+        \label{fig:OverlapProblem_2}
+    \end{center}
+\end{figure}
+
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{CurveProblem.eps}
+        \caption{Curve Problem}
+        \label{fig:CurveProblem}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ProgSetupOld.eps}
+        \caption{Prog Setup Old}
+        \label{fig:ProgSetupOld}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ProgSetupNew.eps}
+        \caption{Prog Setup New}
+        \label{fig:ProgSetupNew}
+    \end{center}
+\end{figure}
+
+
 
 
 \end{document}
