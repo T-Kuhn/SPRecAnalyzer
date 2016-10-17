@@ -12,17 +12,17 @@
 
 
 \title{平成28年　卒業研究論文\\
-　\\
-　\\
-　\\
+    　\\
+    　\\
+    　\\
 \huge\bf 疑似ラインセンサーを用いた\\ＳＰレコード音検出\\}
 \author{　\\
-　\\
-北海学園大学工学部 電子情報工学科\\
-魚住研究室\\
-\\
-\\
-4513213\\
+    　\\
+    北海学園大学工学部 電子情報工学科\\
+    魚住研究室\\
+    \\
+    \\
+    4513213\\
 クーン・トビアス}
 \date{2016年10月11日}
 
@@ -32,47 +32,6 @@
 \maketitle
 \tableofcontents
 
-\chapter{TODO}
-
-These are the things we need to get done:
-\begin{itemize}
-        \item 実験環境について説明する  [  ]
-        \item 実験環境の図を描く　      [OK]
-        \item データの流れ、装置の電気的模式図を描く　[  ]
-        \item こんな実験環境でデータを集めると何が問題になるか説明する  [  ]
-        \item 問題を説明する幾何学図を描く                      　      [OK]
-\end{itemize}
-
-\chapter{Document Flow}
-Here some thoughts on the flow of this document:
-\begin{itemize}
-    \item explaining the setup.
-    \begin{itemize}
-        \item 物理的配置
-        \item 電気的配線（必要？） 
-    \end{itemize}
-    \item explaining the ways of getting the data.
-    \item The author chose method 疑似ラインセンサ！
-    \item explaining the problems.
-        \begin{description}
-        \item [問題１：重なり部分]
-            文章が来るぜ。
-        \item [問題２：湾曲修正]
-            音溝が曲がっている。それを直す修正。
-        \end{description}
-    \item showing the solutions.
-        \begin{description}
-        \item [疑似ラインセンサ]
-            疑似センサの利点について説明する
-        \item [0：ソフトウェアの話]
-            ここでソフトの模式図を挿入
-        \item [１：物理的距離検出]
-            アルゴリズムについて説明する
-        \item [２：ライントレースアルゴリズム]
-            アルゴリズムについて説明する
-        \end{description}
-\end{itemize}
-
 
 
 \chapter{はじめに}
@@ -81,12 +40,11 @@ Here some thoughts on the flow of this document:
 
 
 \chapter{実験}
-具体的な物理的な実験環境について説明する。
-\begin{itemize}
-    \item 実験環境の模式図
-    \item 電気的なところを説明する模式図
-    \item 
-\end{itemize}
+\section{実験装置}
+
+SPレコードの撮像に用いられる実験装置を図\ref{fig:experimentalSetup}に示す．レコードに下にあるパルスステージはレコードをカメラの位置に対して平行に
+（図\ref{fig:experimentalSetup}で言うと左右に）動かす．この平行移動をパルスモータFが実装する回転運動と組み合わせると，SPレコードの全領域を顕微鏡の下
+に持ってこられる仕組みができる．
 
 
 \begin{figure}[h]
@@ -97,16 +55,23 @@ Here some thoughts on the flow of this document:
     \end{center}
 \end{figure}
 
-
-文章の中で（図\ref{fig:experimentalSetup}）ってやればいいのかな。
-
-\begin{figure}[h]
+\begin{table}[h]
     \begin{center}
-        \includegraphics[width=0.9\textwidth, clip]{ElectricalSetup.eps}
-        \caption{実験装置の設定}
-        \label{fig:ElectricalSetup}
+        \begin{tabular}{ l l }
+            A & CDDカメラ \\
+            B & 顕微鏡 \\
+            C & 照射装置 \\
+            D & SPレコード \\
+            E & パルスモータ、平行移動用 \\
+            F & パルスモータ、回転用 \\
+        \end{tabular}
     \end{center}
-\end{figure}
+\end{table}
+
+顕微鏡を通って撮像される光からSPレコードの音溝に記録されたデータを復元するのが本研究目標であるから，
+撮像されるデータに音溝の形態が何らかの方法で読み取れなければならない．これを成し遂げるために，
+光を斜めに照射して，音溝の壁の一部が明るく映るようにするのが有力な方法であることが過去の研究で分かった（ref!）．
+図\ref{fig:ReflectionOnSPRec}に光の反射具合を模式的に表す．
 
 \begin{figure}[h]
     \begin{center}
@@ -123,6 +88,15 @@ Here some thoughts on the flow of this document:
         \label{fig:SprecMicroscopeImgLabeled}
     \end{center}
 \end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ElectricalSetup.eps}
+        \caption{実験装置の設定}
+        \label{fig:ElectricalSetup}
+    \end{center}
+\end{figure}
+
 
 \chapter{問題分析}
 
@@ -167,6 +141,47 @@ Here some thoughts on the flow of this document:
         \label{fig:ProgSetupNew}
     \end{center}
 \end{figure}
+
+\chapter{TODO}
+
+These are the things we need to get done:
+\begin{itemize}
+    \item 実験環境について説明する  [  ]
+    \item 実験環境の図を描く　      [OK]
+    \item データの流れ、装置の電気的模式図を描く　[  ]
+    \item こんな実験環境でデータを集めると何が問題になるか説明する  [  ]
+    \item 問題を説明する幾何学図を描く                      　      [OK]
+\end{itemize}
+
+\chapter{Document Flow}
+Here some thoughts on the flow of this document:
+\begin{itemize}
+    \item explaining the setup.
+        \begin{itemize}
+            \item 物理的配置
+            \item 電気的配線（必要？） 
+        \end{itemize}
+    \item explaining the ways of getting the data.
+    \item The author chose method 疑似ラインセンサ！
+    \item explaining the problems.
+        \begin{description}
+            \item [問題１：重なり部分]
+                文章が来るぜ。
+            \item [問題２：湾曲修正]
+                音溝が曲がっている。それを直す修正。
+        \end{description}
+    \item showing the solutions.
+        \begin{description}
+            \item [疑似ラインセンサ]
+                疑似センサの利点について説明する
+            \item [0：ソフトウェアの話]
+                ここでソフトの模式図を挿入
+            \item [１：物理的距離検出]
+                アルゴリズムについて説明する
+            \item [２：ライントレースアルゴリズム]
+                アルゴリズムについて説明する
+        \end{description}
+\end{itemize}
 
 
 
