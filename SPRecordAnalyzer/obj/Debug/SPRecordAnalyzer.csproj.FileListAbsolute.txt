@@ -29,3 +29,8 @@ D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.pdb
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csprojResolveAssemblyReference.cache
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\Newtonsoft.Json.dll
 D:\KT\SPRecordAnalyzer\SPRecordAnalyzer\bin\Debug\Newtonsoft.Json.xml
+C:\git\SPRecAnalyzer\SPRecordAnalyzer\bin\Debug\SPRecordAnalyzer.exe.config
+C:\git\SPRecAnalyzer\SPRecordAnalyzer\obj\Debug\Interop.MLApp.dll
+C:\git\SPRecAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.csproj.ResolveComReference.cache
+C:\git\SPRecAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.exe
+C:\git\SPRecAnalyzer\SPRecordAnalyzer\obj\Debug\SPRecordAnalyzer.pdb
