@@ -8,7 +8,11 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{siunitx}
 \usepackage{graphicx}
+
+\sisetup{detect-all}
+
 
 
 \title{•½¬28”N@‘²‹ÆŒ¤‹†˜_•¶\\
@@ -81,27 +85,60 @@ SPƒŒƒR[ƒh‚ÌB‘œ‚É—p‚¢‚ç‚ê‚éÀŒ±‘•’u‚ğ}\ref{fig:experimentalSetup}‚É¦‚·DƒŒƒR
 \end{figure}
 
 \subsection{CCDƒJƒƒ‰}
-–{Œ¤‹†‚Åg—p‚³‚ê‚Ä‚¢‚éƒJƒƒ‰‚ÍJAIĞ‚ÌuBB-500GEv‚Å‚ ‚éD•\\ref{table:JAI}‚ÉƒJƒƒ‰‚Ìd—l‚ğ¦‚·D
+–{Œ¤‹†‚Åg—p‚³‚ê‚Ä‚¢‚éƒJƒƒ‰‚ÍJAIĞ‚ÌuBB-500GEv‚Å‚ ‚éD
+ƒJƒƒ‰‚ÌÅ‘å‰ğ‘œ“x‚Í2456(h)x2058(v)‚Å‚ ‚é‚ªCVariable Partial Scan‹@”\‚ğ—˜—p‚µ‚ÄÀÛ‚Éƒf[ƒ^‚Æ‚µ‚Äƒpƒ\ƒRƒ“‚É‘—‚ç‚ê‚é‚Ì‚Í‚à‚Á‚Æ•‚ª‹·‚¢—Ìˆæ‚Ìƒf[ƒ^‚Å‚ ‚éD
+•\\ref{table:JAI}‚ÉƒJƒƒ‰‚Ìƒpƒ‰ƒ[ƒ^‚Ìİ’è‚ğ¦‚·D
 
 \begin{table}[h]
     \begin{center}
-        \caption{JAI BB-500GE‚Ìd—l}
+        \caption{JAI BB-500GE‚Ìƒpƒ‰ƒ[ƒ^‚Ìİ’è}
         \label{table:JAI}
         \begin{tabular}{ | l | l |}
             \hline
-            Å‘å‰ğ‘œ“x & 2456 (h) x 2058 (v) \\ \hline
             ROI”ÍˆÍİ’è & 2456 (h) x 32 (v) \\ \hline
-            Partial Scan & Variable Partial Scan \\ \hline
-            Variable Partial Scan Start Line & 965 \\ \hline
-
-            \hline
+            GainRaw & 550 \\ \hline
+            ExposureTimeRaw & 222 \\ \hline
+            AcquisitionMode & Continuous \\ \hline
+            ExposureMode & EdgePreSelect \\ \hline
+            PartialScan & Variable Partial Scan \\ \hline
+            VariablePartialScanStartLine & 1013 \\ \hline
+            VariablePartialScanNumOfLines & 32 \\ \hline
+            TriggerSelector & FrameStart \\ \hline
+            TriggerMode & On \\ \hline
+            TriggerSource & Software \\ \hline
+            LineSelector & CameraTrigger0 \\ \hline
+            LineSource & SoftwareTrigger0 \\ \hline
+            LineInverter & ActiveHight \\ \hline
         \end{tabular}
     \end{center}
 \end{table}
 
+‰æ‘œƒf[ƒ^¶¬’iŠK‚ÅSPƒŒƒR[ƒh‚ğˆê’è‚Ì‘¬“x‚Å‰ñ“]‚³‚¹‚È‚ª‚ç‡Ÿ‚ÉB‘œ‚ğs‚¤‚½‚ßC
+ExposureTimeRawƒpƒ‰ƒ[ƒ^i–³’PˆÊj‚ÍÀŒ±“I‚É‚Ô‚ê‚ª¶‚¶‚È‚¢‚æ‚¤‚Éİ’è‚µ‚½D•\\ref{table:JAI}‚Ìƒpƒ‰ƒ[ƒ^‚Í‘S‚Ä©ì‚ÌC\#ƒvƒƒOƒ‰ƒ€‚Åİ’è‚³‚ê‚éD
+SoftwareTrigger‚ğÀs‚µ‚Ä‰æ‘œˆê–‡æ“¾‚·‚é‚½‚ß‚ÌƒR[ƒh‚ğ}\ref{fig:Trigger}‚É¦‚·D
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{Trigger.eps}
+        \caption{C\#ƒvƒƒOƒ‰ƒ€‚Ì’†‚©‚çƒJƒƒ‰‚ÌSoftwareTrigger‚ğÀs‚³‚¹‚é‚½‚ß‚ÌƒR[ƒh}
+        \label{fig:Trigger}
+    \end{center}
+\end{figure}
 
 \subsection{ƒpƒ‹ƒXƒXƒe[ƒW}
-ƒpƒ‹ƒXƒXƒe[ƒW‚Ìd—v‚Èƒpƒ‰ƒ[ƒ^D
+ƒpƒ‹ƒXƒXƒe[ƒW‚Ìd—l‚ğ}\ref{table:PulseStage}‚É¦‚·D
+
+\begin{table}[h]
+    \begin{center}
+        \caption{ƒpƒ‹ƒXƒXƒe[ƒW‚Ìd—l}
+        \label{table:PulseStage}
+        \begin{tabular}{ | l | l |}
+            \hline
+            degrees per pulsei‰ñ“]‰^“®j & 0.0025 \\ \hline
+            mm per pulsei•½sˆÚ“®j & 0.002 \\ \hline
+        \end{tabular}
+    \end{center}
+\end{table}
 
 \section{‰¹aŒ`‘Ô‚ÆŒõÆË}
 Œ°”÷‹¾‚ğ’Ê‚Á‚ÄB‘œ‚³‚ê‚éŒõ‚©‚çSPƒŒƒR[ƒh‚Ì‰¹a‚É‹L˜^‚³‚ê‚½ƒf[ƒ^‚ğ•œŒ³‚·‚é‚Ì‚ª–{Œ¤‹†–Ú•W‚Å‚ ‚é‚©‚çC
@@ -175,19 +212,107 @@ SPƒŒƒR[ƒh‚ÌB‘œ‚É—p‚¢‚ç‚ê‚éÀŒ±‘•’u‚ğ}\ref{fig:experimentalSetup}‚É¦‚·DƒŒƒR
     \end{center}
 \end{figure}
 
-–{Œ¤‹†‚Å‚ÍCB‘œ”ÍˆÍ‚Ì•i}\ref{fig:OverlapProblem_3}’†$\overline{AB} = \overline{DC}$j‚ğ¬‚³‚­‚·‚é‚±‚Æ‚Åd•¡•”•ª‚Ì‰e‹¿‚ğ–³‹‚Å‚«‚é’ö“x‚É—}‚¦‚éD
-‚Ç‚Ì‚­‚ç‚¢‚Ì•‚Å‚ ‚ê‚Î–³‹‚Å‚«‚é‚Æ‚¢‚¦‚é‚©‚ğ’²‚×‚éD}\ref{fig:OverlapProblem_3}’†‚Ì$rho$‚ªˆê‰æ‘œ‚Ìd•¡•”•ª‚¾‚Æ‚·‚é‚ÆC
+–{Œ¤‹†‚Å‚ÍCB‘œ”ÍˆÍ‚Ì•i}\ref{fig:OverlapProblem_3}’†$\overline{AB} = \overline{CD}$j‚ğ¬‚³‚­‚·‚é‚±‚Æ‚Åd•¡•”•ª‚Ì‰e‹¿‚ğ–³‹‚Å‚«‚é’ö“x‚É—}‚¦‚éD
+‚Ç‚Ì‚­‚ç‚¢‚Ì•‚Å‚ ‚ê‚Î–³‹‚Å‚«‚é‚Æ‚¢‚¦‚é‚©‚ğ’²‚×‚éD}\ref{fig:OverlapProblem_3}’†‚Ì$\epsilon$‚ªˆê‰æ‘œ‚Ì•Ğ•û‚Ìd•¡•”•ª‚¾‚Æ‚·‚éD—×‚è‡‚Á‚Ä‚¢‚é‰æ‘œ‚Å‚ÌƒsƒNƒZƒ‹‚Ìd•¡•”•ª‚ğ
+l‚¦‚é‚Æ$2\epsilon$‚Æ‚È‚éD
 
+$\epsilon$‚ğ‹‚ß‚é‚½‚ß‚ÉC‚Ü‚¸’¼ŠpOŠpŒ`MCF‚æ‚è$\displaystyle \frac{\alpha}{2}$‚ğ‹‚ß‚Ä‚¨‚­D
 
-\begin{figure}[h]
+\begin{equation}
+    \label{eq:Overlap1}
+    \frac{\alpha}{2} = \arctan{\left(\frac{\overline{BE}}{\overline{MF}}\right)}
+\end{equation}
+
+$\frac{\alpha}{2}$‚ğ—p‚¢‚ÄˆÈ‰º‚Ì•û’ö®‚ª¬‚è—§‚ÂD
+
+\begin{equation}
+    \label{eq:Overlap2}
+    \overline{BE} - \overline{BG} = \tan{\left(\frac{\alpha}{2}\right)}\overline{ME}
+\end{equation}
+
+\begin{equation}
+    \label{eq:Overlap3}
+    \epsilon = \overline{BG} = \overline{BE} - \tan{\left(\frac{\alpha}{2}\right)}\overline{ME}
+\end{equation}
+
+®\ref{eq:Overlap1}‚ğ®\ref{eq:Overlap3}‚É‘ã“ü‚µ®‚ğ®—‚·‚é‚Æ
+
+\begin{equation}
+    \label{eq:Overlap4}
+    \epsilon = \overline{BE} \left( 1 - \frac{\overline{ME}}{\overline{MF}} \right)
+\end{equation}
+
+‚ª“¾‚ç‚ê‚éD–{Œ¤‹†‚Åì¬‚µ‚½C\#ƒvƒƒOƒ‰ƒ€‚Ì’†‚ÌƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“‹@”\‚ğ—˜—p‚µ‚½Œã‚Ìƒpƒ‹ƒXƒXƒe[ƒW‚¾‚ÆC•Ï”$\overline{BE}$C$\overline{ME}$‚Æ$\overline{MF}$‚Í
+í‚É”cˆ¬‚Å‚«‚Ä‚¢‚é‚±‚Æ‚©‚çCSPƒŒƒR[ƒh‚Ì”CˆÓ‚ÌˆÊ’u‚É‚¨‚¢‚Ä‚Ì$\epsilon$‚ğ‹‚ß‚é‚±‚Æ‚ª‚Å‚«‚éD$\epsilon$‚Ì«¿‚ğ’²‚×‚é‚½‚ß‚ÉC‚Ü‚¸SPƒŒƒR[ƒh‚Ìˆê”ÔŠO‘¤‚Æ“à‘¤‚Æ‚¢‚¤‚Q‚Â‚ÌƒP[ƒX‚É•ª‚¯‚ÄC
+ƒJƒƒ‰‚ÌÅ‘å‰ğ‘œ“x‚ÅB‘œ‚ªs‚í‚ê‚é‚Æ‰¼’è‚µ‚ÄŒvZ‚ği‚ß‚Ä‚İ‚éD‚Ü‚½CƒJƒƒ‰‚É’¼Œ‹‚µ‚Ä‚¢‚éŒ°”÷‹¾‚ÌŠg‘å—¦‚ğ1.0x‚É‚µ‚½‚Æ‚«‚ÌŸ‚Ì’è”‚ğŒvZ‚É—p‚¢‚éD
+
+\begin{equation}
+    \label{eq:Overlap5}
+    \gamma = 0.002366 \left[\frac{\si{mm}}{\si{pixel}}\right]
+\end{equation}
+
+\begin{equation}
+    \label{eq:Overlap6}
+    \delta = 422.65 \left[\frac{\si{pixel}}{\si{mm}}\right]
+\end{equation}
+
+\begin{figure}[t]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_3.eps}
-        \caption{Overlap Problem 3}
+        \caption{d•¡–â‘è‚ğ”’l‰»‚·‚é$\rho$‚ÌŠô‰½Šw“I}}
         \label{fig:OverlapProblem_3}
     \end{center}
 \end{figure}
 
+Å‘å‰ğ‘œ“x‚ÅB‘œ‚µ‚½‰æ‘œ‚ÍÀÛ‚ÌƒTƒCƒY‚Í
 
+    
+\begin{equation}
+    \label{eq:Overlap7}
+    \verb|height| = \overline{EF} = 5.81 \left[\si{mm}\right]
+\end{equation}
+
+\begin{equation}
+    \label{eq:Overlap8}
+    \verb|width| = 2\cdot\overline{BE} = 4.87 \left[\si{mm}\right]
+\end{equation}
+
+‚Æ‚È‚èC‚Ü‚½ƒŒƒR[ƒh‚ÌŠO‘¤‚ÅB‘œ‚µ‚½‚Æ‚«‚Ì$\overline{ME}$‚Í
+
+\begin{equation}
+    \label{eq:Overlap9}
+    \overline{ME} = 120.0 \left[\si{mm}\right]
+\end{equation}
+
+‚Æ‚È‚éD$\displaystyle \overline{MF} = \overline{ME} + \overline{EF}$‚ğl—¶‚µ‚È‚ª‚ç®\ref{eq:Overlap7}C\ref{eq:Overlap8}C\ref{eq:Overlap9}‚ğ®\ref{eq:Overlap4}‚É‘ã“ü‚µ‚ÄŒvZ‚·‚é‚Æ
+
+\begin{equation}
+    \label{eq:Overlap10}
+    \epsilon_{1} = 0.1124 \left[\si{mm}\right]
+\end{equation}
+
+‚Æ‚È‚èC®\ref{eq:Overlap6}‚Ì’PˆÊŠ·Z’è”$\delta$‚ğ‚©‚¯‚é‚Æ
+
+\begin{equation}
+    \label{eq:Overlap11}
+    \epsilon_{1} = 47.52 \left[\si{pixel}\right]
+\end{equation}
+
+‚Æ‚¢‚¤Œ‹‰Ê‚ª“¾‚ç‚ê‚éD“¯—l‚ÉSPƒŒƒR[ƒh‚Ì“à‘¤‚Å‚Ì$\rho$‚ğ$\overline{ME} = 50.0\left[\si{mm}\right] $‚Æ‚µ‚Ä‹‚ß‚é‚Æ
+
+\begin{equation}
+    \label{eq:Overlap12}
+    \epsilon_{2} = 0.2534 \left[\si{mm}\right] = 107.14 \left[\si{pixel}\right]
+\end{equation}
+
+‚Æ‚È‚éD‚±‚±‚ÅC‘Oq‚µ‚½‚æ‚¤‚ÉC—×‚è‡‚Á‚Ä‚¢‚é‰æ‘œ‚Ì—×Úd•¡‹——£‚ª$2\epsilon$‚Å‚ ‚é‚±‚Æ‚ğv‚¢o‚·‚ÆÅˆ«‚Ìê‡‚Ì—×Úd•¡‹——£‚ª
+
+\begin{equation}
+    \label{eq:Overlap13}
+    2\epsilon_{2} = 0.5068 \left[\si{mm}\right] = 214.28 \left[\si{pixel}\right]
+\end{equation}
+
+‚Æ‚È‚èC‚±‚ê‚ª‰æ‘œ‚Ì•i2058 pixelj‚Ì10.4“‚É‚àŠ‚é‚½‚ßC–³‹‚Å‚«‚È‚¢–â‘è‚Æ”»’f‚¹‚´‚é‚ğ“¾‚È‚¢D
 
 \section{˜p‹È–â‘è}
 
