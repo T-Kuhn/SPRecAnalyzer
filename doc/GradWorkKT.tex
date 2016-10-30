@@ -8,11 +8,7 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{siunitx}
 \usepackage{graphicx}
-
-\sisetup{detect-all}
-
 
 
 \title{平成28年　卒業研究論文\\
@@ -238,81 +234,26 @@ $\frac{\alpha}{2}$を用いて以下の方程式が成り立つ．
 式\ref{eq:Overlap1}を式\ref{eq:Overlap3}に代入し式を整理すると
 
 \begin{equation}
-    \label{eq:Overlap4}
+    \label{eq:Overlap3}
     \epsilon = \overline{BE} \left( 1 - \frac{\overline{ME}}{\overline{MF}} \right)
 \end{equation}
 
 が得られる．本研究で作成したC\#プログラムの中のキャリブレーション機能を利用した後のパルスステージだと，変数$\overline{BE}$，$\overline{ME}$と$\overline{MF}$は
-常に把握できていることから，SPレコードの任意の位置においての$\epsilon$を求めることができる．$\epsilon$の性質を調べるために，まずSPレコードの一番外側と内側という２つのケースに分けて，
-カメラの最大解像度で撮像が行われると仮定して計算を進めてみる．また，カメラに直結している顕微鏡の拡大率を1.0xにしたときの次の定数を計算に用いる．
+常に把握できていることから，SPレコードの任意の位置においての$\epsilon$を求めることができる．$\epsilon$の性質を調べるために，まずカメラの最大解像度で撮像を行ったときの
 
-\begin{equation}
-    \label{eq:Overlap5}
-    \gamma = 0.002366 \left[\frac{\si{mm}}{\si{pixel}}\right]
-\end{equation}
 
-\begin{equation}
-    \label{eq:Overlap6}
-    \delta = 422.65 \left[\frac{\si{pixel}}{\si{mm}}\right]
-\end{equation}
 
-\begin{figure}[t]
+
+
+\begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_3.eps}
-        \caption{重複問題を数値化する$\rho$の幾何学的図}
+        \caption{Overlap Problem 3}
         \label{fig:OverlapProblem_3}
     \end{center}
 \end{figure}
 
-最大解像度で撮像した画像は実際のサイズは
 
-    
-\begin{equation}
-    \label{eq:Overlap7}
-    \verb|height| = \overline{EF} = 5.81 \left[\si{mm}\right]
-\end{equation}
-
-\begin{equation}
-    \label{eq:Overlap8}
-    \verb|width| = 2\cdot\overline{BE} = 4.87 \left[\si{mm}\right]
-\end{equation}
-
-となり，またレコードの外側で撮像したときの$\overline{ME}$は
-
-\begin{equation}
-    \label{eq:Overlap9}
-    \overline{ME} = 120.0 \left[\si{mm}\right]
-\end{equation}
-
-となる．$\displaystyle \overline{MF} = \overline{ME} + \overline{EF}$を考慮しながら式\ref{eq:Overlap7}，\ref{eq:Overlap8}，\ref{eq:Overlap9}を式\ref{eq:Overlap4}に代入して計算すると
-
-\begin{equation}
-    \label{eq:Overlap10}
-    \epsilon_{1} = 0.1124 \left[\si{mm}\right]
-\end{equation}
-
-となり，式\ref{eq:Overlap6}の単位換算定数$\delta$をかけると
-
-\begin{equation}
-    \label{eq:Overlap11}
-    \epsilon_{1} = 47.52 \left[\si{pixel}\right]
-\end{equation}
-
-という結果が得られる．同様にSPレコードの内側での$\rho$を$\overline{ME} = 50.0\left[\si{mm}\right] $として求めると
-
-\begin{equation}
-    \label{eq:Overlap12}
-    \epsilon_{2} = 0.2534 \left[\si{mm}\right] = 107.14 \left[\si{pixel}\right]
-\end{equation}
-
-となる．ここで，前述したように，隣り合っている画像の隣接重複距離が$2\epsilon$であることを思い出すと最悪の場合の隣接重複距離が
-
-\begin{equation}
-    \label{eq:Overlap13}
-    2\epsilon_{2} = 0.5068 \left[\si{mm}\right] = 214.28 \left[\si{pixel}\right]
-\end{equation}
-
-となり，これが画像の幅（2058 pixel）の10.4％にも至るため，無視できない問題と判断せざるを得ない．
 
 \section{湾曲問題}
 
@@ -326,7 +267,7 @@ $\frac{\alpha}{2}$を用いて以下の方程式が成り立つ．
 
 
 \section{うなり問題}
-
+\iffalse 
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{UnariProblem.eps}
@@ -334,7 +275,7 @@ $\frac{\alpha}{2}$を用いて以下の方程式が成り立つ．
         \label{fig:Unari}
     \end{center}
 \end{figure}
-
+\fi
 \chapter{音検出アルゴリズム}
 
 \end{document}
