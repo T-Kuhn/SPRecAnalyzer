@@ -11,6 +11,7 @@ classdef SigExBot < handle
         CurrentX;
         CurrentY;
         CurrentRoundNmbr;
+        ImgRGB = {};
         Img = {};
         ImgWidth;
         ImgHeight;
@@ -58,7 +59,7 @@ classdef SigExBot < handle
             obj.IsOnTrack = false;      % When the Bot is created, it isn't on track
             obj.StartStepSize = 2.5;           % Default StepSize is 2 Pixel on the X Axis!
             obj.CurrentX = 1;
-            obj.CurrentY = 1;
+            obj.CurrentY = 2400;
             obj.ImgWidth = 0;
             obj.ImgHeight = 0;
             obj.PixelThreshold = 250;   % Default Threshold for Pixelregocnition is 250
@@ -105,7 +106,14 @@ classdef SigExBot < handle
         % - - - - - - - - - - - - - - - -
         function LoadImagesIntoRAM(obj)
             for p = 1 : obj.MaxImgNmbr;  
-                obj.Img(p) = {imread(sprintf('Round%d/splicedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p), 'bmp')};
+                tmp = imread(sprintf('Round%d/splicedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p), 'bmp');
+                obj.Img(p) = {tmp};
+                [m n r] = size(tmp);
+                tmpRGB = uint8(zeros(m,n,3)); 
+                tmpRGB(:,:,1) = uint8(tmp);
+                tmpRGB(:,:,2) = tmpRGB(:,:,1);
+                tmpRGB(:,:,3) = tmpRGB(:,:,1);
+                obj.ImgRGB(p) = {tmpRGB};
             end
         end
         % - - - - - - - - - - - - - - - - 
@@ -208,10 +216,18 @@ classdef SigExBot < handle
         % - - - - - - - - - - - - - - - -
         function LeaveBlackMark(obj)
             if obj.Debug;
-                if obj.GapFlag
-                    obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) = 200;
-                else
-                    obj.Img{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX)) = 0;
+                if obj.GapFillingFlag
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 1) = 0;
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 2) = 0;
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 3) = 255;
+                elseif obj.GapFlag
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 1) = 255;
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 2) = 0;
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 3) = 0;
+                else 
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 1) = 0;
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 2) = 255;
+                    obj.ImgRGB{obj.CurrentImgNmbr}(round(obj.CurrentY), round(obj.CurrentX), 3) = 0;
                 end
             end
         end
@@ -223,7 +239,7 @@ classdef SigExBot < handle
             if obj.Debug;
                 disp('saving marked images');
                 for p = 1 : obj.MaxImgNmbr;  
-                    imwrite(obj.Img{p}, sprintf('Round%d/markedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p)); 
+                    imwrite(obj.ImgRGB{p}, sprintf('Round%d/markedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p)); 
                 end
             end
         end
