@@ -41,16 +41,20 @@ N=length(x);
 Nfft=2^nextpow2(N);
 f=Fs/2*linspace(0,1,1+Nfft/2); % create freqs vector
 cutoff_freq=Fs/8;
+cutoff_freqLow = 0;
 my_freqs=[];
 if nargin>2,
     cutoff_freq=varargin{1};
 end
 if nargin>3,
-    my_freqs=varargin{2};
+    cutoff_freqLow=varargin{2};
+end
+if nargin>4,
+    my_freqs=varargin{3};
 end
 %% main
 y=fft(x,Nfft)/N; % perform fft transform
-y2=filterfft(f, y, cutoff_freq, my_freqs); % filter amplitudes
+y2=filterfft(f, y, cutoff_freq, my_freqs, cutoff_freqLow); % filter amplitudes
 %X=ifft(y2,'symmetric'); % the inverse transform. 'symmetric' is not recognized in older versions of matlab 
 X=ifft(y2); % inverse transform
 X=X(1:N)/max(X);
@@ -91,7 +95,7 @@ title(stitle3)
 axis tight
 return
 
-function y2=filterfft(f, y, cutoff, wins)
+function y2=filterfft(f, y, cutoff, wins, cutoffLow)
 nf=length(f);
 ny=length(y);
 if ~(ny/2+1 == nf),
@@ -102,8 +106,10 @@ end
 
 % cutoff filter
 y2=zeros(1,ny);
-if ~isempty(cutoff)
-    ind1=find(f<=cutoff);
+if ~isempty(cutoff) && (cutoffLow > 0);
+    display('we are in here');
+    ind1=find(f<=cutoff & f>=cutoffLow);
+    %display(ind1);
     y2(ind1) = y(ind1); % insert required elements
 else
     y2=y;
