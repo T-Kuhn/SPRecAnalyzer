@@ -9,7 +9,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
-
+\usepackage{siunitx}
+\sisetup{detect-all}
 
 \title{平成28年　卒業研究論文\\
     　\\
@@ -203,7 +204,7 @@ SoftwareTriggerを実行して画像一枚取得するためのコードを図\ref{fig:Trigger}に示す
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_2.eps}
-        \caption{Overlap Problem 2}
+        \caption{A，B，Cと順番に撮像を行った際に重複部分が生じる}
         \label{fig:OverlapProblem_2}
     \end{center}
 \end{figure}
@@ -234,26 +235,94 @@ $\frac{\alpha}{2}$を用いて以下の方程式が成り立つ．
 式\ref{eq:Overlap1}を式\ref{eq:Overlap3}に代入し式を整理すると
 
 \begin{equation}
-    \label{eq:Overlap3}
+    \label{eq:Overlap4}
     \epsilon = \overline{BE} \left( 1 - \frac{\overline{ME}}{\overline{MF}} \right)
 \end{equation}
 
 が得られる．本研究で作成したC\#プログラムの中のキャリブレーション機能を利用した後のパルスステージだと，変数$\overline{BE}$，$\overline{ME}$と$\overline{MF}$は
 常に把握できていることから，SPレコードの任意の位置においての$\epsilon$を求めることができる．$\epsilon$の性質を調べるために，まずカメラの最大解像度で撮像を行ったときの
+計算を進めてみる．ただし，撮像場所においてはSPレコードの一番外側と内側と２つのケースに分けることにする．カメラに直結している顕微鏡の拡大率が1.5xに設定してあるときの次の定数を計算に用いる．
 
-
-
-
+\begin{equation}
+    \label{eq:Overlap5}
+    \gamma = 0.002366 \left[\frac{\si{mm}}{\si{pixel}}\right]
+\end{equation}
+  
+\begin{equation}
+    \label{eq:Overlap6}
+    \delta = 422.65 \left[\frac{\si{pixel}}{\si{mm}}\right]
+\end{equation}
 
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_3.eps}
-        \caption{Overlap Problem 3}
+        \caption{重複問題を数値化する$\rho$の幾何学的図}
         \label{fig:OverlapProblem_3}
     \end{center}
 \end{figure}
 
+最大解像度で撮像した画像は実際のサイズは
+   
+\begin{equation}
+    \label{eq:Overlap7}
+    \verb|height| = \overline{EF} = 5.81 \left[\si{mm}\right]
+\end{equation}
 
+\begin{equation}
+    \label{eq:Overlap8}
+    \verb|width| = 2\cdot\overline{BE} = 4.87 \left[\si{mm}\right]
+\end{equation}
+
+となり，またレコードの外側で撮像したときの$\overline{ME}$は
+
+\begin{equation}
+    \label{eq:Overlap9}
+    \overline{ME} = 120.0 \left[\si{mm}\right]
+\end{equation}
+
+となる．$\displaystyle \overline{MF} = \overline{ME} + \overline{EF}$を考慮しながら式\ref{eq:Overlap7}，\ref{eq:Overlap8}，\ref{eq:Overlap9}を式\ref{eq:Overlap4}に代入して計算すると
+
+\begin{equation}
+    \label{eq:Overlap10}
+    \epsilon_{1} = 0.1124 \left[\si{mm}\right]
+\end{equation}
+
+となり，式\ref{eq:Overlap6}の単位換算定数$\delta$をかけると
+  
+\begin{equation}
+    \label{eq:Overlap11}
+    \epsilon_{1} = 47.52 \left[\si{pixel}\right]
+\end{equation}
+
+という結果が得られる．同様にSPレコードの内側での$\rho$を$\overline{ME} = 50.0\left[\si{mm}\right] $として求めると
+
+\begin{equation}
+    \label{eq:Overlap12}
+    \epsilon_{2} = 0.2534 \left[\si{mm}\right] = 107.14 \left[\si{pixel}\right]
+\end{equation}
+
+となる．ここで，前述したように，隣り合っている画像の隣接重複距離が$2\epsilon$であることを思い出すと最悪の場合の隣接重複距離が
+ 
+\begin{equation}
+    \label{eq:Overlap13}
+    2\epsilon_{2} = 0.5068 \left[\si{mm}\right] = 214.28 \left[\si{pixel}\right]
+\end{equation}
+ 
+となり，これだけのピクセル数の情報が重複していると無視できない問題と判断せざるを得ない．
+しかしながら，上記の計算は画像の縦幅$\displaystyle \overline{AB} = \overline{DC}$がカメラの最大解像度設定にしてある際の$\epsilon_{3}$の計算結果．
+縦幅32ピクセルに指定した際の計算は位下の通りになる．
+
+\begin{equation}
+    \label{eq:Overlap14}
+    \verb|width| = 2\cdot\overline{BE} = 0.0378 \left[\si{mm}\right]
+\end{equation}
+
+\begin{equation}
+    \label{eq:Overlap15}
+    2\epsilon_{3} = 0.00782 \left[\si{mm}\right] = 3.331 \left[\si{pixel}\right]
+\end{equation}
+
+式\ref{eq:Overlap15}の結果は最悪条件の下で計算したものであることを考慮しながら，実際の撮像データで幅3ピクセルの音溝に大きい変化があり得ないことが確認でき，このくらいの重複であれば無視してもいいと判断できる．
 
 \section{湾曲問題}
 
