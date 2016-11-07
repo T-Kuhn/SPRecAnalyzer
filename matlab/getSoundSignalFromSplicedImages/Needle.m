@@ -7,6 +7,7 @@ classdef Needle < handle
         TrendCorrectedSignal;
         FFTOutput;
         SmoothingOutput;
+        NeedleSimOut;
         SignalLength;
         Yn;
         x;
@@ -14,6 +15,13 @@ classdef Needle < handle
         Drag;
         SignalLengthInSecs;
         xTime;
+        %NeedleSimualtion properties
+        Speed;
+        Mass;
+        Acceleration;
+        NeedleForce;
+        SpeedResForce
+        SpringResForce
     end
     methods
         % - - - - - - - - - - - - - - - - 
@@ -41,11 +49,42 @@ classdef Needle < handle
         function Start(obj)
             obj.TrendCorrectSignal();
             obj.FFT();
-            %obj.SmoothingSignal();
             obj.Crop();
             obj.AdjustAmplitude();
+
+            obj.NeedleSimulation();
+
             obj.Plot();
             obj.SaveWAV();
+        end
+        % - - - - - - - - - - - - - - - - 
+        % - - -  NeedleSimulation - - - -
+        % - - - - - - - - - - - - - - - -
+        function NeedleSimulation(obj)
+            obj.Acceleration = 0;
+            obj.Speed = 0;
+            obj.Mass = 2;
+            obj.NeedleSimOut(length(obj.FFTOutput)) = 0; % Here we make another array the same size as the input signal 
+            obj.NeedleSimOut(1) = obj.FFTOutput(1);
+            for i = 2:length(obj.FFTOutput);
+                % compute all the forces for the current step
+                obj.NeedleForce = obj.FFTOutput(i) - obj.NeedleSimOut(i-1);
+                obj.SpeedResForce = -obj.Speed*0.1;
+                obj.SpringResForce = -obj.NeedleSimOut(i-1) * 0.5;
+
+                obj.Acceleration = (obj.NeedleForce + obj.SpeedResForce + obj.SpringResForce)/obj.Mass; % a = (F + SpeedRes + SpringRes)/m
+                
+                obj.Speed = obj.Speed + obj.Acceleration * 0.3; % 0.01 because we don't want to add the full acceleration every time.
+                obj.NeedleSimOut(i) = obj.NeedleSimOut(i-1) + obj.Speed*0.005;
+     
+                % First thing: The Force which tries to move the needle towards the Signal!    
+                % -SignalForce
+            
+                % Then: All the Forces which work against the first Force!
+                % -SpeedResistanceForce (the greater the moving speed the greater this Force)
+
+                % -SpringForce (tries to move needle back to center position)
+            end 
         end
         % - - - - - - - - - - - - - - - - 
         % - - - TrendCorrectSignal  - - -
@@ -70,14 +109,18 @@ classdef Needle < handle
         % - - - - - - - Plot  - - - - - -
         % - - - - - - - - - - - - - - - -
         function Plot(obj)
-            figure('Name', 'FFTOutput'); 
-            plot(obj.xTime, obj.FFTOutput);
-            figure('Name', 'original Signal plot'); 
-            plot(obj.Signal);
-            figure('Name', 'comparing TrendCorrected Signal to FFTOutput'); 
-            plot(obj.TrendCorrectedSignal);
-            hold on;
+            figure('Name', 'FFTOutput + NeedleSimOut'); 
             plot(obj.FFTOutput);
+            hold on;
+            plot(obj.NeedleSimOut);
+            %figure('Name', 'FFTOutput secs1'); 
+            %plot(obj.xTime, obj.FFTOutput);
+            %figure('Name', 'FFTOutput secs2'); 
+            %plot(obj.xTime, obj.FFTOutput);
+            %figure('Name', 'FFTOutput datapoints'); 
+            %plot(obj.FFTOutput);
+            %figure('Name', 'original Signal plot'); 
+            %plot(obj.Signal);
         end
         % - - - - - - - - - - - - - - - - 
         % - - - - Adjust Amplitude  - - -
@@ -90,7 +133,7 @@ classdef Needle < handle
         % - - - - - - - - - - - - - - - -
         function FFT(obj)
             %obj.TrendCorrectedSignal(1) = obj.TrendCorrectedSignal(length(obj.TrendCorrectedSignal));
-            [obj.FFTOutput, f, y, y2] = fftf(obj.xTime, obj.TrendCorrectedSignal, 15000, 20);
+            [obj.FFTOutput, f, y, y2] = fftf(obj.xTime, obj.TrendCorrectedSignal, 15000, 100);
         end
         % - - - - - - - - - - - - - - - - 
         % - - - - - - - Crop  - - - - - -
@@ -108,19 +151,9 @@ classdef Needle < handle
         % - - - - - - - - - - - - - - - -
         function SaveWAV(obj)
            audiowrite('needleOutput.wav', obj.FFTOutput, obj.SamplingRate); 
+           audiowrite('needleOutputSimuNeedle.wav', obj.NeedleSimOut, obj.SamplingRate); 
         end
     end
 end
 
 
-
-
-
-
-
-
-
-
-
-
-% - We need limits!
