@@ -70,16 +70,14 @@ classdef Needle < handle
         % - - - - - - - Plot  - - - - - -
         % - - - - - - - - - - - - - - - -
         function Plot(obj)
-            figure('Name', 'some graph'); 
-            plot(obj.Yn);
-            hold on;
-            plot(obj.FFTOutput);
+            figure('Name', 'FFTOutput'); 
+            plot(obj.xTime, obj.FFTOutput);
             figure('Name', 'original Signal plot'); 
             plot(obj.Signal);
-            figure('Name', 'Comparing SmoothingOut to FFTOut'); 
-            plot(obj.FFTOutput);
+            figure('Name', 'comparing TrendCorrected Signal to FFTOutput'); 
+            plot(obj.TrendCorrectedSignal);
             hold on;
-            plot(obj.SmoothingOutput);
+            plot(obj.FFTOutput);
         end
         % - - - - - - - - - - - - - - - - 
         % - - - - Adjust Amplitude  - - -
@@ -98,9 +96,12 @@ classdef Needle < handle
         % - - - - - - - Crop  - - - - - -
         % - - - - - - - - - - - - - - - -
         function Crop(obj)
+            % Crop the first and last entries of the FFTOutput
             obj.FFTOutput(1:10000) = [];
+            obj.xTime(1:10000) = [];
             len = length(obj.FFTOutput);
             obj.FFTOutput(len-10000:len) = [];
+            obj.xTime(len-10000:len) = [];
         end
         % - - - - - - - - - - - - - - - - 
         % - - - - - - Save WAV  - - - - -
