@@ -194,6 +194,7 @@ SoftwareTriggerを実行して画像一枚取得するためのコードを図\ref{fig:Trigger}に示す
 \end{figure}
 
 図\ref{fig:OverlapProblem_1}において，四角形ABCDがカメラの撮像範囲，SがSPレコードの外側，MがSPレコードの中心，$\alpha$が次の画像を取るための回転角度だとする．
+また$\overline{EG} = \overline{GF}$である．
 
 \section{重複部分問題}
 
@@ -326,13 +327,91 @@ $\frac{\alpha}{2}$を用いて以下の方程式が成り立つ．
 
 \section{湾曲問題}
 
+SPレコードに刻まれた音溝がらせん状にレコードの中心へと近づいていく仕組みであるからレコードの任意の位置で音溝の形態を撮像した際にそれが湾曲していることが画像情報に残される．
+複数の連続的に撮像された画像を並べてみると音溝の湾曲成分が周期的な上下振動として残り，音検出段階でこのゆっくりとした振動が間違って音情報として検出されることを防ぐために，湾曲の影響を最低限に抑える必要がある．
+
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{CurveProblem.eps}
-        \caption{Curve Problem}
+        \caption{音溝湾曲を数値化した変数$\rho$}
         \label{fig:CurveProblem}
     \end{center}
 \end{figure}
+
+図\ref{fig:CurveProblem}において，四角形ABCDがカメラの撮像範囲，TがSPレコードの音溝，MがSPレコードの中心，$\alpha$が次の画像を取るための回転角度だとする．
+また，$\overline{FG} = \overline{GE}$，角$MGF$は直角である．
+
+
+\begin{equation}
+    \label{eq:CurveProblem1}
+    \overline{GF} = \frac{1}{2}\overline{AB}
+\end{equation}
+
+\begin{equation}
+    \label{eq:CurveProblem2}
+    \frac{\alpha}{2} = \arctan{\left(\frac{\overline{GF}}{\overline{MF}}\right)}
+\end{equation}
+
+\begin{equation}
+    \label{eq:CurveProblem3}
+    \overline{MG} = \cos{\left(\frac{\alpha}{2}\right)}\overline{MF}
+\end{equation}
+
+\begin{equation}
+    \label{eq:CurveProblem4}
+    \rho = \overline{MH} - \overline{MG}
+\end{equation}
+
+式\ref{eq:CurveProblem1}～式\ref{eq:CurveProblem4}より
+
+\begin{equation}
+    \label{eq:CurveProblem5}
+    \rho = \overline{MH} \left\{1-\cos{\left[\arctan{\left(\frac{\overline{AB}}{2\overline{MH}}\right)}\right]}\right\}
+\end{equation}
+
+重複問題の計算と同様にレコードの一番外側と内側で$\rho$を求めることにする．まず，画像の横幅を32ピクセルと設定し，実際の画像幅を
+
+\begin{equation}
+    \label{eq:CurveProblem6}
+    \verb|width| = \overline{AB} = 0.0378 \left[\si{mm}\right]
+\end{equation}
+
+と置いておく（単位換算には式\ref{eq:Overlap6}の$\gamma$を用いる）．レコードの外側だと
+
+\begin{equation}
+    \label{eq:CurveProblem7}
+    \overline{MH} = 120.0 \left[\si{mm}\right]
+\end{equation}
+
+になる．このときの湾曲問題係数$\rho$は
+
+\begin{equation}
+    \label{eq:CurveProblem8}
+    \rho_{1} = 0.001488 \left[\si{\micro\metre}\right] = 0.000629 \left[\si{pixel}\right]
+\end{equation}
+
+レコードの内側では
+
+\begin{equation}
+    \label{eq:CurveProblem9}
+    \overline{MH} = 50.0 \left[\si{mm}\right]
+\end{equation}
+
+なので，湾曲問題係数は
+
+\begin{equation}
+    \label{eq:CurveProblem10}
+    \rho_{2} = 0.03572 \left[\si{\micro\metre}\right] = 0.0015 \left[\si{pixel}\right]
+\end{equation}
+
+となる．比較のため，以下に悪条件（レコードの内側での撮像）のもとで画像幅2058ピクセル（$\overline{AB} = 4.87 \left[\si{mm}\right]$）のときの湾曲問題係数を示す．
+
+\begin{equation}
+    \label{eq:CurveProblem10}
+    \rho_{3} = 59.18 \left[\si{\micro\metre}\right] = 25.0 \left[\si{pixel}\right]
+\end{equation}
+
+以上の計算より，横幅32ピクセルで画像撮像を行った場合の湾曲問題による影響が極めて小さく，無視できる程度であることがわかる．
 
 
 \section{うなり問題}
