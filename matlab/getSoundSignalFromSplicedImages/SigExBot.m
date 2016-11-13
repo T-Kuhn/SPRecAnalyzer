@@ -339,7 +339,7 @@ classdef SigExBot < handle
                 else
                     % just go straight. Somethings strange happened!     
                     obj.StrangeThingCounter = obj.StrangeThingCounter + 1;
-                    if obj.StrangeThingCounter > 300;
+                    if obj.StrangeThingCounter > 600;
                         if obj.TryToRecover;
                             obj.SaveMarkedImages();
                             disp('Something strange happened!');
