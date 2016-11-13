@@ -420,7 +420,7 @@ classdef SigExBot < handle
                 obj.ChangeInSigWidth = 0;
             else
                 diff = sigWidth - obj.MeanSignalWidth;
-                if abs(diff) <= 8
+                if abs(diff) <= 18
                     obj.MeanSignalWidth = obj.MeanSignalWidth + diff/100;
                 end
                 obj.ChangeInSigWidth = abs(diff); 
