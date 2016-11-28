@@ -130,6 +130,18 @@ classdef SpliceBot < handle
             end
         end
         % - - - - - - - - - - - - - - - - 
+        % - - - CONVERT TO BW IMAGES  - -
+        % - - - - - - - - - - - - - - - -
+        function ConvertToBWImages(obj)
+            for p = 1 : obj.NmbrOfSplicedImages;
+                img = imread(sprintf('Round%d/splicedImages/splicedImage%d.bmp', obj.CurrentRoundNmbr, p), 'bmp');
+                bwImg = false(size(img));
+                bwImg(img > 250) = true;
+                p 
+                imwrite(bwImg,sprintf('Round%d/BWImages/BWImage%d.bmp', obj.CurrentRoundNmbr, p));
+            end
+        end
+        % - - - - - - - - - - - - - - - - 
         % - - Get Number Of folders - - -
         % - - - - - - - - - - - - - - - -
         function GetNmbrOfFolders(obj)

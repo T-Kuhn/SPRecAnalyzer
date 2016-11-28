@@ -110,9 +110,9 @@ classdef Needle < handle
         % - - - - - - - - - - - - - - - -
         function Plot(obj)
             figure('Name', 'FFTOutput + NeedleSimOut'); 
-            plot(obj.FFTOutput);
+            plot(obj.xTime, obj.FFTOutput);
             hold on;
-            plot(obj.NeedleSimOut);
+            plot(obj.xTime, obj.NeedleSimOut);
             %figure('Name', 'FFTOutput secs1'); 
             %plot(obj.xTime, obj.FFTOutput);
             %figure('Name', 'FFTOutput secs2'); 
@@ -133,7 +133,7 @@ classdef Needle < handle
         % - - - - - - - - - - - - - - - -
         function FFT(obj)
             %obj.TrendCorrectedSignal(1) = obj.TrendCorrectedSignal(length(obj.TrendCorrectedSignal));
-            [obj.FFTOutput, f, y, y2] = fftf(obj.xTime, obj.TrendCorrectedSignal, 3000, 100); %15000,100
+            [obj.FFTOutput, f, y, y2] = fftf(obj.xTime, obj.TrendCorrectedSignal, 15000, 100); %15000,100
         end
         % - - - - - - - - - - - - - - - - 
         % - - - - - - - Crop  - - - - - -
