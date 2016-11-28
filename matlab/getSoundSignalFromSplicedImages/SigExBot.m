@@ -62,7 +62,7 @@ classdef SigExBot < handle
             obj.CurrentY = 2400;
             obj.ImgWidth = 0;
             obj.ImgHeight = 0;
-            obj.PixelThreshold = 250;   % Default Threshold for Pixelregocnition is 250
+            obj.PixelThreshold = 240;   % Default Threshold for Pixelregocnition is 250
             obj.CurrentImgNmbr = 1;
             obj.CurrentRoundNmbr = 1;
             obj.StrangeThingCounter = 0;
@@ -299,7 +299,7 @@ classdef SigExBot < handle
 
                     obj.ResetTryToRecoverFlag();
 
-                    if obj.ChangeInSigWidth >= 6 & ~obj.TryToRecover;
+                    if obj.ChangeInSigWidth >= 2 & ~obj.TryToRecover;
                         if ~obj.GapFlag
                             obj.GapFlag = true;
                             obj.StartOfGapX = obj.CurrentX -4 * obj.StepSize;
