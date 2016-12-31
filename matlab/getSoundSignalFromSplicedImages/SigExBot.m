@@ -299,7 +299,7 @@ classdef SigExBot < handle
 
                     obj.ResetTryToRecoverFlag();
 
-                    if obj.ChangeInSigWidth >= 2 & ~obj.TryToRecover;
+                    if obj.ChangeInSigWidth >= 5 & ~obj.TryToRecover;
                         if ~obj.GapFlag
                             obj.GapFlag = true;
                             obj.StartOfGapX = obj.CurrentX -4 * obj.StepSize;
