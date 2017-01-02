@@ -6,6 +6,7 @@
 \textwidth 150mm
 \textheight 230mm
 
+\usepackage[autolinebreaks, numbered]{mcode}
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -500,8 +501,8 @@ SpliceBot‚ªì¬‚µ‚½‰æ‘œƒf[ƒ^‚ğŒ³‚É‰¹a‚É“ä‚Á‚ÄM†ƒf[ƒ^‚ğ’Šo‚·‚é‚Ì‚ÍSigExBot
 
 \section{SpliceBot}
 
-SpliceBot‚ÍMatlab—p‚Ì‰æ‘œ‡¬ƒAƒ‹ƒSƒŠƒYƒ€D
-SpliceBot‚ª³í‚Éì“®‚·‚é‚½‚ß‚É‰æ‘œƒtƒ@ƒCƒ‹EƒtƒHƒ‹ƒ_–¼‚ÆƒtƒHƒ‹ƒ_\‘¢‚ğç‚ç‚È‚¯‚ê‚Î‚È‚ç‚È‚¢D
+Splice\footnote{usplicev‚ÌˆÓ–¡‡‚¢‚É‚Â‚¢‚ÄDOxford Dictionary‚æ‚èF Join (pieces of timber, film, or tape) at the ends}Bot‚ÍMatlab—p‚Ì‰æ‘œ‡¬ƒAƒ‹ƒSƒŠƒYƒ€D
+SpliceBot‚ª³í‚Éì“®‚·‚é‚½‚ß‚É‰æ‘œƒtƒ@ƒCƒ‹CƒtƒHƒ‹ƒ_–¼‚ÆƒtƒHƒ‹ƒ_\‘¢‚ğç‚ç‚È‚¯‚ê‚Î‚È‚ç‚È‚¢D
 ƒAƒ‹ƒSƒŠƒYƒ€ƒtƒ@ƒCƒ‹uSpliceBot.mv‚Æ“¯‚¶ƒtƒHƒ‹ƒ_‚ÉuRoundZZvƒtƒHƒ‹ƒ_‚ğ’u‚­DZZ‚Í‚P‚©‚çn‚Ü‚é‰æ‘œƒf[ƒ^¶¬‚ÌÛ‚ÌT”Ô†D
 —á‚¦‚ÎCuRound1vƒtƒHƒ‹ƒ_‚É‚ÍƒŒƒR[ƒh‚Ìˆê”ÔŠO‘¤‚ğˆêü‚µ‚½‚Æ‚«‚Ì‰æ‘œƒf[ƒ^‚ğŠi”[‚·‚éD
 ƒAƒ‹ƒSƒŠƒYƒ€‚ª—v‹‚·‚éRoundZZƒtƒHƒ‹ƒ_‚Ì’†‚ÌƒtƒHƒ‹ƒ_\‘¢‚ğ}\ref{fig:folderScructure}‚É¦‚·D
@@ -521,7 +522,7 @@ BWImagesƒtƒHƒ‹ƒ_‚É‚Í2’l‰»‰æ‘œƒf[ƒ^‚ªŠi”[‚³‚ê‚éDƒAƒ‹ƒSƒŠƒYƒ€‚Ì’†‚Å‚ÍuConvertTo
 markedImagesƒtƒHƒ‹ƒ_‚É‚ÍSigExBot‚ª’ÇÕƒ}[ƒN‚ğƒvƒƒbƒg‚µ‚½Œã‚Ì‰æ‘œƒf[ƒ^‚ª“ü‚éD
 rawdataƒtƒHƒ‹ƒ_‚É‚Í‰æ‘œƒf[ƒ^¶¬‚Åì¬‚³‚ê‚é‰æ‘œƒf[ƒ^‚ğŠi”[‚·‚éD‰æ‘œƒf[ƒ^‚Ìƒtƒ@ƒCƒ‹Œ`®‚ÍuAIAZZ.bmpvDZZ‚Í‚P‚©‚çn‚Ü‚é’Ê‚µ”Ô†‚Å‚ ‚éD
 SpliceBot‚Í‚±‚ÌƒtƒHƒ‹ƒ_‚Ì‰æ‘œƒf[ƒ^‚ğˆ—‘ÎÛ‚É‚·‚éD
-splicedImagesƒtƒHƒ‹ƒ_‚É‚ÍSpiceBot‚ª‰æ‘œ‡¬ˆ—‚ğs‚Á‚½Œã‚Ì‰æ‘œƒf[ƒ^‚ğŠi”[‚·‚éêŠD
+splicedImagesƒtƒHƒ‹ƒ_‚É‚ÍSpliceBot‚ª‰æ‘œ‡¬ˆ—‚ğs‚Á‚½Œã‚Ì‰æ‘œƒf[ƒ^‚ğŠi”[‚·‚éêŠD
 
 \subsection{ˆ—“à—e}
 
@@ -544,14 +545,46 @@ MatlabŠÂ‹«“à‚ÅƒpƒX‚ğSpliceBot.m‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Éİ’è‚µ‚½Œã‚ÉCommand Win
     \item splicedImagesƒtƒHƒ‹ƒ_“à‚Ì.bmpƒtƒ@ƒCƒ‹‚ÌŒÂ”‚ğŒŸoiGetNmbrOfSplicedImagesƒƒ\ƒbƒhj 
     \item ‡¬‰æ‘œƒf[ƒ^‚ğƒOƒŒ[ƒXƒP[ƒ‹‚É•ÏŠ·‚·‚éiConvertToGrayScaleƒƒ\ƒbƒhj 
     \item ‡¬‰æ‘œƒf[ƒ^‚ğ‚Q’l‰»‚·‚éiConvertToBWImagesƒƒ\ƒbƒhj
+    \item ˆ—‘ÎÛƒf[ƒ^ƒpƒX‚ğŸ‚Ì“o˜^RoundƒtƒHƒ‹ƒ_‚É•ÏX‚µ‚Ä1. -- 6.‚ğƒtƒHƒ‹ƒ_‚ª‚È‚­‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
 \end{enumerate}
-
-
-
 
 \section{SigExBot}
 
-- ƒAƒ‹ƒSƒŠƒYƒ€‚ª—v‹‚·‚éƒtƒHƒ‹ƒ_\‘¢D
+‚±‚ÌƒAƒ‹ƒSƒŠƒYƒ€‚Í–{Œ¤‹†‚Ì‰æ‘œˆ—‚Ì’†‚Å’†S“I‚È–ğŠ„‚ğ‰Ê‚½‚µ‚Ä‚¢‚éDˆ—‘ÎÛ‚Æ‚È‚é‚Ì‚ÍSpliceBot‚ªì¬‚µ‚½‰æ‘œƒf[ƒ^D
+SigExBot\footnote{uSignal Extraction Botv‚Ì—ªÌ}‚ÍSpliceBot‚Æ“¯‚¶ƒtƒHƒ‹ƒ_\‘¢‚ğ—v‹‚·‚éD
+–{Œ¤‹†‚Ì‰æ‘œˆ—ƒAƒ‹ƒSƒŠƒYƒ€‚Í–w‚Ç—áŠO‚È‚­‚İ‚ñ‚ÈƒNƒ‰ƒXƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä’è‹`‚³‚ê‚Ä‚¢‚éD
+]‚Á‚ÄCSigExBot‚àSpliceBot‚Æ“¯—l‚ÉƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‰»‚ª‚Ü‚¸Å‰‚É•K—v‚Å‚ ‚éD
+Matlab‚ÌCommand Window‚ÉusigExBot = SigExBot();v‚ÅƒNƒ‰ƒX‚ğƒCƒ“ƒXƒ^ƒ“ƒX‰»‚µusigExBot.Start();v‚Åˆ—ŠJnD
+
+\subsection{ˆ—“à—e}
+
+M†C³‹@”\‚ğ•Ê‚Æ‚µ‚½‚Æ‚«‚ÉSigExBot‚Ìˆ—“à—e‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚éD
+
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item 
+    \item 
+    \item 
+    \item 
+\end{enumerate}
+
+\subsection{M†C³‹@”\}
+
+uFill the Gap after width changev
+
+uTry To Recoverv
+
+
+\mcode{'cool'}
+
+
+
+\begin{lstlisting}
+imgOriginal = imread('img/tmp.bmp', 'bmp'); % load the original image
+\end{lstlisting}
+
+
 
 \section{Needle}
 
@@ -560,6 +593,50 @@ Shmuel Ben-Ezra
 ƒoƒ“ƒh‚ª‚Å‚«‚é‚æ‚¤‚É‰ü‘¢D
 
 \chapter{Œ‹˜_}
+
+\appendix
+\chapter{•¨—“I‹——£ŒŸoƒvƒƒOƒ‰ƒ€}
+\section{PixelProcessing.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/PixelProcessing.m}
+    \end{footnotesize}
+\fi
+
+\section{ObjectExtraction.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/ObjectExtraction.m}
+    \end{footnotesize}
+\fi
+
+\chapter{‰æ‘œˆ—ƒvƒƒOƒ‰ƒ€}
+\section{SpliceBot.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/getSoundSignalFromSplicedImages/SpliceBot.m}
+    \end{footnotesize}
+\fi
+
+\newpage
+
+\section{SigExBot.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/getSoundSignalFromSplicedImages/SigExBot.m}
+    \end{footnotesize}
+\fi
+
+\newpage
+
+\section{Needle.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/getSoundSignalFromSplicedImages/Needle.m}
+    \end{footnotesize}
+\fi
+
+
 
 \end{document}
 

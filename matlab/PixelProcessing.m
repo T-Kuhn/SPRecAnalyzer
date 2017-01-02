@@ -2,8 +2,10 @@
 % - - - - Load Image Data - - - -
 % - - - - - - - - - - - - - - - -
 tic
-imgOriginal = imread('img/SmallP59000FL.bmp', 'bmp'); % load the original image
-%imgOriginal = imread('img/P60400FL.bmp', 'bmp'); % load the original image
+% load the original image
+imgOriginal = imread('img/SmallP59000FL.bmp', 'bmp'); 
+% load the original image
+%imgOriginal = imread('img/P60400FL.bmp', 'bmp'); 
 img = uint16(imgOriginal); 
 [imgHeight, imgWidth] = size(img(:,:,1));
 % - - - - - - - - - - - - - - - - 
@@ -18,7 +20,9 @@ imgNmbrOfPixels = length(grayImg(:));
 % - - - - - - - - - - - - - - - -
 threshold = 80;
 TwoValImg = uint16(zeros(imgHeight, imgWidth));
-for pixel = 1:imgHeight*imgWidth   % loop through all the pixels. The Pixels values go from 0 to 255*3
+% loop through all the pixels.
+% The Pixels values go from 0 to 255*3
+for pixel = 1:imgHeight*imgWidth   
     if grayImg(pixel) > threshold
         TwoValImg(pixel) = 1;
     else
@@ -38,17 +42,19 @@ imagesc(imgOriginal);
 axis image;
 
 figure(2);
-imagesc(grayImg); colormap(gray); % display the image in matlab
+% display the image in matlab
+imagesc(grayImg); colormap(gray); 
 axis image;
 
 figure(3);
-imagesc(TwoValImg); colormap(gray); % display the image in matlab
+% display the image in matlab
+imagesc(TwoValImg); colormap(gray); 
 axis image;
 
 % - - - - - - - - - - - - - - - - 
 % - - -  Pixel Processing - - - -
 % - - - - - - - - - - - - - - - -
-PixelProcessing_ObjectExtraction11_1();
+ObjectExtraction();
 
 
 

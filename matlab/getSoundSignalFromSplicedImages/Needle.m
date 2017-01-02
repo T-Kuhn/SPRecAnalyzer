@@ -64,26 +64,36 @@ classdef Needle < handle
             obj.Acceleration = 0;
             obj.Speed = 0;
             obj.Mass = 2;
-            obj.NeedleSimOut(length(obj.FFTOutput)) = 0; % Here we make another array the same size as the input signal 
+            % Here we make another array 
+            % the same size as the input signal 
+            obj.NeedleSimOut(length(obj.FFTOutput)) = 0; 
             obj.NeedleSimOut(1) = obj.FFTOutput(1);
             for i = 2:length(obj.FFTOutput);
-                % compute all the forces for the current step
+                % compute all the forces 
+                % for the current step
                 obj.NeedleForce = obj.FFTOutput(i) - obj.NeedleSimOut(i-1);
                 obj.SpeedResForce = -obj.Speed*1.0;
                 obj.SpringResForce = -obj.NeedleSimOut(i-1) * 0.1;
 
-                obj.Acceleration = (obj.NeedleForce + obj.SpeedResForce + obj.SpringResForce)/obj.Mass; % a = (F + SpeedRes + SpringRes)/m
+                % a = (F + SpeedRes + SpringRes)/m
+                obj.Acceleration = (obj.NeedleForce + obj.SpeedResForce + obj.SpringResForce)/obj.Mass; 
                 
-                obj.Speed = obj.Speed + obj.Acceleration * 0.8; % 0.01 because we don't want to add the full acceleration every time.
+                % 0.01 because we don't want to add 
+                % the full acceleration every time.
+                obj.Speed = obj.Speed + obj.Acceleration * 0.8; 
                 obj.NeedleSimOut(i) = obj.NeedleSimOut(i-1) + obj.Speed*0.09;
      
-                % First thing: The Force which tries to move the needle towards the Signal!    
+                % First thing: The Force which tries
+                % to move the needle towards the Signal!    
                 % -SignalForce
             
-                % Then: All the Forces which work against the first Force!
-                % -SpeedResistanceForce (the greater the moving speed the greater this Force)
+                % Then: All the Forces which work 
+                % against the first Force!
+                % -SpeedResistanceForce (the greater
+                % the moving speed the greater this Force)
 
-                % -SpringForce (tries to move needle back to center position)
+                % -SpringForce (tries to move 
+                % needle back to center position)
             end 
         end
         % - - - - - - - - - - - - - - - - 
@@ -97,7 +107,9 @@ classdef Needle < handle
         % - - - - SmoothingSignal - - - -
         % - - - - - - - - - - - - - - - -
         function SmoothingSignal(obj)
-            obj.Yn(length(obj.FFTOutput)) = 0; % Here we make another array the same size as the input signal 
+            % Here we make another array the
+            % same size as the input signal
+            obj.Yn(length(obj.FFTOutput)) = 0;  
             obj.Yn(1) = obj.FFTOutput(1);
             for i = 2:length(obj.FFTOutput);
                 diff = obj.FFTOutput(i) - obj.Yn(i-1);
@@ -139,7 +151,8 @@ classdef Needle < handle
         % - - - - - - - Crop  - - - - - -
         % - - - - - - - - - - - - - - - -
         function Crop(obj)
-            % Crop the first and last entries of the FFTOutput
+            % Crop the first and last
+            % entries of the FFTOutput
             obj.FFTOutput(1:10000) = [];
             obj.xTime(1:10000) = [];
             len = length(obj.FFTOutput);

@@ -56,22 +56,27 @@ classdef SigExBot < handle
         function obj = SigExBot()
             obj.TrackFollowing = false;
             obj.FirstCycle = false;
-            obj.IsOnTrack = false;      % When the Bot is created, it isn't on track
-            obj.StartStepSize = 2.5;           % Default StepSize is 2 Pixel on the X Axis!
+            % When the Bot is created, it isn't on track
+            obj.IsOnTrack = false;      
+            obj.StartStepSize = 2.5;           
             obj.CurrentX = 1;
             obj.CurrentY = 2400;
             obj.ImgWidth = 0;
             obj.ImgHeight = 0;
-            obj.PixelThreshold = 240;   % Default Threshold for Pixelregocnition is 250
+            obj.PixelThreshold = 240;   
             obj.CurrentImgNmbr = 1;
             obj.CurrentRoundNmbr = 1;
             obj.StrangeThingCounter = 0;
             obj.SignalIndex = 0;
-            obj.Signal(300000) = 0;    % Get some memory for the Signal Array
-            obj.ProcessedSignal(300000) = 0;    % Get some memory for the Signal Array
-            obj.Debug = true;          % Debug is On by defautlt
-            obj.AlgoStopHeight = 2000; % Algorithm stops when higher than 2000px at 1st image
-            obj.CorVal = 1486;         % 1486px correction after one full Round
+            obj.Signal(300000) = 0;    
+            obj.ProcessedSignal(300000) = 0;    
+            % Debug is On by defaut
+            obj.Debug = true;          
+            % Algorithm stops when higher 
+            % than 2000px at 1st image
+            obj.AlgoStopHeight = 2000; 
+            % 1486px correction after one full Round
+            obj.CorVal = 1486;         
             obj.CurrentCorVal = 0;
             obj.GapEndedCounter = 0;
             obj.GapFlag = false;
@@ -151,7 +156,9 @@ classdef SigExBot < handle
             obj.ImgWidth = tmpSize(2);
             if (nmbr == 1 & (obj.ImgHeight - obj.AlgoStopHeight) > obj.CurrentY & obj.TrackFollowing) | ...
                 (obj.CurrentRoundNmbr == obj.MaxRoundNmbr & (obj.ImgHeight - obj.AlgoStopHeight) > obj.CurrentY); 
-                obj.GapFlag = false;        % even if there is a gap which the program tries to fill, stop it!
+                % even if there is a gap which 
+                % the program tries to fill, stop it!
+                obj.GapFlag = false;        
                 obj.SaveMarkedImages();
                 obj.CurrentRoundNmbr = obj.CurrentRoundNmbr + 1;
                 obj.CurrentCorVal = obj.CurrentCorVal - obj.CorVal;
@@ -299,8 +306,17 @@ classdef SigExBot < handle
 
                     obj.ResetTryToRecoverFlag();
 
+                    % This is quite important:
+                    % Here we check wether or not the signal 
+                    % width changed more than x (in this case 5)
+                    % if this is the case, we declare 
+                    % the signal from here on as "gap".
+                    % after getting back on track, 
+                    % the gap will be filled with a linear slope.
                     if obj.ChangeInSigWidth >= 5 & ~obj.TryToRecover;
                         if ~obj.GapFlag
+                            % The code here runs only 
+                            % one cycle after gap was detected
                             obj.GapFlag = true;
                             obj.StartOfGapX = obj.CurrentX -4 * obj.StepSize;
                             obj.StartOfGapIndex = obj.SignalIndex - 4; 
@@ -312,8 +328,13 @@ classdef SigExBot < handle
                             obj.StartOfGapImgNmbr = obj.CurrentImgNmbr;
                         end
                         obj.GapEndedCounter = 0;
+                        % as long as the change in signal width 
+                        % is bigger than x we go straight ahead.
                         changeInY = 0;
                     elseif obj.GapFlag;
+                        % If we get in here, we are inside a gap, 
+                        % but the signal width has normalized to a degree where
+                        % Trackfollowing is possible again.
                         obj.GapEndedCounter = obj.GapEndedCounter + 1;
                         if obj.GapEndedCounter > 30;
                             obj.GapFlag = false;
@@ -338,14 +359,27 @@ classdef SigExBot < handle
                     obj.CurrentY = obj.CurrentY + changeInY;                    
                 else
                     % just go straight. Somethings strange happened!     
+                    % (We are in here because there is no pixel 
+                    % bright enough to do the centering on)
                     obj.StrangeThingCounter = obj.StrangeThingCounter + 1;
                     if obj.StrangeThingCounter > 600;
+                        % give we are already trying to recover and 
+                        % there is once again no bright pixelcluster 
+                        % to follow.
                         if obj.TryToRecover;
                             obj.SaveMarkedImages();
                             disp('Something strange happened!');
                             disp(obj.CurrentImgNmbr);
                             obj.TrackFollowing = false;
                         end
+                        % after 600 steps of going blindly
+                        % straight forward: Try to recover!
+                        % We try to recover by setting the current Y 
+                        % value to the value 750 steps earlier 
+                        % (then everything should be still fine)
+                        % Then we connect the X,Y point 750 steps ago 
+                        % with the current X and current (new) Y. 
+                        % We use a straight line for this.   
                         obj.StrangeThingCounter = 0;
                         disp('Try to recover!');
                         obj.GapFlag = false;
@@ -355,11 +389,11 @@ classdef SigExBot < handle
                         obj.EndOfGapImgNmbr = obj.CurrentImgNmbr;
                         obj.ReturnIndex = obj.SignalIndex;
                         obj.ReturnX = obj.CurrentX;
-                        obj.CurrentY = obj.Signal(obj.SignalIndex -450) - obj.CurrentCorVal;
+                        obj.CurrentY = obj.Signal(obj.SignalIndex - 750) - obj.CurrentCorVal;
                         obj.ReturnY = obj.CurrentY;
                         obj.EndOfGapY = obj.CurrentY;
-                        obj.SignalIndex = obj.SignalIndex - 450;
-                        obj.CurrentX = obj.CurrentX - 450 * obj.StepSize;
+                        obj.SignalIndex = obj.SignalIndex - 750;
+                        obj.CurrentX = obj.CurrentX - 750 * obj.StepSize;
                         obj.StartOfGapX = obj.CurrentX;
                         obj.StartOfGapY = obj.CurrentY;
                         obj.StartOfGapIndex = obj.SignalIndex;
@@ -452,16 +486,3 @@ classdef SigExBot < handle
         end
     end
 end
-
-
-% - - - - - - - - - - - - - - - - 
-% - - - - - - MEMO  - - - - - - -
-% - - - - - - - - - - - - - - - -
-
-% WHEN the widths changes:
-%   search ahead straight for the place where things get back to normal for longer than 30 steps.
-%   
-
-
-
-
