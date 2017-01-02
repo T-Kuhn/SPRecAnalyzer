@@ -505,11 +505,11 @@ Splice\footnote{「splice」の意味合いについて．Oxford Dictionaryより： Join (piec
 SpliceBotが正常に作動するために画像ファイル，フォルダ名とフォルダ構造を守らなければならない．
 アルゴリズムファイル「SpliceBot.m」と同じフォルダに「Round〇〇」フォルダを置く．〇〇は１から始まる画像データ生成の際の週番号．
 例えば，「Round1」フォルダにはレコードの一番外側を一周したときの画像データを格納する．
-アルゴリズムが要求するRound〇〇フォルダの中のフォルダ構造を図\ref{fig:folderScructure}に示す．
+アルゴリズムが要求するRound〇〇フォルダの中のフォルダ構造を図\ref{fig:folderStructure}に示す．
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=0.9\textwidth, clip]{folderStructure.eps}
+        \includegraphics[width=0.7\textwidth, clip]{folderStructure.eps}
         \caption{フォルダRound〇〇フォルダの中身}
         \label{fig:folderStructure}
     \end{center}
@@ -522,7 +522,15 @@ BWImagesフォルダには2値化画像データが格納される．アルゴリズムの中では「ConvertTo
 markedImagesフォルダにはSigExBotが追跡マークをプロットした後の画像データが入る．
 rawdataフォルダには画像データ生成で作成される画像データを格納する．画像データのファイル形式は「AIA〇〇.bmp」．〇〇は１から始まる通し番号である．
 SpliceBotはこのフォルダの画像データを処理対象にする．
-splicedImagesフォルダにはSpliceBotが画像合成処理を行った後の画像データを格納する場所．
+splicedImagesフォルダにはSpliceBotが画像合成処理を行った後の画像データを格納する場所．画像合成後にできた画像ファイルを\ref{fig:splicedImage}に示す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.4\textwidth, clip]{splicedImage.eps}
+        \caption{spliceBotが作成した合成画像データ（レコードの表面が削れた箇所）}
+        \label{fig:splicedImage}
+    \end{center}
+\end{figure}
 
 \subsection{処理内容}
 
@@ -533,18 +541,18 @@ Matlab環境内でパスをSpliceBot.mが格納されているフォルダに設定した後にCommand Win
 
 \begin{enumerate}
     \itemsep-0.3pt 
-    \item フォルダ内のbmpファイル数を検出（GetNmbrOfFilesメソッド）
-    \item 画像データを50枚ずつ合成する（AddImagesメソッド）\\
+    \item フォルダ内のbmpファイル数を検出
+    \item 画像データを50枚ずつ合成する\\
         rawdata画像データを束ねる前にrawdata一枚ずつに対して以下の処理を行う：
         \begin{enumerate}[topsep=0pt]
             \itemsep-0.3pt 
             \item 幅1ピクセルの枠を削除する（画像データのサイズが縦横2ピクセル縮む）
             \item 上下反転，90度回転，上下反転
         \end{enumerate}
-    \item 残り画像データが50枚以下の場合，残り画像数だけ2.と同じ手法で合成する（AddRemainingImagesメソッド）
-    \item splicedImagesフォルダ内の.bmpファイルの個数を検出（GetNmbrOfSplicedImagesメソッド） 
-    \item 合成画像データをグレースケールに変換する（ConvertToGrayScaleメソッド） 
-    \item 合成画像データを２値化する（ConvertToBWImagesメソッド）
+    \item 残り画像データが50枚以下の場合，残り画像数だけ2.と同じ手法で合成する
+    \item splicedImagesフォルダ内の.bmpファイルの個数を検出 
+    \item 合成画像データをグレースケールに変換する 
+    \item 合成画像データを２値化する
     \item 処理対象データパスを次の登録Roundフォルダに変更して1. -- 6.をフォルダがなくなるまで繰り返す
 \end{enumerate}
 
@@ -558,16 +566,54 @@ MatlabのCommand Windowに「sigExBot = SigExBot();」でクラスをインスタンス化し「si
 
 \subsection{処理内容}
 
-信号修正機能を別としたときにSigExBotの処理内容は以下のようになる．
-
+「sigExBot = SigExBot();」とオブジェクトを作成したとき，以下の処理が行われる．
 
 \begin{enumerate}
     \itemsep-0.3pt 
-    \item 
-    \item 
-    \item 
-    \item 
+    \item 様々のパラメータの初期化
+    \item Round〇〇フォルダの個数を検出し，処理対象フォルダをRound1と設定する
+    \item Round1フォルダ内のbmpファイル数を検出
+    \item Round1フォルダの検出された画像データを全部RAMに読み込む 
 \end{enumerate}
+
+「sigExBot.Start();」と処理を開始させた後は以下の処理が実行される．ただし，信号修正機能については後ほど説明するため，ここでは除く．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item 開始した直後は設定された画像データのピクセル値を左下から上へと向かって調べていき，音溝を探す 
+    \item 縦軸に対する音溝の中心を計算し，現在の位置をそれに合わせる
+    \item 現在位置のピクセルに色を付ける（デバグ用）
+    \item 設定されたステップサイスの値だけ右へと進む
+    \item 2.に戻り繰り返し処理を行う
+\end{enumerate}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.5\textwidth, clip]{searchForTrack.eps}
+        \caption{処理開始直後アルゴリズムは左下から上に向かって音溝を探す}
+        \label{fig:searchForTrack}
+    \end{center}
+\end{figure}
+
+基本的な処理内容は上記のようになっている．
+ただし，右へと進んでいき画像データの左端に到達した際は次の画像が現在処理対象画像として設定される．
+また，画像データを何回か一周した後には画像の上部に到達し，ある一定のピクセル数を超えるとRound番号がインクリメントされ，
+次の画像データがRAMに格納され，上記の処理が繰り返し行われる．
+
+なお，画像データ生成ソフトでRoundxとRoundx+1の撮像縦座標の違いがちょうど1500ピクセルになるように設定されているため，
+RoundxからRoundx+1へと進むときは，現在縦座標パラメータから1500ピクセルを引くことで，途切れることなく音溝追跡処理が続けられる．
+
+4.のステップサイズに関して説明する．蓄音機でレコードを再生するとき，針が外側から内側へと向かっていくに連れて，針の直下を回るレコードの
+表面速度が減少する．同じ1000Hzのサイン信号をレコードの外側と内側とで比較すると，内側の方が音溝の周期が短くなる．これは表面速度が減少
+しても，時間軸に対しては同じ1000Hzの信号を保たなければならないからである．
+この音溝の横軸に対する収縮に対応するため，処理対象Roundフォルダが変わるたびにステップサイズを調節する．
+中心に近づけば近づくほど，ステップサイズが小さくなる．
+
+また，Roundフォルダが変わるたびに，アルゴリズムの追跡マークが色づけられた画像データがmarkedImagesフォルダ内に保存される．
+これはあくまでもデバグ用であり，これからの信号処理アルゴリズムが必要とするデータではない．
+したがって，処理時間短縮を目指すなら追跡マーク関連のメソッドをコメントアウトするとよい．
+
+
 
 \subsection{信号修正機能}
 
@@ -576,21 +622,24 @@ MatlabのCommand Windowに「sigExBot = SigExBot();」でクラスをインスタンス化し「si
 「Try To Recover」
 
 
-\mcode{'cool'}
-
-
-
-\begin{lstlisting}
-imgOriginal = imread('img/tmp.bmp', 'bmp'); % load the original image
-\end{lstlisting}
-
-
-
 \section{Needle}
 
 \section{fftf.m}
 Shmuel Ben-Ezra
 バンドができるように改造．
+
+
+
+
+\iffalse
+\mcode{'cool'}
+
+\begin{lstlisting}
+imgOriginal = imread('img/tmp.bmp', 'bmp'); % load the original image
+\end{lstlisting}
+
+\fi
+
 
 \chapter{結論}
 
