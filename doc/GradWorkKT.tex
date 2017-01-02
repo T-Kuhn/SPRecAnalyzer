@@ -6,6 +6,7 @@
 \textwidth 150mm
 \textheight 230mm
 
+\usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -462,6 +463,7 @@ SPレコードに刻まれた音溝がらせん状にレコードの中心へと近づいていく仕組みであるか
 撮像時に直面するする問題とその解決法については前節に詳しく説明している．ただし，部分読み出し法の利点・欠点について議論を進められるようにそれらの問題をもう一度リストアップする．
 
 \begin{itemize}
+    \itemsep-0.3pt 
     \item 重複部分問題
     \item 湾曲問題
     \item うねり問題
@@ -485,13 +487,71 @@ pixelprocessing.m
 
 \chapter{画像処理}
 
-SPRecAnalyzerを利用して取得した画像データは数多くの2456x32ピクセルの画像ファイルから構成される．原理的にはMatlabで直接この画像データをメモリに読み込み画像処理の元にすることも可能ではあるが，画像処理アルゴリズムのデバグ作業などを考えると，この非常に幅が狭い画像データを一度もう少し幅が広い画像ファイルにまとめてから画像処理を行った方が画像データ生成メカニズムや後ほどの画像処理での結果確認が取りやすくなる．
+SPRecAnalyzerを利用して取得した画像データは数多くの2456x32ピクセルの画像ファイルから構成される．
+原理的にはMatlabで直接この画像データをメモリに読み込み画像処理の元にすることも可能ではあるが，
+画像処理アルゴリズムのデバグ作業などを考えると，
+この非常に幅が狭い画像データを一度もう少し幅が広い画像ファイルにまとめてから画像処理を行った方が画像データ生成メカニズムや後ほどの画像処理での結果確認が取りやすくなる．
 
-幅が狭い画像データを数十枚束ねて幅が広い画像データを作成しておくのがSpliceBotアルゴリズムの仕事である．SpliceBotが作成した画像データを元に音溝に謎って信号データを抽出するのはSigExBot．最後にSigExBotの信号データに信号処理を施して音信号の形に変形してくれるのはNeedle．本研究の画像処理は全部Matlabで行うことになっている．Matlabの有料ツールボックスのインストールは不要．
+幅が狭い画像データを数十枚束ねて幅が広い画像データを作成しておくのがSpliceBotアルゴリズムの仕事である．
+SpliceBotが作成した画像データを元に音溝に謎って信号データを抽出するのはSigExBot．
+最後にSigExBotの信号データに信号処理を施して音信号の形に変形してくれるのはNeedle．
+本研究の画像処理は全部Matlabで行うことになっている．Matlabの有料ツールボックスのインストールは不要．
+
 
 \section{SpliceBot}
 
+SpliceBotはMatlab用の画像合成アルゴリズム．
+SpliceBotが正常に作動するために画像ファイル・フォルダ名とフォルダ構造を守らなければならない．
+アルゴリズムファイル「SpliceBot.m」と同じフォルダに「Round〇〇」フォルダを置く．〇〇は１から始まる画像データ生成の際の週番号．
+例えば，「Round1」フォルダにはレコードの一番外側を一周したときの画像データを格納する．
+アルゴリズムが要求するRound〇〇フォルダの中のフォルダ構造を図\ref{fig:folderScructure}に示す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{folderStructure.eps}
+        \caption{フォルダRound〇〇フォルダの中身}
+        \label{fig:folderStructure}
+    \end{center}
+\end{figure}
+
+BWImagesフォルダには2値化画像データが格納される．アルゴリズムの中では「ConvertToBWImages」メソッドがこのデータを作成する．
+次段階の画像処理アルゴリズムは2値化データを必要としないため，処理時間短縮を目指すならコメントアウトしてよいメソッドである．
+2値化データはあくまでも画像データ確認の一つの手段にすぎない．
+
+markedImagesフォルダにはSigExBotが追跡マークをプロットした後の画像データが入る．
+rawdataフォルダには画像データ生成で作成される画像データを格納する．画像データのファイル形式は「AIA〇〇.bmp」．〇〇は１から始まる通し番号である．
+SpliceBotはこのフォルダの画像データを処理対象にする．
+splicedImagesフォルダにはSpiceBotが画像合成処理を行った後の画像データを格納する場所．
+
+\subsection{処理内容}
+
+Matlab環境内でパスをSpliceBot.mが格納されているフォルダに設定した後にCommand Windowに「spliceBot = SpliceBot();」を入力するとSpliceBotオブジェクトが生成される．
+生成時に，クラスファイルと同じフォルダにあるRound〇〇フォルダが全てオブジェクト内に登録される．
+
+アルゴリズムを実行するには「spliceBot.Start();」を入力する．実行開始後，全ての登録されているRound〇〇フォルダに対し，以下の処理が行われる．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item フォルダ内のbmpファイル数を検出（GetNmbrOfFilesメソッド）
+    \item 画像データを50枚ずつ合成する（AddImagesメソッド）\\
+        rawdata画像データを束ねる前にrawdata一枚ずつに対して以下の処理を行う：
+        \begin{enumerate}[topsep=0pt]
+            \itemsep-0.3pt 
+            \item 幅1ピクセルの枠を削除する（画像データのサイズが縦横2ピクセル縮む）
+            \item 上下反転，90度回転，上下反転
+        \end{enumerate}
+    \item 残り画像データが50枚以下の場合，残り画像数だけ2.と同じ手法で合成する（AddRemainingImagesメソッド）
+    \item splicedImagesフォルダ内の.bmpファイルの個数を検出（GetNmbrOfSplicedImagesメソッド） 
+    \item 合成画像データをグレースケールに変換する（ConvertToGrayScaleメソッド） 
+    \item 合成画像データを２値化する（ConvertToBWImagesメソッド）
+\end{enumerate}
+
+
+
+
 \section{SigExBot}
+
+- アルゴリズムが要求するフォルダ構造．
 
 \section{Needle}
 

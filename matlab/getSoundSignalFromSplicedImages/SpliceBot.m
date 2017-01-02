@@ -26,6 +26,7 @@ classdef SpliceBot < handle
                 obj.AddRemainingImages();
                 obj.GetNmbrOfSplicedImages();
                 obj.ConvertToGrayScale();
+                obj.ConvertToBWImages();
                 obj.Next();
             end
         end
