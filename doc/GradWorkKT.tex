@@ -722,12 +722,98 @@ TryToRecover機能の呼び出し条件は「黒領域（アルゴリズムの閾値以下のピクセル領域）
 呼び出された後は現在縦座標値を750ステップ前（まだ黒領域ではなかった箇所）の値に設定し，その後750ステップ前の点と新しくできた
 座標点が直線で結ばれ，アルゴリズムが終点からライントレースを再開する．
 
-
 \section{Needle}
 
-\section{fftf.m}
-Shmuel Ben-Ezra
-バンドができるように改造．
+このアルゴリズムはSigExBotが検出した信号を処理対象とし，
+フーリエ変換や振幅調整などを通じて元信号をWAVファイルへと変換できる形にしてから実際にWAVファイルとして保存しておく．
+SigExBotが音溝画像データから抽出した信号データを図j\ref{fig:SigExBotOutput}に示す．
+この信号データは処理が終わった後に「sigExBot.Signal」でアクセスできる．
+Needleアルゴリズムは前述の画像処理アルゴリズムと同様に「needle = Needle(sigExBot.Signal);」とインスタンス化できる．
+インスタンス化の際には処理対象信号データを引数として渡さす必要がある．処理開始には「needle.Start();」とMatlabのCommand Windowに入力する．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.65\textwidth, clip]{SigExBotOutput.eps}
+        \caption{}
+        \label{fig:SigExBotOutput}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.65\textwidth, clip]{SigExBotOutput2.eps}
+        \caption{}
+        \label{fig:SigExBotOutput2}
+    \end{center}
+\end{figure}
+
+図\ref{fig:SigExBotOutput}に示す信号データについて考察しよう．
+まず特徴的なところとしてゆっくりとしたサイン波に近い成分が挙げられる．
+これはうねり問題の影響である．
+レコードの穴が偏心しているときの音溝撮像への影響が理論上サイン波になることと，音信号より遥かに振幅が大きく，周期が長いこととを考慮すれば間違えなくそう関係付けられる．
+また，この信号を構成するもう一つの成分として，左上から右下に向かう直線が挙げられる．
+これは単に音溝を謎っていけばいくほど，レコードの中心に近付いていく影響である．
+
+音信号データはもっと振幅が小さく，図\ref{fig:SigExBotOutput}ではその存在確認が困難．
+図\ref{fig:SigExBotOutput}の一部を拡大した図が図\ref{fig:SigExBotOutput2}である．
+音信号が確かにうねり信号に乗っていることが分かる．
+
+\subsection{処理内容}
+
+図\ref{fig:SigExBotOutput}に示す信号データからうねり成分と直線成分を取り，
+音ファイルへと変換できるように振幅を調節し，
+なるべくノイズを除法するのがNeedleアルゴリズムの仕事である．
+アルゴリズムの細かいタスクを以下にリストアップする．
+Matlabプログラムとの関連性がわかるように処理名は英語で表記する．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item TrendCorrectSignal
+    \item FFT
+    \item Crop
+    \item AdjustAmplitude
+    \item NeedleSimulation
+    \item SaveWAV 
+\end{enumerate}
+
+TrendCorrectSignalはいわゆるトレンド修正処理である．
+全信号を対象とする1次元多項式近似で直線成分を抽出し，
+それを信号データから減算する．Matlabが用意する「polyfit」，「polyval」で実装．
+
+FFTはFast Fourier Transformの略であり，フーリエ変換処理のことである．
+この処理の目的は「うねり成分削除」と「ノイズ除法」である．実装には「」
+実装にはShmuel Ben-Ezra氏がMatlabの公式ファイル交換サイト（Matlab File Exchange）
+に投稿した「fftf.m」を利用．ただし，バンドフィルタリングができるように改造．
+バンドフィルタリングで100Hz--15'000Hz以外の周波数成分を全部削除する．
+これにより周波数ノイズをある程度抑制することに成功した．しかしながら，これでもまだノイズが残っており，
+フィルタリングされる周波数領域を例えば，100Hz--5000Hzにしてみると，白ノイズがさら減少する半面，今度は抽出しよう
+としている音声データに影響がでるため（「つ，ち」などが聞こえなくなり，音声が全体的にこもる），白ノイズに
+別の手段で対応する必要がある．
+
+Cropは信号の前後のデータ点を数百個を切り落とす処理．
+フーリエ変換が周期的な信号しか扱わずにも関わらず，
+周期的でない信号に適用したため，逆フーリエ変換の前後のデータ点が無理やりに繋がるようになっている．
+これにより信号の前後のデータが乱れており，切り落とすことで対応することにした．
+次にAdjustAmplitude処理が実行される．文字通り，信号の振幅を調節する処理であり，最高振幅が1を超えないように設定した．
+この処理は後ほどMatlabのaudiowrite関数を利用するために必要．
+NeedleSimulationは仮想針で蓄音機と同等レベルの音質が得られないか，と思ったときの試みである．
+仮想針の結果はFFT段階の信号とともに自動的にWAVファイルとして保存される．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.75\textwidth, clip]{Needle.eps}
+        \caption{}
+        \label{fig:Needle}
+    \end{center}
+\end{figure}
+
+図\ref{fig:Needle}にNeedle機能を適用した信号（オレンジ）とそうでない信号（青）を示す．
+仮想針の信号処理後の信号がもう少し柔らかく，ギザギザが少なくなることがわかる．
+しかしながら，Needleパラメータをいじって，信号をさらに白ノイズが少なく，スムーズにしようとしたところ，
+フーリエフィルタで通過領域を絞り過ぎた場合と同じ現象が起こり，白ノイズが減少するとともに，
+音声データも悪化する．
+
+
 
 
 

@@ -107,7 +107,6 @@ end
 % cutoff filter
 y2=zeros(1,ny);
 if ~isempty(cutoff) && (cutoffLow > 0);
-    display('we are in here');
     ind1=find(f<=cutoff & f>=cutoffLow);
     %display(ind1);
     y2(ind1) = y(ind1); % insert required elements

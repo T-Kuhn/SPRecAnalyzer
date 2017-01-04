@@ -51,9 +51,7 @@ classdef Needle < handle
             obj.FFT();
             obj.Crop();
             obj.AdjustAmplitude();
-
             obj.NeedleSimulation();
-
             obj.Plot();
             obj.SaveWAV();
         end
@@ -151,7 +149,7 @@ classdef Needle < handle
         % - - - - - - - Crop  - - - - - -
         % - - - - - - - - - - - - - - - -
         function Crop(obj)
-            % Crop the first and last
+            % Crop the first and last few
             % entries of the FFTOutput
             obj.FFTOutput(1:10000) = [];
             obj.xTime(1:10000) = [];
