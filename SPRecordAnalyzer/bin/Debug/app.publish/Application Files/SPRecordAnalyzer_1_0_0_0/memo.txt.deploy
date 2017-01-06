@@ -1,0 +1,7 @@
+﻿
+Some new memos:
+
+About the Automatic Image Acquisition:
+This thing has to do the thing for 1 round. then move Motor1 some 1500 Pixels [THIS SHOULD BE A FIELD!]
+and then the hole thing has to start over [IN A NEW FOLDER]
+There has to be a ROUNDCOUNT!

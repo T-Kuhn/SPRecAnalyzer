@@ -15,6 +15,6 @@ function convertToGrayScale(x, y)
         grayImg = grayImg / max(grayImg(:));
         imgNmbrOfPixels = length(grayImg(:));
         p 
-        imwrite(grayImg,sprintf('Round%d/splicedImages/splicedImage%d.bmp', roundNmbr, p));
+        imwrite(grayImg, sprintf('Round%d/splicedImages/splicedImage%d.bmp', roundNmbr, p));
     end
 end
