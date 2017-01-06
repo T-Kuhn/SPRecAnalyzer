@@ -1,0 +1,23 @@
+
+
+-press open
+-go to camera
+-set software trigger
+-gain control
+-exposure time
+-partial scan
+-vpart line
+-vpart start line
+-press start
+-press sw trigger to see image
+-go back to GPIB
+-press calib
+
+2058/2 -16 = 1013
+
+-after calib, go to AIA, run it
+pics will be saved in:
+SPRecordAnalyzer\matlab\getPulsePerPixelData\img\Round1
+
+
+
