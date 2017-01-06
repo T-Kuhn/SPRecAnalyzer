@@ -12,3 +12,5 @@ for i = 1: length(a);
         correction = correction - 0.02;
     end
 end
+
+audiowrite('something.wav', b, 180000);

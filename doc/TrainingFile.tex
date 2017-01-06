@@ -1,0 +1,279 @@
+\documentclass[12pt,a4paper]{jreport}
+
+\pagestyle{headings}
+\topmargin 0mm
+\oddsidemargin 5mm
+\textwidth 150mm
+\textheight 230mm
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{\huge\bf \LaTeXe の使用法No.2}
+\author{北海学園大学工学部\\
+電子情報工学科\\
+4513213\\
+クーン・トビアス}
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{環境}
+\LaTeX の基本的な使い方について説明する．ここでは，特に，様々な「環境」を
+紹介し，さらに，数学記号や数式の表現方法についても説明する．
+
+\section{リスト系の環境}
+\LaTeX では，ある長さを持つ領域に特定の表示方法を指定する方法として，さまざ
+まな「環境(environment)」が用意されている．個々の環境は，\verb|\begin{ } と\end{ } |
+で囲むことにより，その範囲を明示的に示すことができる．\LaTeX  には多くの環境
+が用意されているが，卒論などでも良く使うと思われるものを以下に示す．
+
+\begin{description}
+    \item [description 環境]
+    ここに使われている環境．用語の説明などに使われるもので，そ
+    の用語を冒頭にボールド体あるいはゴシック体で置き，その後に説明などを続
+    ける．
+    \item [itemize 環境] 
+    箇条書きなどに使われる環境．この環境の特徴は，
+    \begin{itemize}
+        \item 冒頭にbullet などの記号を配置
+        \begin{itemize}
+            \item このように，入れ子にもできる
+            \item 冒頭の記号は，レベルにより変化
+            \item 記号の指定も可能
+        \end{itemize}
+        \item 適度な字下げを設定
+        \item 右端は，上位の環境と同じ
+    \end{itemize}
+    などである．
+
+    \item [enumerate 環境] 
+    冒頭に一連の数字あるいは記号をつける箇条書き環境．特徴として，
+    \begin{enumerate}
+        \item 冒頭の数字や記号は，アラビア数字，ローマ数字，アルファベットなど，
+レベルにより変化
+        \item 容易に想像できるように，内部にカウンタ変数が定義されている
+        \item ということは，その変数を操作することで，番号の操作も可能
+    \end{enumerate}
+\end{description}
+
+\section{その他の環境}
+
+\begin{description}
+    \item [quote 環境] 
+    他書などから引用した部分を示す環境．左右端を縮めて表示する．たと
+    えば，
+    \begin{quote}
+        フラクタル図形を初めて目にしたとき，多くの人はとまどいを感じ
+        る．それらがあまりに複雑で，従来の幾何学的な図形とはかけ離れ
+        ているからである．
+    \end{quote}
+のように用いる．
+
+    \item [center 環境] 
+    この環境内の文字は，全てセンタリングされる．
+    \begin{center}
+        この環境の中では，\\
+        各行がセンタリングされて，\\
+        出力される．
+    \end{center}
+
+    \item [minipage 環境] 
+    この環境は，文字通り，小さなページを構成する．複数のミニペー
+    ジを横に並べることもでき，複数の図の配置などにも便利である．下の例は，
+    このページのテキスト領域幅の0.3 倍の幅を持つミニページを横に2 つ並べた
+    もの．
+
+    \begin{minipage}[t]{0.3\textwidth}
+        このミニページの中でセ
+        ンタリングをすると，つ
+        ぎのようになる．
+        \begin{center}
+        ここは，\\
+        センタリングを\\
+        している．
+        \end{center}
+        設定したミニページの幅
+        の中でのセンタリングに
+        なっていることがわかる． 
+    \end{minipage}
+    \makebox[6em]{}
+    \begin{minipage}[t]{0.3\textwidth}
+        これは，2 つめのミニペー
+        ジを横に並べたもの．
+        \begin{center}
+        ここも，\\
+        センタリングを\\
+        している．
+        \end{center}
+        見やすいように，左のミ
+        ニページとの間に，``m''
+        の文字幅5 個分のスペー
+        スを空けてある．
+    \end{minipage}
+   
+    \item[verbatim 環境]
+    これは，その範囲内の文字は，そのまま出力し，\TeX や\LaTeX のコ
+    マンドとは解釈しないという環境．プログラムのソースコードの掲載に便利．
+
+    \item[equation 環境]
+    次の章に述べるように，1 行に表記する数式にも環境を用いる．
+
+    \item[figure 環境]
+    図を配置するための環境．後述する．
+
+    \item[tabular 環境]
+    表を配置するための環境．これも後述．
+
+\end{description}
+
+\chapter{数学記号と数式の記述方法}
+この章では，\LaTeXe における数式記号と数式の表し方について説明する．
+
+\section{数学記号と文中の数式}
+数式に用いる記号は，基本的には全て\TeX あるいは\LaTeX のコマンドにより入力する．
+それらの数学用のコマンドは，原則として数式環境や数式領域中で用いる．
+文章中にそれらを入れる場合には，\$で挟むことにより，数式領域であることを示す．
+たとえば，\verb|$e^{i\omega t}=\cos(\omega t)+i\sin(\omega t)$|と入力すれば，
+$e^{i\omega t}=\cos(\omega t) + i\sin(\omega t)$と出力される．
+
+文中数式では，自動的にtextstyleと呼ばれるスタイルが使われる．このスタイルでは，
+分数や和の表示が$f(x)=\frac{\sin(\pi x)}{\pi x}\sum_{n=1}^{N}x^n/n!$のように，
+1行に収まる高さに整形される．
+
+変数に用いられるアルファベットには，数式専用のイタリック体が使われる．
+このため，文中１文字であっても，数学変数については通常のイタリックを用いてはいけない．
+両者を並べてみると，
+\begin{itemize}
+    \item 通常のitalic: \textit{abcdefghijklmnopqrstuvwxyz}\\
+          数式用italic: $abcdefghijklmnopqrstuvwxyz$
+    
+    \item 通常のitalic: \textit{ABCDEFGHIJKLMNOPQRSTUVWXYZ}\\ 
+          数式用italic: $ABCDEFGHIJKLMNOPQRSTUVWXYZ$
+\end{itemize}
+のように，文字の形状も文字間のスペースの取り方も違っていることが分かる．
+
+また，ギリシャ文字などの記号も，コマンドを使って入力する．日本語の全角文字などを
+使うことは，決してしてはいけない．両者は，以下に示すように，明らかに違っている．
+\begin{itemize}
+    \item \TeX コマンドによる入力：$\alpha\beta\gamma\delta\epsilon\zeta\eta\theta\iota\kappa\lambda\mu
+        \nu\xi o\pi\rho\sigma\tau\upsilon\phi\chi\psi\omega\varepsilon\vartheta\varsigma\varrho\varphi$ \\
+        \TeX コマンドによる入力：$\mathit{AB\Gamma\Delta EZH\Theta IK\Lambda MN\Xi O\Pi P\Sigma 
+        T\Upsilon\Phi X\Psi\Omega}$
+    \item 全角文字による入力（禁止）：αβγδεζη
+\end{itemize}
+
+ギリシャ文字の大文字のうち，通常のアルファベットと道警のものには\TeX のコマンドがないため，
+通常のアルファベットを代用する．その際，数式領域内でも，\TeX コマンドによるギリシャ文字の大文字は立体になる
+ことに注意する．これを数学イタリックにするには，\verb|\mathit{}|のコマンドを用いる．上の出力にもこのコマンド
+が使われている．
+\section{数学用パッケージ}
+\LaTeX には基本的な数学表現や数式を記述するためのコマンドが備えられているが，
+さらに特殊な記号を出力したり，複雑な表現を簡潔に表すのに便利なコマンド
+などを集めたパッケージが用意されている．これは，アメリカ数学学会（American Methematical Society, AMS）
+が提供しているもので\LaTeX のインストールセットに予め含まれている．
+
+|これらの数学用パッケージを含め，パッケージを使う場合には，\verb|\usepackage{***}|のコマンド
+をプリアンブルに記述する．ここで，\verb|***|はパッケージ名である．数式表現においては，通常は，次の
+2つのパッケージの使用を宣言しておけば安心である．
+\begin{description}
+        \item[amsmathパッケージ]
+            $\forall$, $\exists$, $\partial$, $\heartsuit$, $\spadesuit$などの特殊記号，二重・三重積分
+            を表す\verb|\iintや\iiint|などのコマンド，複数行の数式を揃えて記述するためのalign，align\verb|*|，
+            gather環境などを集めたパッケージ．たとえば，次のような数式の記述がしやすくなる．
+            \begin{align}
+                U(f_x, f_y) &= \iint_{-\infty}^{\infty}u(x,y)
+                                \exp[-i2\pi(f_x x + f_y y)]dxdy\\
+                u(x,y) &= g(x,y)\exp\left[i\frac{2\pi}{\lambda}h(x,y)\right]\\
+                g(x,y) &= \frac{\partial P(x,y)}{\partial x}
+                                \frac{\partial Q(x,y)}{\partial x}
+            \end{align}
+        \item[amssymbパッケージ]
+            さらに特殊な記号を表すコマンドのパッケージ．たとえば，$\lesssim , \leqq , \nless , \llless , 
+            \rightleftarrows , \dashrightarrow , \mho , \hslash$などがこれに含まれる．
+\end{description}
+\section{数式行}
+数式を文章とは独立した行に記述するには，数式行を表す環境を用いる．良く使われる環境を以下に示す．
+
+\begin{description}
+    \item[equation環境]
+        \LaTeX に本来備わっている基本的な数式環境．複数行には対応しない．
+        右端に式番号が自動的に挿入される．複雑な数式も，この環境を使って，
+        \begin{equation}
+            \left(\int_{0}^{\infty}\frac{\sin(x)}{\sqrt x}dx\right)^2 = 
+            \sum_{k=0}^{\infty}\frac{(2k)!}{2^{2k} (k!)^2}\frac{1}{2k + 1} = \frac{\pi}{2}
+        \end{equation}
+        のように出力できる．
+
+    \item[式番号なしの数式環境]
+        １行の数式を式番号なしで入れる場合は，次のような簡潔な記述が使える．\\
+
+\verb|\[|\\
+\verb|    f(x)=\frac{\sin(\pi x)}{\pi x}\sum_{n=1}^{N}\frac{x^n}{n!}|\\
+\verb|\]|\\
+
+        出力結果は，
+\[
+    f(x)=\frac{\sin(\pi x)}{\pi x}\sum_{n=1}^{N}\frac{x^n}{n!}
+\]
+        となる．
+    \item[align環境]
+        複数行の数式を，符号などで位置を揃えて表示する．実は，式(2.1)-(2.3)がこれで，
+        コードは次のようになっている．ここでは符号で位置を揃えるために，＝の前に＆を置いている．\\
+\\
+\verb|\begin{align}|\\
+\verb|   U(f_x, F_y) &= \iint_{-\infty}^{\infty}u(x,y)|\\
+\verb|                   \exp[-i2\pi(f_x x + f_y y)]dxdy\\|\\
+\verb|   u(x,y) &= g(x,y)\exp\left[i\frac{2\pi}{\lambda}h(x,y)\right]\\|\\
+\verb|   g(x,y) &= \frac{\partial P(x,y)}{\partial x}|\\
+\verb|                    \frac{\partial Q(x,y)}{\partial x}|\\
+\verb|\end{align}|\\
+\\
+        複数行の数式を表示する環境としては，eqnarrayも用意されているが，これは古いコマンドで，
+        符号の前後に必要以上にスペースが空くなど，出力品質は良好ではない．
+    \item[align*環境]
+        式番号が付かない点を除いて，align環境と同じ．
+\end{description}
+
+これらの数式行の出力スタイルは，displaystyleと呼ばれている．ただし，複雑な分数を含むような場合，
+システムが部分的にtextstyleを使って整形することがあり，それを強制的にdisplaystyleに
+するには，当該部分の前に\verb|\displaystyle|のコマンドを挿入する．同様に文中数式に\verb|\displaystyle|
+を使って大きく表示することも可能で，たとえば，
+\verb|$\displaystyle f(x)=\frac{\sin(\pix)}{\pi x} \sum_{n=1}^{N}|\\
+\verb|\frac{x^n}{n!}$|のようにすると，出力は
+$\displaystyle f(x)=\frac{\sin(\pi x)}{\pi x} \sum_{n=1}^{N}\frac{x^n}{n!}$
+と大きくなる．また，逆に数式行をコンパクトにしたければ，テキトウな場所に\verb|textstyle|のコマンドを挿入
+すればよい．ただし，見た目はその分悪くなる．
+
+\section{区切り記号}
+かっこや，絶対値の記号などは，区切り記号と呼ばれる．通常は，キーボード上のキーを
+そのまま使って入力できるが，積分や微分のような高さのある式の場合は，区切り記号
+もそれに合わせた高さ調整が必要である．それを自動的行いコマンドが\verb|\left|と\verb|\right|
+である．たとえば，（）の場合\verb|\lest(|と\verb|\right)|のように用いる．このコマンドは，
+左右を必ず１行中に対して使わないとエラーになる．そこで，片方だけ使いたい場合のダミーコマンド
+として，\verb|\left.|と\verb|\right.|が用意されている．たとえば\\
+\\
+\verb|\begin{align*}|\\
+\verb|F(x,y) &= \left\{\iiint\exp\left[-\frac{(x - \mu)^2}{2\sigma^2}\right]|\\
+\verb|    \sin(x+y)\cos(y+z)\log(z+x)dxdydz\right. \\|\\
+\verb|    & \left. + \left(1+x+\frac{x^2}{2!}+\cdots +\frac{x^{10}}{10!}\right)|\\
+\verb|    \left(1+y+\frac{y^2}{2!}+\cdots +\frac{y^{10}}{10!}\right)\right\}^2|\\
+\verb|\end{align*}|\\
+\\
+とすれば，
+\begin{align*}
+    F(x,y) &= \left\{\iiint\exp\left[-\frac{(x - \mu)^2}{2\sigma^2}\right]
+        \sin(x+y)\cos(y+z)\log(z+x)dxdydz\right. \\
+        & \left. + \left(1+x+\frac{x^2}{2!}+\cdots +\frac{x^{10}}{10!}\right)
+        \left(1+y+\frac{y^2}{2!}+\cdots +\frac{y^{10}}{10!}\right)\right\}^2
+\end{align*}
+と表示される．
+
+\end{document}
+
+
+
+

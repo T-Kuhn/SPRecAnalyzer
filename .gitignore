@@ -1,5 +1,11 @@
+*~
+*.fig
+*.swp
 *.png
 *.bmp
 *.json
 *.mat
 *.wav
+*.toc
+*.aux
+*.log

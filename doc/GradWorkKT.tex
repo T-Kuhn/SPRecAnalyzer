@@ -1,0 +1,888 @@
+\documentclass[12pt,a4paper]{jreport}
+
+\pagestyle{headings}
+\topmargin 0mm
+\oddsidemargin 5mm
+\textwidth 150mm
+\textheight 230mm
+
+\usepackage[autolinebreaks, numbered]{mcode}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\sisetup{detect-all}
+
+\title{平成28年　卒業研究論文\\
+    　\\
+    　\\
+    　\\
+\huge\bf 疑似ラインセンサーを用いた\\ＳＰレコード音検出\\}
+\author{　\\
+    　\\
+    北海学園大学工学部 電子情報工学科\\
+    魚住研究室\\
+    \\
+    \\
+    4513213\\
+クーン・トビアス}
+\date{2016年10月11日}
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+
+
+\chapter{はじめに}
+
+ここをメモ用に使おう．この論文の構造について考えたいと思い．
+
+
+- - 概要 - -\\ 
+- 実験装置\\
+- 音溝形状と光照射\\
+- プログラム構造\\
+
+- - 部分読み出し法- -\\ 
+- 撮像段階での問題\\
+- 部分読み出し法の利点・利点\\
+
+- - 画像処理- -\\
+- SpliceBot \\
+- SigExBot \\
+- Needle \\
+
+
+- - 結論 - -\\
+
+
+- - 結論 - -\\
+- 少なくとも一つの箇所を完璧に書こう．今日は部分読み出し法のところに挑もう．
+
+
+
+\chapter{概要}
+
+本研究で用いた実験装置，撮像法とプログラム構造について説明する．
+
+\section{実験装置}
+
+SPレコードの撮像に用いられる実験装置を図\ref{fig:experimentalSetup}に示す．レコードの下にあるパルスステージはレコードをカメラの位置に対して平行に
+（図\ref{fig:experimentalSetup}で言うと左右に）動かす．この平行移動をパルスモータFが実装する回転運動と組み合わせると，SPレコードの全領域を顕微鏡の下
+に持ってこられる仕組みができる．
+
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{experimentalSetup.eps}
+        \caption{実験装置の設定}
+        \label{fig:experimentalSetup}
+    \end{center}
+\end{figure}
+
+\begin{table}[h]
+    \begin{center}
+        \begin{tabular}{ l l }
+            A & CDDカメラ \\
+            B & 顕微鏡 \\
+            C & 照射装置 \\
+            D & SPレコード \\
+            E & パルスモータ、平行移動用 \\
+            F & パルスモータ、回転用 \\
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\subsection{接続図}
+それぞれの実験装置がどのようにしてパソコンと繋がっているかを図\ref{fig:ElectricalSetup}に示す．GigEバスはパソコンのNIC（Network Interface Card）と接続される．
+
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ElectricalSetup.eps}
+        \caption{実験装置の設定}
+        \label{fig:ElectricalSetup}
+    \end{center}
+\end{figure}
+
+\subsection{CCDカメラ}
+本研究で使用されているカメラはJAI社の「BB-500GE」である．
+カメラの最大解像度は2456(h)x2058(v)であるが，Variable Partial Scan機能を利用して実際にデータとしてパソコンに送られるのはもっと幅が狭い領域のデータである．
+表\ref{table:JAI}にカメラのパラメータの設定を示す．
+
+\begin{table}[h]
+    \begin{center}
+        \caption{JAI BB-500GEのパラメータの設定}
+        \label{table:JAI}
+        \begin{tabular}{ | l | l |}
+            \hline
+            ROI範囲設定 & 2456 (h) x 32 (v) \\ \hline
+            GainRaw & 550 \\ \hline
+            ExposureTimeRaw & 222 \\ \hline
+            AcquisitionMode & Continuous \\ \hline
+            ExposureMode & EdgePreSelect \\ \hline
+            PartialScan & Variable Partial Scan \\ \hline
+            VariablePartialScanStartLine & 1013 \\ \hline
+            VariablePartialScanNumOfLines & 32 \\ \hline
+            TriggerSelector & FrameStart \\ \hline
+            TriggerMode & On \\ \hline
+            TriggerSource & Software \\ \hline
+            LineSelector & CameraTrigger0 \\ \hline
+            LineSource & SoftwareTrigger0 \\ \hline
+            LineInverter & ActiveHight \\ \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+画像データ生成段階でSPレコードを一定の速度で回転させながら順次に撮像を行うため，
+ExposureTimeRawパラメータ（無単位）は実験的にぶれが生じないように設定した．表\ref{table:JAI}のパラメータは全て自作のC\#プログラムで設定される．
+SoftwareTriggerを実行して画像一枚取得するためのコードを図\ref{fig:Trigger}に示す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{Trigger.eps}
+        \caption{C\#プログラムの中からカメラのSoftwareTriggerを実行させるためのコード}
+        \label{fig:Trigger}
+    \end{center}
+\end{figure}
+
+\subsection{パルスステージ}
+パルスステージの仕様を図\ref{table:PulseStage}に示す．
+
+\begin{table}[h]
+    \begin{center}
+        \caption{パルスステージの仕様}
+        \label{table:PulseStage}
+        \begin{tabular}{ | l | l |}
+            \hline
+            degrees per pulse（回転運動） & 0.0025 \\ \hline
+            mm per pulse（平行移動） & 0.002 \\ \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\section{音溝形状と光照射}
+顕微鏡を通って撮像される光からSPレコードの音溝に記録されたデータを復元するのが本研究目標であるから，
+撮像されるデータに音溝の形状が何らかの方法で読み取れなければならない．これを成し遂げるために，
+光を斜めに照射して，音溝の壁の一部が明るく映るようにするのが有力な方法であることが過去の研究でわかった（ref!）．
+図\ref{fig:ReflectionOnSPRec}に光の反射具合を模式的に表す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ReflectionOnSPRec.eps}
+        \caption{反射の仕方}
+        \label{fig:ReflectionOnSPRec}
+    \end{center}
+\end{figure}
+
+図\ref{fig:ReflectionOnSPRec}を見てわかるように，SP盤に対して垂直に反射する光は，音溝の壁部分が一番多い．
+一方，音溝以外の平面部分で反射する光は垂直に反射せず，顕微鏡にはほとんど入らない．この設定でカメラと顕微鏡で撮像した画像を図\ref{fig:SprecMicroscopeImgLabeled}に示す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.6\textwidth, clip]{SprecMicroscopeImgLabeled.eps}
+        \caption{SprecMicroscopeImgLabaled}
+        \label{fig:SprecMicroscopeImgLabeled}
+    \end{center}
+\end{figure}
+
+\section{プログラム構造}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ProgSetupOld.eps}
+        \caption{Prog Setup Old}
+        \label{fig:ProgSetupOld}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{ProgSetupNew.eps}
+        \caption{Prog Setup New}
+        \label{fig:ProgSetupNew}
+    \end{center}
+\end{figure}
+
+\chapter{部分読み出し法}
+
+カメラが撮影した画像データの一部しか用いらない部分読み出し法には利点もあれば欠点もあり，撮像段階で直面する問題とその解決の説明を通じてそれらについて考察する．
+
+\section{撮像段階での問題}
+
+画像処理技術を適応し音溝から音データを抽出するためには，
+画像上の音溝データが連続的で，余分な重複などがないものでなければならない．
+四角形の画像を撮影するカメラでその下を回る円盤の表面を撮像する際どのような問題が起きるかを調べて，解析する．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_1.eps}
+        \caption{撮像の様子を幾何学的に表した図}
+        \label{fig:OverlapProblem_1}
+    \end{center}
+\end{figure}
+
+図\ref{fig:OverlapProblem_1}において，四角形ABCDがカメラの撮像範囲，SがSPレコードの外側，MがSPレコードの中心，$\alpha$が次の画像を取るための回転角度だとする．
+また$\overline{EG} = \overline{GF}$である．
+
+\subsection{重複部分問題}
+
+図\ref{fig:OverlapProblem_2}の四角形A，B，Cが順番に撮像された画像範囲だとする．このとき，それぞれの撮像範囲が重なることがわかる．撮像範囲が
+四角形であることを前提とすると，画像をどのように撮像しても重複部分，または情報損失が生じる．
+音溝から音を抽出する画像処理段階で，情報損失があってはならない．重複部分も画像処理を困難にするため何らかの方法でそれを最低限に抑える必要がある．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_2.eps}
+        \caption{A，B，Cと順番に撮像を行った際に重複部分が生じる}
+        \label{fig:OverlapProblem_2}
+    \end{center}
+\end{figure}
+
+本研究では，撮像範囲の幅（図\ref{fig:OverlapProblem_3}中$\overline{AB} = \overline{CD}$）を小さくすることで重複部分の影響を無視できる程度に抑える．
+どのくらいの幅であれば無視できる程度になるかを調べることにしよう．図\ref{fig:OverlapProblem_3}中の$\epsilon$が一画像の片方の重複部分だとする．隣り合っている画像でのピクセルの重複部分を
+考えると$2\epsilon$となる．
+
+$\epsilon$を求めるために，まず直角三角形MCFより$\displaystyle \frac{\alpha}{2}$を求めておく．
+
+\begin{equation}
+    \label{eq:Overlap1}
+    \frac{\alpha}{2} = \arctan{\left(\frac{\overline{BE}}{\overline{MF}}\right)}
+\end{equation}
+
+$\frac{\alpha}{2}$を用いて以下の方程式が成り立つ．
+
+\begin{equation}
+    \label{eq:Overlap2}
+    \overline{BE} - \overline{BG} = \tan{\left(\frac{\alpha}{2}\right)}\overline{ME}
+\end{equation}
+
+\begin{equation}
+    \label{eq:Overlap3}
+    \epsilon = \overline{BG} = \overline{BE} - \tan{\left(\frac{\alpha}{2}\right)}\overline{ME}
+\end{equation}
+
+式\ref{eq:Overlap1}を式\ref{eq:Overlap3}に代入し式を整理すると
+
+\begin{equation}
+    \label{eq:Overlap4}
+    \epsilon = \overline{BE} \left( 1 - \frac{\overline{ME}}{\overline{MF}} \right)
+\end{equation}
+
+が得られる．本研究で作成したC\#プログラムの中のキャリブレーション機能を利用した後のパルスステージだと，変数$\overline{BE}$，$\overline{ME}$と$\overline{MF}$は
+常に把握できていることから，SPレコードの任意の位置においての$\epsilon$を求めることができる．$\epsilon$の性質を調べるために，まずカメラの最大解像度で撮像を行った際の
+計算を進めてみる．ただし，撮像場所においてはSPレコードの一番外側と内側と２つのケースに分けることにする．カメラに直結している顕微鏡の拡大率が1.5xに設定してあるときの次の定数を計算に用いる．
+
+\begin{equation}
+    \label{eq:Overlap5}
+    \gamma = 0.002366 \left[\frac{\si{mm}}{\si{pixel}}\right]
+\end{equation}
+  
+\begin{equation}
+    \label{eq:Overlap6}
+    \delta = 422.65 \left[\frac{\si{pixel}}{\si{mm}}\right]
+\end{equation}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_3.eps}
+        \caption{重複問題を数値化する$\rho$の幾何学的図}
+        \label{fig:OverlapProblem_3}
+    \end{center}
+\end{figure}
+
+最大解像度で撮像した画像は実際のサイズは
+   
+\begin{equation}
+    \label{eq:Overlap7}
+    \verb|height| = \overline{EF} = 5.81 \left[\si{mm}\right]
+\end{equation}
+
+\begin{equation}
+    \label{eq:Overlap8}
+    \verb|width| = 2\cdot\overline{BE} = 4.87 \left[\si{mm}\right]
+\end{equation}
+
+となり，またレコードの外側で撮像したときの$\overline{ME}$は
+
+\begin{equation}
+    \label{eq:Overlap9}
+    \overline{ME} = 120.0 \left[\si{mm}\right]
+\end{equation}
+
+となる．$\displaystyle \overline{MF} = \overline{ME} + \overline{EF}$を考慮しながら式\ref{eq:Overlap7}，\ref{eq:Overlap8}，\ref{eq:Overlap9}を式\ref{eq:Overlap4}に代入して計算すると
+
+\begin{equation}
+    \label{eq:Overlap10}
+    \epsilon_{1} = 0.1124 \left[\si{mm}\right]
+\end{equation}
+
+となり，式\ref{eq:Overlap6}の単位換算定数$\delta$をかけると
+  
+\begin{equation}
+    \label{eq:Overlap11}
+    \epsilon_{1} = 47.52 \left[\si{pixel}\right]
+\end{equation}
+
+という結果が得られる．同様にSPレコードの内側での$\rho$を$\overline{ME} = 50.0\left[\si{mm}\right] $として求めると
+
+\begin{equation}
+    \label{eq:Overlap12}
+    \epsilon_{2} = 0.2534 \left[\si{mm}\right] = 107.14 \left[\si{pixel}\right]
+\end{equation}
+
+となる．ここで，前述したように，隣り合っている画像の隣接重複距離が$2\epsilon$であることを思い出すと最悪の場合の隣接重複距離が
+ 
+\begin{equation}
+    \label{eq:Overlap13}
+    2\epsilon_{2} = 0.5068 \left[\si{mm}\right] = 214.28 \left[\si{pixel}\right]
+\end{equation}
+ 
+となり，これだけのピクセル数の情報が重複していると無視できない問題と判断せざるを得ない．
+しかしながら，上記の計算は画像の縦幅$\displaystyle \overline{AB} = \overline{DC}$がカメラの最大解像度設定にしてある際の$\epsilon_{3}$の計算結果．
+縦幅32ピクセルに指定した際の計算は以下の通りになる．
+
+\begin{equation}
+    \label{eq:Overlap14}
+    \verb|width| = 2\cdot\overline{BE} = 0.0378 \left[\si{mm}\right]
+\end{equation}
+
+\begin{equation}
+    \label{eq:Overlap15}
+    2\epsilon_{3} = 0.00782 \left[\si{mm}\right] = 3.331 \left[\si{pixel}\right]
+\end{equation}
+
+式\ref{eq:Overlap15}の結果は最悪条件の下で計算したものであることを考慮しながら，実際の撮像データで幅3ピクセルの音溝に大きい変化があり得ないことが確認でき，このくらいの重複であれば無視してもいいと判断できる．
+
+\subsection{湾曲問題}
+
+SPレコードに刻まれた音溝がらせん状にレコードの中心へと近づいていく仕組みであるからレコードの任意の位置で音溝の形状を撮像した際にそれが湾曲していることが画像情報に残される．
+複数の連続的に撮像された画像を並べてみると音溝の湾曲成分が周期的な上下振動として残り，音検出段階でこのゆっくりとした振動が間違って音情報として検出されることを防ぐために，湾曲の影響を最低限に抑える必要がある．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{CurveProblem.eps}
+        \caption{音溝湾曲を数値化した変数$\rho$}
+        \label{fig:CurveProblem}
+    \end{center}
+\end{figure}
+
+図\ref{fig:CurveProblem}において，四角形ABCDがカメラの撮像範囲，TがSPレコードの音溝，MがSPレコードの中心，$\alpha$が次の画像を取るための回転角度だとする．
+また，$\overline{FG} = \overline{GE}$，角$MGF$は直角である．
+
+\begin{equation}
+    \label{eq:CurveProblem1}
+    \overline{GF} = \frac{1}{2}\overline{AB}
+\end{equation}
+
+\begin{equation}
+    \label{eq:CurveProblem2}
+    \frac{\alpha}{2} = \arctan{\left(\frac{\overline{GF}}{\overline{MF}}\right)}
+\end{equation}
+
+\begin{equation}
+    \label{eq:CurveProblem3}
+    \overline{MG} = \cos{\left(\frac{\alpha}{2}\right)}\overline{MF}
+\end{equation}
+
+\begin{equation}
+    \label{eq:CurveProblem4}
+    \rho = \overline{MH} - \overline{MG}
+\end{equation}
+
+式\ref{eq:CurveProblem1}～式\ref{eq:CurveProblem4}より
+
+\begin{equation}
+    \label{eq:CurveProblem5}
+    \rho = \overline{MH} \left\{1-\cos{\left[\arctan{\left(\frac{\overline{AB}}{2\overline{MH}}\right)}\right]}\right\}
+\end{equation}
+
+重複問題の計算と同様にレコードの一番外側と内側で$\rho$を求めることにする．まず，画像の横幅を32ピクセルと設定し，実際の画像幅を
+
+\begin{equation}
+    \label{eq:CurveProblem6}
+    \verb|width| = \overline{AB} = 0.0378 \left[\si{mm}\right]
+\end{equation}
+
+と置いておく（単位換算には式\ref{eq:Overlap6}の$\gamma$を用いる）．レコードの外側だと
+
+\begin{equation}
+    \label{eq:CurveProblem7}
+    \overline{MH} = 120.0 \left[\si{mm}\right]
+\end{equation}
+
+になる．このときの湾曲問題係数$\rho$は
+
+\begin{equation}
+    \label{eq:CurveProblem8}
+    \rho_{1} = 0.001488 \left[\si{\micro\metre}\right] = 0.000629 \left[\si{pixel}\right]
+\end{equation}
+
+レコードの内側では
+
+\begin{equation}
+    \label{eq:CurveProblem9}
+    \overline{MH} = 50.0 \left[\si{mm}\right]
+\end{equation}
+
+なので，湾曲問題係数は
+
+\begin{equation}
+    \label{eq:CurveProblem10}
+    \rho_{2} = 0.03572 \left[\si{\micro\metre}\right] = 0.0015 \left[\si{pixel}\right]
+\end{equation}
+
+となる．比較のため，以下に悪条件（レコードの内側での撮像）のもとで画像幅2058ピクセル（$\overline{AB} = 4.87 \left[\si{mm}\right]$）のときの湾曲問題係数を示す．
+
+\begin{equation}
+    \label{eq:CurveProblem10}
+    \rho_{3} = 59.18 \left[\si{\micro\metre}\right] = 25.0 \left[\si{pixel}\right]
+\end{equation}
+
+以上の計算より，横幅32ピクセルで画像撮像を行った場合の湾曲問題による影響が極めて小さく，無視できる程度であることがわかる．
+
+
+\subsection{うねり問題}
+うねり問題はレコードに開けられた穴が偏心しているために起きる．ここまでの幾何学的問題はレコードの性質（音溝がらせん状に円形のレコードに刻まれている）やカメラの撮像範囲が四角形に対し，レコードがカメラの下で回転することに起因している．ただし，うねり問題は湾曲問題と重複問題と異なり，不可避の問題ではない．完璧に作られたレコードをそれにぴったりと合う実験装置であれば，うねり問題は起きないと言える．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{UnariProblem.eps}
+        \caption{レコード一週分の画像データ．横幅は圧縮された．}
+        \label{fig:Uneri}
+    \end{center}
+\end{figure}
+
+図\ref{fig:Uneri}にレコードの一週分の画像データを示す．ページ内に収まるように，横幅は圧縮されました．この画像データに見られる音溝の形を確認してみると，ゆっくりと上下振動していることが分かる．この振動は音情報ではなく，単なる穴が偏心しているために起きる．本研究においては，うねり問題の影響を信号処理で抑制する．
+
+\section{部分読み出し法の利点・欠点}
+
+撮像時に直面するする問題とその解決法については前節に詳しく説明している．ただし，部分読み出し法の利点・欠点について議論を進められるようにそれらの問題をもう一度リストアップする．
+
+\begin{itemize}
+    \itemsep-0.3pt 
+    \item 重複部分問題
+    \item 湾曲問題
+    \item うねり問題
+\end{itemize}
+
+重複問題と湾曲問題は本研究と同じ実験設定ならば必ず台頭する．その解決法に関しては，画像処理を通じて克服する手法もあるが，部分読み出しを採用すれば重複問題と湾曲問題の影響が無視できる程度に収まる．これが部分読み出しの利点の一つである．
+
+欠点として挙げられるのは画像結合が増えること．幅が非常に小さい（本研究では32ピクセル）画像データを数多く取得し，画像処理を通して連結させる過程において，隣り合っている画像データの境界面が重複も欠損もなく実際の音溝を連続的に再現できるかどうかが部分読み出し法の難点である．
+
+\chapter{画像データ生成}
+ここでSPRecAnalyzerについて書く．
+映画を撮るか，画像を取るか．
+
+\section{SPRecAnalyzer}
+
+\subsection{物理的距離検出}
+pixelprocessing.m
+無料オープンソースツールボックスJSONLABをインストールする必要がある
+
+\subsection{自動撮像機能}
+
+\chapter{画像処理}
+
+SPRecAnalyzerを利用して取得した画像データは数多くの2456x32ピクセルの画像ファイルから構成される．
+原理的にはMatlabで直接この画像データをメモリに読み込み画像処理の元にすることも可能ではあるが，
+画像処理アルゴリズムのデバグ作業などを考えると，
+この非常に幅が狭い画像データを一度もう少し幅が広い画像ファイルにまとめてから画像処理を行った方が画像データ生成メカニズムや後ほどの画像処理での結果確認が取りやすくなる．
+
+幅が狭い画像データを数十枚束ねて幅が広い画像データを作成しておくのがSpliceBotアルゴリズムの仕事である．
+SpliceBotが作成した画像データを元に音溝に謎って信号データを抽出するのはSigExBot．
+最後にSigExBotの信号データに信号処理を施して音信号の形に変形してくれるのはNeedle．
+本研究の画像処理は全部Matlabで行うことになっている．Matlabの有料ツールボックスのインストールは不要．
+
+
+\section{SpliceBot}
+
+Splice\footnote{「splice」の意味合いについて．Oxford Dictionaryより： Join (pieces of timber, film, or tape) at the ends}BotはMatlab用の画像合成アルゴリズム．
+SpliceBotが正常に作動するために画像ファイル，フォルダ名とフォルダ構造を守らなければならない．
+アルゴリズムファイル「SpliceBot.m」と同じフォルダに「Round〇〇」フォルダを置く．〇〇は１から始まる画像データ生成の際の週番号．
+例えば，「Round1」フォルダにはレコードの一番外側を一周したときの画像データを格納する．
+アルゴリズムが要求するRound〇〇フォルダの中のフォルダ構造を図\ref{fig:folderStructure}に示す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.7\textwidth, clip]{folderStructure.eps}
+        \caption{フォルダRound〇〇フォルダの中身}
+        \label{fig:folderStructure}
+    \end{center}
+\end{figure}
+
+BWImagesフォルダには2値化画像データが格納される．アルゴリズムの中では「ConvertToBWImages」メソッドがこのデータを作成する．
+次段階の画像処理アルゴリズムは2値化データを必要としないため，処理時間短縮を目指すならコメントアウトしてよいメソッドである．
+2値化データはあくまでも画像データ確認の一つの手段にすぎない．
+
+markedImagesフォルダにはSigExBotが追跡マークをプロットした後の画像データが入る．
+rawdataフォルダには画像データ生成で作成される画像データを格納する．画像データのファイル形式は「AIA〇〇.bmp」．〇〇は１から始まる通し番号である．
+SpliceBotはこのフォルダの画像データを処理対象にする．
+splicedImagesフォルダにはSpliceBotが画像合成処理を行った後の画像データを格納する場所．画像合成後にできた画像ファイルを\ref{fig:splicedImage}に示す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.4\textwidth, clip]{splicedImage.eps}
+        \caption{spliceBotが作成した合成画像データ（レコードの表面が削れた箇所）}
+        \label{fig:splicedImage}
+    \end{center}
+\end{figure}
+
+\subsection{処理内容}
+
+Matlab環境内でパスをSpliceBot.mが格納されているフォルダに設定した後にCommand Windowに「spliceBot = SpliceBot();」を入力するとSpliceBotオブジェクトが生成される．
+生成時に，クラスファイルと同じフォルダにあるRound〇〇フォルダが全てオブジェクト内に登録される．
+
+アルゴリズムを実行するには「spliceBot.Start();」を入力する．実行開始後，全ての登録されているRound〇〇フォルダに対し，以下の処理が行われる．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item フォルダ内のbmpファイル数を検出
+    \item 画像データを50枚ずつ合成する\\
+        rawdata画像データを束ねる前にrawdata一枚ずつに対して以下の処理を行う：
+        \begin{enumerate}[topsep=0pt]
+            \itemsep-0.3pt 
+            \item 幅1ピクセルの枠を削除する（画像データのサイズが縦横2ピクセル縮む）
+            \item 上下反転，90度回転，上下反転
+        \end{enumerate}
+    \item 残り画像データが50枚以下の場合，残り画像数だけ2.と同じ手法で合成する
+    \item splicedImagesフォルダ内の.bmpファイルの個数を検出 
+    \item 合成画像データをグレースケールに変換する 
+    \item 合成画像データを２値化する
+    \item 処理対象データパスを次の登録Roundフォルダに変更して1. -- 6.をフォルダがなくなるまで繰り返す
+\end{enumerate}
+
+\section{SigExBot}
+
+このアルゴリズムは本研究の画像処理の中で中心的な役割を果たしている．処理対象となるのはSpliceBotが作成した画像データ．
+SigExBot\footnote{「Signal Extraction Bot」の略称}はSpliceBotと同じフォルダ構造を要求する．
+本研究の画像処理アルゴリズムは殆ど例外なくみんなクラスファイルとして定義されている．
+従って，SigExBotもSpliceBotと同様にクラスのインスタンス化がまず最初に必要である．
+MatlabのCommand Windowに「sigExBot = SigExBot();」でクラスをインスタンス化し「sigExBot.Start();」で処理開始．
+
+\subsection{処理内容}
+
+「sigExBot = SigExBot();」とオブジェクトを作成したとき，以下の処理が行われる．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item 様々のパラメータの初期化
+    \item Round〇〇フォルダの個数を検出し，処理対象フォルダをRound1と設定する
+    \item Round1フォルダ内のbmpファイル数を検出
+    \item Round1フォルダの検出された画像データを全部RAMに読み込む 
+\end{enumerate}
+
+「sigExBot.Start();」と処理を開始させた後は以下の処理が実行される．ただし，信号修正機能については後ほど説明するため，ここでは除く．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item 開始した直後は設定された画像データのピクセル値を左下から上へと向かって調べていき，音溝を探す 
+    \item 縦軸に対する音溝の中心を計算し，現在の位置をそれに合わせる
+    \item 現在位置のピクセルに色を付ける（デバグ用）
+    \item 設定されたステップサイスの値だけ右へと進む
+    \item 2.に戻り繰り返し処理を行う
+\end{enumerate}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.5\textwidth, clip]{searchForTrack.eps}
+        \caption{処理開始直後アルゴリズムは左下から上に向かって音溝を探す}
+        \label{fig:searchForTrack}
+    \end{center}
+\end{figure}
+
+基本的な処理内容は上記のようになっている．
+ただし，右へと進んでいき画像データの左端に到達した際は次の画像が現在処理対象画像として設定される．
+また，画像データを何回か一周した後には画像の上部に到達し，ある一定のピクセル数を超えるとRound番号がインクリメントされ，
+次の画像データがRAMに格納され，上記の処理が繰り返し行われる．
+
+なお，画像データ生成ソフトでRoundxとRoundx+1の撮像縦座標の違いがちょうど1500ピクセルになるように設定されているため，
+RoundxからRoundx+1へと進むときは，現在縦座標パラメータから1500ピクセルを引くことで，途切れることなく音溝追跡処理が続けられる．
+
+4.のステップサイズに関して説明する．蓄音機でレコードを再生するとき，針が外側から内側へと向かっていくに連れて，針の直下を回るレコードの
+表面速度が減少する．同じ1000Hzのサイン信号をレコードの外側と内側とで比較すると，内側の方が音溝の周期が短くなる．これは表面速度が減少
+しても，時間軸に対しては同じ1000Hzの信号を保たなければならないからである．
+この音溝の横軸に対する収縮に対応するため，処理対象Roundフォルダが変わるたびにステップサイズを調節する．
+中心に近づけば近づくほど，ステップサイズが小さくなる．
+
+また，Roundフォルダが変わるたびに，アルゴリズムの追跡マークが付けられた画像データがmarkedImagesフォルダ内に保存される．
+これはあくまでもデバグ用であり，字段階の信号処理アルゴリズムが必要とするデータではない．図\ref{fig:SigExBotResults}に追跡マーク付きの画像データを示す．
+したがって，処理時間短縮を目指すなら追跡マーク関連のメソッドをコメントアウトするとよい．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.8\textwidth, clip]{SigExBotResults.eps}
+        \caption{元画像データ（左）とアルゴリズムが適応された後の画像データ（右）}
+        \label{fig:SigExBotResults}
+    \end{center}
+\end{figure}
+
+図\ref{fig:SigExBotResults}に示された追跡マークは実際に検出されるデータと一致する．
+
+\subsection{信号修正機能}
+
+本研究で音検出対象となるSP盤レコードには擦り傷，割れやひびが入っているものが多い．
+それに加え，音溝に反射される光のが音溝読み取り手段になるため，蓄音機と異なり単なるほこりにも影響を受ける．
+これらの悪影響に対応できるように音信号検出アルゴリズムに様々な工夫が施された．
+乱れた信号を修正するための機能を以下にリストアップする．
+
+\begin{itemize}
+    \itemsep-0.3pt 
+    \item GapFilling
+    \item TryToRecover
+\end{itemize}
+
+Matlabプログラムとの関連性がわかるように機能名は英語で表記された．
+
+\subsection{GapFilling}
+
+GapFilling\footnote{ギャック埋め立て}機能はほこり，擦り傷やひびに対応するために実装された．
+この機能を説明するためにはまず最初にSigExBotの状態について記述する必要がある．
+SigExBotが取り得る状態を以下に示す．
+
+\begin{itemize}
+    \itemsep-0.3pt 
+    \item ライントレース中（緑） 
+    \item 警戒中（赤）
+    \item ギャップ埋め立て中（青）
+\end{itemize}
+
+かっこの中の色はデバグ用の追跡マークの色に該当する．
+普段，音信号検出アルゴリズムは「ライントレース中」の状態にある．
+アルゴリズムが謎っていこうとしている白い線の幅が急激に5\footnote{執筆時の値}ピクセル以上変わる際に，アルゴリズム状態が「警戒中」へと変化する．
+警戒中の追跡点線は赤くなり，幅が平均的な値に戻らない限りアルゴリズムは白い線の中心を追わず幅の回復が確認できるまではまっすぐ進んでいく．
+なお，アルゴリズムが追いかける白い線は音溝の壁に反射する光にすぎず，当然のことながら，反射光で撮像する画像データ内の白い線の幅は一定にはならない．
+レコードが回りながら幅が伸縮する．自然と映り具合が多少変わる幅の変化と，ひこりやひびで幅が変わるのとを区別するためにアルゴリズムの中で平均的な
+幅を常に計算している．そのため，100ステップに渡って画像データ内の音溝幅が5ピクセル大きくなってもアルゴリズム状態は「警戒中」とならず，
+追跡処理が普通通りに続けられる．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.75\textwidth, clip]{GapFilling1.eps}
+        \caption{GapFilling機能によるレコードに入っているひびで乱れたデータを修正}
+        \label{fig:GapFilling1}
+    \end{center}
+\end{figure}
+
+一旦アルゴリズム状態が「警戒中」となった後は音溝データの幅が平均値の5ピクセル以内に戻らなければ回復できない．
+音溝幅が平均値±5ピクセル以内になったとしても，その状態が30ステップ続かなければならない．
+これらの条件が満たされれば，アルゴリズムは「警戒中」から「ライントレース中」に戻り，追跡マークが赤から緑に変わる．
+
+しかし，警戒中で進んだ際の信号データが満足のできないものになる場合もあり，GapFilling機能の肝心の「ギャップ埋め立て」が
+警戒中からライントレース中に戻る直前に行われる．この機能は，信号データを上書きする機能である．
+上書きする対象となるのは警戒中に入ったところから，ライントレース中に戻ったところマイナス26ステップ．
+この範囲がギャップとされ，2点が直線で結ばれる用にアルゴリズムが追跡マークを打ち，信号データを上書きする．
+この処理を行っている間はアルゴリズム状態は「埋め立て中」となり，追跡マークは青に変わる．
+埋め立て処理が終わった後，アルゴリズムはギャップ埋め立て処理直前の位置に戻り，状態は「ライントレース中」となる．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.75\textwidth, clip]{GapFilling2.eps}
+        \caption{GapFilling機能によるレコードに入っているひびで乱れたデータを修正}
+        \label{fig:GapFilling2}
+    \end{center}
+\end{figure}
+
+図\ref{fig:GapFilling2}の画像データはレコードが完全に割れた画像データの場合の追跡マーク．
+青い点線が赤点線のデータを上書きする．これはGapFilling機能が正常に動く例であり，
+アルゴリズムは乱れた音溝データの両端を直線で結び，データ修正が成功した．
+
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.75\textwidth, clip]{GapFilling4.eps}
+        \caption{GapFilling機能が正常な音声データを謝って修正した例}
+        \label{fig:GapFilling4}
+    \end{center}
+\end{figure}
+
+一方，図\ref{fig:GapFilling4}はGapFilling機能の判断が謝り，音声信号を誤って修正した例である．
+これは音声データを悪化させたことであり，防ぎたいものの，ギャップ判定の判断基準を変えたりしない
+限り，GapFilling機能の望ましからぬ副作用として目視せざるを得ない．
+
+\subsection{TryToRecover}
+
+図\ref{fig:TryToRecover1}の中心にある音溝データを見てみると赤い点線が，アルゴリズムの仕様の結果，黒領域に入ることが確認できる．
+いうまでもなく，一旦黒領域に入ると抜き出すことは困難であり，アルゴリズムは何万ステップも警戒中状態でとにかく真っすぐに進んでみる状態に陥る．
+こうなったときに，TryToRecover機能が呼び出される．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.75\textwidth, clip]{TryToRecover1.eps}
+        \caption{TryToRecover機能によりアルゴリズムが無限警戒状態から回復}
+        \label{fig:TryToRecover1}
+    \end{center}
+\end{figure}
+
+TryToRecover機能の呼び出し条件は「黒領域（アルゴリズムの閾値以下のピクセル領域）を600ステップ以上連続的に進んだ」である．
+呼び出された後は現在縦座標値を750ステップ前（まだ黒領域ではなかった箇所）の値に設定し，その後750ステップ前の点と新しくできた
+座標点が直線で結ばれ，アルゴリズムが終点からライントレースを再開する．
+
+\section{Needle}
+
+このアルゴリズムはSigExBotが検出した信号を処理対象とし，
+フーリエ変換や振幅調整などを通じて元信号をWAVファイルへと変換できる形にしてから実際にWAVファイルとして保存しておく．
+SigExBotが音溝画像データから抽出した信号データを図j\ref{fig:SigExBotOutput}に示す．
+この信号データは処理が終わった後に「sigExBot.Signal」でアクセスできる．
+Needleアルゴリズムは前述の画像処理アルゴリズムと同様に「needle = Needle(sigExBot.Signal);」とインスタンス化できる．
+インスタンス化の際には処理対象信号データを引数として渡さす必要がある．処理開始には「needle.Start();」とMatlabのCommand Windowに入力する．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.65\textwidth, clip]{SigExBotOutput.eps}
+        \caption{}
+        \label{fig:SigExBotOutput}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.65\textwidth, clip]{SigExBotOutput2.eps}
+        \caption{}
+        \label{fig:SigExBotOutput2}
+    \end{center}
+\end{figure}
+
+図\ref{fig:SigExBotOutput}に示す信号データについて考察しよう．
+まず特徴的なところとしてゆっくりとしたサイン波に近い成分が挙げられる．
+これはうねり問題の影響である．
+レコードの穴が偏心しているときの音溝撮像への影響が理論上サイン波になることと，音信号より遥かに振幅が大きく，周期が長いこととを考慮すれば間違えなくそう関係付けられる．
+また，この信号を構成するもう一つの成分として，左上から右下に向かう直線が挙げられる．
+これは単に音溝を謎っていけばいくほど，レコードの中心に近付いていく影響である．
+
+音信号データはもっと振幅が小さく，図\ref{fig:SigExBotOutput}ではその存在確認が困難．
+図\ref{fig:SigExBotOutput}の一部を拡大した図が図\ref{fig:SigExBotOutput2}である．
+音信号が確かにうねり信号に乗っていることが分かる．
+
+\subsection{処理内容}
+
+図\ref{fig:SigExBotOutput}に示す信号データからうねり成分と直線成分を取り，
+音ファイルへと変換できるように振幅を調節し，
+なるべくノイズを除法するのがNeedleアルゴリズムの仕事である．
+アルゴリズムの細かいタスクを以下にリストアップする．
+Matlabプログラムとの関連性がわかるように処理名は英語で表記する．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item TrendCorrectSignal
+    \item FFT
+    \item Crop
+    \item AdjustAmplitude
+    \item NeedleSimulation
+    \item SaveWAV 
+\end{enumerate}
+
+TrendCorrectSignalはいわゆるトレンド修正処理である．
+全信号を対象とする1次元多項式近似で直線成分を抽出し，
+それを信号データから減算する．Matlabが用意する「polyfit」，「polyval」で実装．
+
+FFTはFast Fourier Transformの略であり，フーリエ変換処理のことである．
+この処理の目的は「うねり成分削除」と「ノイズ除法」である．実装には「」
+実装にはShmuel Ben-Ezra氏がMatlabの公式ファイル交換サイト（Matlab File Exchange）
+に投稿した「fftf.m」を利用．ただし，バンドフィルタリングができるように改造．
+バンドフィルタリングで100Hz--15'000Hz以外の周波数成分を全部削除する．
+これにより周波数ノイズをある程度抑制することに成功した．しかしながら，これでもまだノイズが残っており，
+フィルタリングされる周波数領域を例えば，100Hz--5000Hzにしてみると，白ノイズがさら減少する半面，今度は抽出しよう
+としている音声データに影響がでるため（「つ，ち」などが聞こえなくなり，音声が全体的にこもる），白ノイズに
+別の手段で対応する必要がある．
+
+Cropは信号の前後のデータ点を数百個を切り落とす処理．
+フーリエ変換が周期的な信号しか扱わずにも関わらず，
+周期的でない信号に適用したため，逆フーリエ変換の前後のデータ点が無理やりに繋がるようになっている．
+これにより信号の前後のデータが乱れており，切り落とすことで対応することにした．
+次にAdjustAmplitude処理が実行される．文字通り，信号の振幅を調節する処理であり，最高振幅が1を超えないように設定した．
+この処理は後ほどMatlabのaudiowrite関数を利用するために必要．
+NeedleSimulationは仮想針で蓄音機と同等レベルの音質が得られないか，と思ったときの試みである．
+仮想針の結果はFFT段階の信号とともに自動的にWAVファイルとして保存される．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.75\textwidth, clip]{Needle.eps}
+        \caption{}
+        \label{fig:Needle}
+    \end{center}
+\end{figure}
+
+図\ref{fig:Needle}にNeedle機能を適用した信号（オレンジ）とそうでない信号（青）を示す．
+仮想針の信号処理後の信号がもう少し柔らかく，ギザギザが少なくなることがわかる．
+しかしながら，Needleパラメータをいじって，信号をさらに白ノイズが少なく，スムーズにしようとしたところ，
+フーリエフィルタで通過領域を絞り過ぎた場合と同じ現象が起こり，白ノイズが減少するとともに，
+音声データも悪化する．
+
+
+
+
+
+
+\iffalse
+\mcode{'cool'}
+
+\begin{lstlisting}
+imgOriginal = imread('img/tmp.bmp', 'bmp'); % load the original image
+\end{lstlisting}
+
+\fi
+
+\chapter{今後の課題}
+
+\chapter{結論}
+
+\appendix
+\chapter{物理的距離検出プログラム}
+\section{PixelProcessing.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/PixelProcessing.m}
+    \end{footnotesize}
+\fi
+
+\section{ObjectExtraction.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/ObjectExtraction.m}
+    \end{footnotesize}
+\fi
+
+\chapter{画像処理プログラム}
+\section{SpliceBot.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/getSoundSignalFromSplicedImages/SpliceBot.m}
+    \end{footnotesize}
+\fi
+
+\newpage
+
+\section{SigExBot.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/getSoundSignalFromSplicedImages/SigExBot.m}
+    \end{footnotesize}
+\fi
+
+\newpage
+
+\section{Needle.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/getSoundSignalFromSplicedImages/Needle.m}
+    \end{footnotesize}
+\fi
+
+\section{fftf.m}
+\iftrue 
+    \begin{footnotesize}
+    \lstinputlisting{..//matlab/getSoundSignalFromSplicedImages/fftf.m}
+    \end{footnotesize}
+\fi
+
+
+\end{document}
+
+
+
+
