@@ -475,10 +475,59 @@ SPレコードに刻まれた音溝がらせん状にレコードの中心へと近づいていく仕組みであるか
 欠点として挙げられるのは画像結合が増えること．幅が非常に小さい（本研究では32ピクセル）画像データを数多く取得し，画像処理を通して連結させる過程において，隣り合っている画像データの境界面が重複も欠損もなく実際の音溝を連続的に再現できるかどうかが部分読み出し法の難点である．
 
 \chapter{画像データ生成}
-ここでSPRecAnalyzerについて書く．
-映画を撮るか，画像を取るか．
+
+本研究の画像取得にははJAI社の「BB-500GE」フルカラーカメラを用いる．
+しかしながら，同じカメラでも取得方法には「ビデオとして取得」と「画像データとして取得」と
+2つがある．前者の方法は昨年の研究で適応され，圧縮をかけずに動画撮影を行えばMatlabで各フレームごとに処理を施すことができる．
+この方法の利点は，フレームレートを一旦設定した後はカメラが等時間間隔で画像を取得し映画ファイルに格納してくれるため，
+フレームレートと回転速度の設定さえ正しければ隣り合っている画像データ同士は重複部分も情報損失も起きず，連続的なデータが得られる．
+一方，画像データに対しMatlabで一枚ずつ画像処理を行いたいため，ビデオ形式で取得する必要がなく，最初から画像ファイル形式で取得した方が
+データとして扱いやすい，というのが欠点として考えられる．
+
+それに対し，後者の「画像データとして取得する」といった手法の利点と欠点はどうなるだろうか．
+最初から画像ファイルとして保存されるので，画像処理には向いている．しかし，画像取得タイミングを
+何らかの基準に基づき，画像データが連続的になるようにカメラに撮像開始命令を送らなければならない．
+本研究ではこの方法を適応し，回転ステージの回転度を毎マイクロセカンド取得し，このデータを基準に撮像命令のタイミングを決める．
 
 \section{SPRecAnalyzer}
+
+カメラやパルスステージとの通信を制御し，大量の画像データを管理するために「SPRecAnalyzer」が作成された．
+このソフトウェアはC♯で書かれたもので，JAI社が公開しているカメラ制御用DLLファイル\footnote{Jai\_FactoryDotNET.dll}を活用する．
+パルスステージとの通信には同様にNational Instruments社の専用DLLファイル\footnote{NationalInstruments.NI4882.dll}を使用．
+SPRecAnalyzerの目的は画像データ取得であり，カリブレーションを行った後にAIAタブで「スターと」ボタンを押すことにより，
+自動的にレコードの全面画像データ取得プログラムが開始できる．図\ref{fig:GPIBwhileCalibrating}にSPRecAnalyzerのUIを示す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{GPIBwhileCalibrating.eps}
+        \caption{SPRecAnalyzerのユーザーインターフェース}
+        \label{fig:GPIBwhileCalibrating}
+    \end{center}
+\end{figure}
+
+\newpage
+
+SPRecAnalyzerのUIには重要なタブが３つあり，それらの役割を以下に示す．
+なお，「Matlab」タブもあるものの，デバグ目的で作成されたため，画像データ生成や各装置のセットアップには不要である．
+
+\begin{table}[h]
+    \begin{center}
+        \begin{tabular}{ l l }
+            GPIB Interface & GPIB設定，パルスステージ状況表示，カリブレーション\\
+            Camera & カメラ設定\\ 
+            Automatic Image Acq. & 自動画像取得\\
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\subsection{GPIB Interface}
+GPIBバス設定
+
+
+\subsection{Camera}
+カメラ設定
+
+\subsection{Automatic Image Acquisition}
 
 \subsection{物理的距離検出}
 pixelprocessing.m
