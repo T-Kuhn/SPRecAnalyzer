@@ -507,7 +507,7 @@ SPRecAnalyzerの目的は画像データ取得であり，カリブレーションを行った後にAIAタブで
 
 \newpage
 
-SPRecAnalyzerのUIには重要なタブが３つあり，それらの役割を以下に示す．
+SPRecAnalyzerのUIには重要なタブが３つあり，それらの役割について以下の表にまとめる．
 なお，「Matlab」タブもあるものの，デバグ目的で作成されたため，画像データ生成や各装置のセットアップには不要である．
 
 \begin{table}[h]
@@ -520,20 +520,90 @@ SPRecAnalyzerのUIには重要なタブが３つあり，それらの役割を以下に示す．
     \end{center}
 \end{table}
 
-\subsection{GPIB Interface}
-GPIBバス設定
+\subsection{GPIB Interfaceタブ}
+このタブでの一番左に「Basics」区切りがあり，そこでGPIBをセットアップできる．
+パルスステージは標準でアドレスが8になっているため，変更する必要がない．
+「Open」ボタンで通信開始した後に「Write」・「Read」ボタンでバスへの書き込み
+とバスバッファーからの読出しができる．
 
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{GPIBSetupFinished.eps}
+        \caption{GPIBをセットアップした後のGPIB Interfaceタブの様子}
+        \label{fig:GPIBSetupFinished}
+    \end{center}
+\end{figure}
 
-\subsection{Camera}
-カメラ設定
+「Advanced」区切りではパルスステージに対する命令を複数行記述し「Start」ボタンを押すことで
+順次実行できる．「Status」はバス状況についての情報が表示される．
+「Calibration」区切りはカリブレーション機能を実行，その結果を確認するために設置された．
+なお，カリブレーション機能を実行するためにはGPIBとカメラがセットアップ済みでなければならない．
 
-\subsection{Automatic Image Acquisition}
+\subsection{Cameraタブ}
+Cameraタブではカメラ設定を行うことと画像データを取得することができる．
+本研究ではカメラのSoftware Trigger機能を利用し画像データの取得タイミングを一枚一枚
+トリガーを送ることで決める．「Gain Control」スライダーではカメラのアナログ利得を設定可能．
+「Exposure Control」スライダーではカメラの露光時間を設定できる．
+本研究の撮像設定では，レコードが一定速度で回転しながら撮像を行うため，
+露光時間の値は小さく設定しないと画像データに回転によるぶれが生じる．
+本研究で用いた設定の詳細については付属Aを参照．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{cameraSetupFinished.eps}
+        \caption{SPRecAnalyzerのユーザーインターフェース}
+        \label{fig:cameraSetupFinished}
+    \end{center}
+\end{figure}
+
 
 \subsection{物理的距離検出}
-pixelprocessing.m
-無料オープンソースツールボックスJSONLABをインストールする必要がある
+
+物理的距離検出機能は本研究において非常に重要な機能である．
+なぜなら，カメラに撮像命令を送信した際に，回転パルスステージが何パルス進んだ後に次の画像を取るべきかを判定するためには
+回転パルスステージにおいて1パルス当たり横方向に何画素進むかといった情報が必要不可欠だからである．
+SPRecAnalyzerでは，この重要な変数を「Pulses per pixel ratio」と呼ぶ．
+しかしながら，カリブレーション機能を用いることで検出される「Pulses per pixel ratio」は
+平行移動軸に対する割合であり，回転パルス数に換算するためには表\ref{table:PulseStage}に示す定数を利用．
+「Beta Angle」は画像一枚当たりに回転するべき角度（単位は度）．それをパルス数に換算した値が「pulsesPerImage」である．
+詳細な換算の仕方についてはSPRecAnalyzerソースコードを参照．
+
+物理的距離検出アルゴリズム内容を以下に示す．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item レコードの外側の音溝がカメラ撮像範囲の半分くらいに入る位置まで進む 
+    \item 画像一枚を取る
+    \item Matlabで画像処理を行い，レコードの外側から見て一番近い音溝の位置情報を検出
+    \item 平行移動パルスステージを400パルスだけレコード中心に向かって移動する
+    \item 画像一枚を取る
+    \item Matlabで画像処理を行い，レコードの外側から見て一番近い音溝の位置情報を検出
+    \item 2回行った画像処理の位置情報を比較し，平行移動後，音溝が何ピクセル移動したかを計算する
+\end{enumerate}
+
+400パルスだけ移動した際に，表\ref{table:PulseStage}の定数を利用することで何mmだけ平行移動したかということが用意に計算できる．
+この結果を用いり，mm/pixel割合を計算することができる．これがいわゆる1ピクセルの物理的サイズ．
+これを一画像当たりの回転パルス数の計算に利用する．
+
+物理的距離検出のための画像処理アルゴリズムを付属Bに示す．画像処理内容は２値化，黒枠削除，ラベリング，音溝検出とまとめることができる．
+ここでいう「音溝検出」はあくまでも一定のピクセル数を超える集合を音溝だと判断する処理の処理のことである．
 
 \subsection{自動撮像機能}
+
+「Automatic Image Acq.」タブは自動撮像機能関連の操作ができる．
+物理的距離検出アルゴリズムでカメル直結顕微鏡の拡大率に関わらず
+正確に１ピクセルの物理的サイズが計算できるため，
+館鼻鏡の拡大率を調節しても，自動撮像機能で取得する画像データが連続的になる．
+
+またパルス対ピクセル割合が計算でもとまるため，レコードを一周した後に1500ピクセルだけ，
+レコードの中心に向かって平行移動することができる．それ以降撮像する画像データは前の週のデータと
+比べてちょうど1500ピクセルだけずれている状況を利用し，音検出アルゴリズム「SigExBot」は
+例えば，Round1からRound2のデータに移行するときに，現在追跡中の音溝を新しい画像データの中で用意に
+特定することができる．
+
+取得される画像データは「SPRecordAnalyzer\matlab\getPulsePerPixelData\img」フォルダ内に「Round1」，「Round2」，「Round3」...と
+週別にフォルダに格納される．このデータは次章の画像処理アルゴリズムの対象となる．
+
 
 \chapter{画像処理}
 
@@ -881,6 +951,38 @@ imgOriginal = imread('img/tmp.bmp', 'bmp'); % load the original image
 \chapter{結論}
 
 \appendix
+
+
+\chapter{SPRecAnalyzerの使用法}
+SPRecAnalyzerは画像データ生成処理過程を管理しやすくするために作成された．
+市販のソフトウェアと異なり，十分にテストされているわけではなく，
+予想しなかった操作を受けた場合にはクラッシュすると考えられる．
+SPレコードを一枚完全画像データ化するための基本的な操作法を以下に示す．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{cameraSetupFinished.eps}
+        \caption{SPRecAnalyzerのユーザーインターフェース}
+        \label{fig:cameraSetupFinished}
+    \end{center}
+\end{figure}
+
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item 高原，カメラ，パルスステージコントローラに電源を供給しONにする
+    \item パルスステージコントローラの「HOST/MANUAL」ボタンを押す
+    \item プログラムを立ち上げて「GPIB Interface」タブが開いていることを確認
+    \item 「Open」ボタンでパルスステージとの通信を開始
+    \item 「Camera」タブを開く
+    \item カメラ設定が図\ref{cameraSetupFinished}と同じになるように設定
+    \item 「Start」ボタンを押す．「BB-500GE」ウィンドウが開くことを確認
+    \item 「swTrigger」ボタンを押す
+    \item 「BB-500GE」ウィンドウに画像データが表示されることを確認
+    \item 「GPIB Interface」タブに戻り「Start Calib」ボタンを押す
+    \item 「Automatic Image Acq.」タブを開き「Start」ボタンを押す
+\end{enumerate}
+
 \chapter{物理的距離検出プログラム}
 \section{PixelProcessing.m}
 \iftrue 
