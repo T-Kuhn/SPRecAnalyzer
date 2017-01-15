@@ -563,10 +563,6 @@ Cameraタブではカメラ設定を行うことと画像データを取得することができる．
 なぜなら，カメラに撮像命令を送信した際に，回転パルスステージが何パルス進んだ後に次の画像を取るべきかを判定するためには
 回転パルスステージにおいて1パルス当たり横方向に何画素進むかといった情報が必要不可欠だからである．
 SPRecAnalyzerでは，この重要な変数を「Pulses per pixel ratio」と呼ぶ．
-しかしながら，カリブレーション機能を用いることで検出される「Pulses per pixel ratio」は
-平行移動軸に対する割合であり，回転パルス数に換算するためには表\ref{table:PulseStage}に示す定数を利用．
-「Beta Angle」は画像一枚当たりに回転するべき角度（単位は度）．それをパルス数に換算した値が「pulsesPerImage」である．
-詳細な換算の仕方についてはSPRecAnalyzerソースコードを参照．
 
 物理的距離検出アルゴリズム内容を以下に示す．
 
@@ -587,6 +583,35 @@ SPRecAnalyzerでは，この重要な変数を「Pulses per pixel ratio」と呼ぶ．
 
 物理的距離検出のための画像処理アルゴリズムを付属Bに示す．画像処理内容は２値化，黒枠削除，ラベリング，音溝検出とまとめることができる．
 ここでいう「音溝検出」はあくまでも一定のピクセル数を超える集合を音溝だと判断する処理の処理のことである．
+
+\subsection{$\beta$角算出}
+
+図\ref{fig:StatusAndCalibration}にGPIB Interfaceタブの「Status」と「Calibration」グループを示す．
+「Calibration」グループ内の「Beta Angle」と「pulsesPerImage」について説明する．
+物理的距離検出で計算される「Pulses per pixel ratio」は
+平行移動軸に対する割合であり，回転パルス数に換算するためには表\ref{table:PulseStage}に示す定数を利用．
+「Beta Angle」は画像一枚当たりに回転するべき角度（単位は度）．それをパルス数に換算した値が「pulsesPerImage」である．
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.5\textwidth, clip]{StatusAndCalibration.eps}
+        \caption{$\beta$角が1画像当たり回転すべき角度である}
+        \label{fig:StatusAndCalibration}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth, clip]{BetaAngle.eps}
+        \caption{$\beta$角が1画像当たり回転すべき角度である}
+        \label{fig:BetaAngle}
+    \end{center}
+\end{figure}
+
+\begin{equation}
+    \label{eq:}
+    \beta = 2\arctan{\left(\frac{\overline{MH}}{\overline{HE}}\right)}
+\end{equation}
 
 \subsection{自動撮像機能}
 
