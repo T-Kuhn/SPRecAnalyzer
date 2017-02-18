@@ -221,7 +221,7 @@ SoftwareTriggerを実行して画像一枚を取得するためのコードを図\ref{fig:Trigger}に示
 \section{音溝形状と光照射}
 顕微鏡を通して撮像された光学像からSPレコードの音溝に記録されたデータを復元するのが本研究の目標であるから，
 撮像されるデータに音溝の形状が何らかの方法で読み取られなければならない．これを実現するため，
-光をレコード面に対して斜めに照射して，音溝の壁の一部が明るく写るようにするのが有力な方法であることが過去の研究でわかった．
+光をレコード面に対して斜めに照射して，音溝の壁の一部が明るく写るようにするのが有力な方法であることが過去の研究でわかっている．
 図\ref{fig:ReflectionOnSPRec}に斜め照射による光の反射の様子を模式的に表す．
 
 \begin{figure}[h]
@@ -232,32 +232,33 @@ SoftwareTriggerを実行して画像一枚を取得するためのコードを図\ref{fig:Trigger}に示
     \end{center}
 \end{figure}
 
-図\ref{fig:ReflectionOnSPRec}に示すように，SP盤に対して垂直方向に反射する光は，音溝の壁部分が最も多い．
-一方，音溝以外の平面部分で反射する光は垂直方向には反射せず，顕微鏡にはほとんど入らない．
-この光照射によりカメラと顕微鏡を向いて撮像した画像を図\ref{fig:SprecMicroscopeImgLabeled}に示す．
+図\ref{fig:ReflectionOnSPRec}に示すように，照射角度を調節することにより，SP盤に対して垂直方向に反射する光のうち，音溝の壁部分からの寄与が最も多くなるようにすることが可能である．
+その場合，音溝以外の平面部分で反射する光は垂直方向には反射せず，顕微鏡の対物レンズにはほとんど入射しない．
+この光照射によりカメラと顕微鏡を用いて撮像した画像を図\ref{fig:SprecMicroscopeImgLabeled}に示す．
 
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.5\textwidth, clip]{SprecMicroscopeImgLabeled.eps}
-        \caption{反射光をカメルで撮像して得られた画像でーた}
+        \caption{反射光をカメラで撮像して得られた画像データ}
         \label{fig:SprecMicroscopeImgLabeled}
     \end{center}
 \end{figure}
 
-本研究の初期段階で照射装置に繋がっている照射ヘッドについて実験を行った．
-円形の照射ヘッドで得られた撮像データには，音溝が強く振動している部分においては，
-画像処理段階で処理が困難だと考えられる黒い影が出た．そのため，円形照射ヘッドを
+本研究の初期段階では照射装置に接続する照射ヘッドについて比較実験を行った．昨年度まで用いてきた
+円形の照射ヘッドで得られた撮像データには，音溝が強く振動している部分において
+画像処理段階で処理が困難になると考えられる黒い影が生じた．これに対し，横長の矩形ヘッドを用いた場合には，このような問題は確認されなかった．そのため，円形照射ヘッドを
 短形照射ヘッドへと変更した．
 
 \chapter{部分読み出し法}
 
-カメラが撮影した画像データの一部しか用いらない部分読み出し法には利点もあれば欠点もあり，撮像段階で直面する問題とその解決の説明を通じてそれらについて考察する．
+カメラが撮影した画像データの一部のみを用いる部分読み出し法には利点もあれば欠点もあり，
+撮像段階で直面する問題とその解決の説明を通じてそれらについて考察する．
 
 \section{撮像段階での問題}
 
 画像処理技術を用いて音溝の画像から音データを抽出するためには，
 画像上の音溝データが連続的であり，かつ余分な重複がないものでなければならない．
-そのため，短形の画像を撮影するカメラでその下を回転する円盤の表面を撮像する際どのような問題が生じるかについて，解析的に考察する．
+そのため，短形の画像を撮影するカメラでその下を回転する円盤の表面を撮像する際にどのような問題が生じるかについて，解析的に考察する．
 
 \begin{figure}[h]
     \begin{center}
@@ -268,7 +269,6 @@ SoftwareTriggerを実行して画像一枚を取得するためのコードを図\ref{fig:Trigger}に示
 \end{figure}
 
 図\ref{fig:OverlapProblem_1}において，長方形ABCDをカメラの撮像範囲，SをSPレコードの外側，MをSPレコードの中心，$\alpha$を次の画像を取るための回転角度とする．
-また$\overline{EG} = \overline{GF}$である．
 
 \subsection{重複部分問題}
 
@@ -281,12 +281,12 @@ SoftwareTriggerを実行して画像一枚を取得するためのコードを図\ref{fig:Trigger}に示
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{OverlapProblem_2.eps}
-        \caption{A，B，Cと順番に撮像を行った際に重複部分が生じる}
+        \caption{長方形画像の連続的撮像による重複部分の発生}
         \label{fig:OverlapProblem_2}
     \end{center}
 \end{figure}
 
-本研究では，撮像範囲の幅（図\ref{fig:OverlapProblem_3}中$\overline{AB} = \overline{CD}$）を小さくすることで重複部分の影響を無視できる程度に抑えることで，この問題に対処する．
+本研究では，撮像範囲の幅（図\ref{fig:OverlapProblem_3}の$\overline{AB} = \overline{CD}$）を小さくし，重複部分の影響を無視できる程度に抑えることで，この問題に対処する．
 そのため，$\overline{AB} = \overline{CD}$がどのくらいの幅であれば画像の重複を無視できるかを調べる．
 図\ref{fig:OverlapProblem_2}から分かるように，図\ref{fig:OverlapProblem_3}中の$\epsilon$が一画像の片方の重複部分であり，隣接する画像間のピクセルの重複部分は$2\epsilon$となる．
 
@@ -297,6 +297,7 @@ $\epsilon$を求めるために，まず直角三角形MCFにおいて頂角$\alpha/2$を考えると，
     \frac{\alpha}{2} = \arctan{\left(\frac{\overline{BE}}{\overline{MF}}\right)}
 \end{equation}
 
+\noindent
 が得られる．また，$\alpha/2$において
 
 \begin{equation}
@@ -304,6 +305,7 @@ $\epsilon$を求めるために，まず直角三角形MCFにおいて頂角$\alpha/2$を考えると，
     \overline{BE} - \overline{BG} = \tan{\left(\frac{\alpha}{2}\right)}\overline{ME}
 \end{equation}
 
+\noindent
 が成り立ち，したがって
 
 \begin{equation}
@@ -311,6 +313,7 @@ $\epsilon$を求めるために，まず直角三角形MCFにおいて頂角$\alpha/2$を考えると，
     \epsilon = \overline{BG} = \overline{BE} - \tan{\left(\frac{\alpha}{2}\right)}\overline{ME}
 \end{equation}
 
+\noindent
 であるから，式(\ref{eq:Overlap1})を式(\ref{eq:Overlap3})に代入して整理すると
 
 \begin{equation}
@@ -318,19 +321,15 @@ $\epsilon$を求めるために，まず直角三角形MCFにおいて頂角$\alpha/2$を考えると，
     \epsilon = \overline{BE} \left( 1 - \frac{\overline{ME}}{\overline{MF}} \right)
 \end{equation}
 
-が得られる．本研究で作成したC\#プログラム（詳細な説明は大第4章を参照）の中のキャリブレーション機能を利用した後のパルスステージの場合，変数$\overline{BE}$，$\overline{ME}$と$\overline{MF}$は
-常に把握できていることから，SPレコードの任意の位置においての$\epsilon$を求めることができる．$\epsilon$の性質を調べるために，まずカメラの最大解像度で撮像を行った際の
+\noindent
+が得られる．本研究で作成したC\#プログラム（詳細な説明は第4章を参照）の中のキャリブレーション機能を利用した後のパルスステージの場合，変数$\overline{BE}$，$\overline{ME}$と$\overline{MF}$は
+常に把握できていることから，SPレコードの任意の位置においての$\epsilon$を求めることができる．$\epsilon$の性質を調べるために，まずカメラの最大解像度で撮像を行った場合の
 計算を進めてみる．ただし，撮像場所においてはSPレコードの一番外側と内側と２つのケースに分けることにする．カメラに直結している顕微鏡の拡大率が1.5xに設定してあるときの次の定数を計算に用いる．
 
-\begin{equation}
-    \label{eq:Overlap5}
-    \gamma = 0.002366 \left[\frac{\si{mm}}{\si{pixel}}\right]
-\end{equation}
-  
-\begin{equation}
-    \label{eq:Overlap6}
-    \delta = 422.65 \left[\frac{\si{pixel}}{\si{mm}}\right]
-\end{equation}
+\begin{align}
+    \gamma & = 0.002366 \left[\si{mm}/\si{pixel}\right], \label{eq:Overlap5}\\
+    \gamma^{-1} & = 422.65 \left[\si{mm}/\si{pixel}\right]. \label{eq:Overlap6}
+\end{align}
 
 \begin{figure}[h]
     \begin{center}
@@ -340,18 +339,14 @@ $\epsilon$を求めるために，まず直角三角形MCFにおいて頂角$\alpha/2$を考えると，
     \end{center}
 \end{figure}
 
-最大解像度で撮像した画像は実際のサイズは
+最大解像度で撮像した画像の実際のサイズは
    
-\begin{equation}
-    \label{eq:Overlap7}
-    \verb|height| = \overline{EF} = 5.81 \left[\si{mm}\right]
-\end{equation}
+\begin{align}
+    \texttt{height} &= \overline{EF} = 5.81 \left[\si{mm}\right], \label{eq:Overlap7} \\
+    \texttt{width} &= 2\cdot\overline{BE} = 4.87 \left[\si{mm}\right]. \label{eq:Overlap8}
+\end{align}
 
-\begin{equation}
-    \label{eq:Overlap8}
-    \verb|width| = 2\cdot\overline{BE} = 4.87 \left[\si{mm}\right]
-\end{equation}
-
+\noindent
 となり，またレコードの外側で撮像したときの$\overline{ME}$は
 
 \begin{equation}
@@ -359,6 +354,7 @@ $\epsilon$を求めるために，まず直角三角形MCFにおいて頂角$\alpha/2$を考えると，
     \overline{ME} = 120.0 \left[\si{mm}\right]
 \end{equation}
 
+\noindent
 となる．$\displaystyle \overline{MF} = \overline{ME} + \overline{EF}$を考慮しながら式(\ref{eq:Overlap7})，(\ref{eq:Overlap8})，(\ref{eq:Overlap9})を式(\ref{eq:Overlap4})に代入して計算すると
 
 \begin{equation}
@@ -366,47 +362,49 @@ $\epsilon$を求めるために，まず直角三角形MCFにおいて頂角$\alpha/2$を考えると，
     \epsilon_{1} = 0.1124 \left[\si{mm}\right]
 \end{equation}
 
-となり，式(\ref{eq:Overlap6})の単位換算定数$\delta$をかけると
+\noindent
+となり，式(\ref{eq:Overlap6})の単位換算定数$\gamma^{-1}$をかけると
   
 \begin{equation}
     \label{eq:Overlap11}
     \epsilon_{1} = 47.52 \left[\si{pixel}\right]
 \end{equation}
 
-という結果が得られる．同様にSPレコードの内側での$\rho$を$\overline{ME} = 50.0\left[\si{mm}\right] $として求めると
+\noindent
+という結果が得られる．同様にSPレコードの内側での$\epsilon$を$\overline{ME} = 50.0\left[\si{mm}\right] $として求めると
 
 \begin{equation}
     \label{eq:Overlap12}
     \epsilon_{2} = 0.2534 \left[\si{mm}\right] = 107.14 \left[\si{pixel}\right]
 \end{equation}
 
-となる．ここで，前述したように，隣接する画像の隣接重複距離が$2\epsilon$であることを思い出すと最悪の場合の隣接重複距離が
+\noindent
+となる．ここで，前述したように，隣接する画像の隣接重複距離が$2\epsilon$であることを思い出すと，最悪の場合の隣接重複距離が
  
 \begin{equation}
     \label{eq:Overlap13}
     2\epsilon_{2} = 0.5068 \left[\si{mm}\right] = 214.28 \left[\si{pixel}\right]
 \end{equation}
  
+\noindent
 となり，これだけのピクセル数の情報が重複していると無視できない問題と判断せざるを得ない．
-しかしながら，上記の計算は画像の縦幅$\displaystyle \overline{AB} = \overline{DC}$がカメラの最大解像度設定にしてある際の$\epsilon_{3}$の計算結果．
+しかしながら，上記の計算は画像の縦幅$\displaystyle \overline{AB} = \overline{DC}$がカメラの最大解像度に設定した場合の$\epsilon_{3}$の計算結果であり，
 縦幅32ピクセルに指定した際の計算は以下の通りになる．
 
-\begin{equation}
-    \label{eq:Overlap14}
-    \verb|width| = 2\cdot\overline{BE} = 0.0378 \left[\si{mm}\right]
-\end{equation}
+\begin{align}
+    \texttt{width} &= 2\cdot\overline{BE} = 0.0378 \left[\si{mm}\right], \label{eq:Overlap14} \\
+    2\epsilon_{3} &= 0.00782 \left[\si{mm}\right] = 3.331 \left[\si{pixel}\right]. \label{eq:Overlap15}
+\end{align}
 
-\begin{equation}
-    \label{eq:Overlap15}
-    2\epsilon_{3} = 0.00782 \left[\si{mm}\right] = 3.331 \left[\si{pixel}\right]
-\end{equation}
-
-式(\ref{eq:Overlap15})の結果は最悪条件の下で計算したものであることを考慮しながら，実際の撮像データで幅3ピクセルの音溝に大きい変化があり得ないことが確認でき，このくらいの重複であれば無視してもいいと判断できる．
+式(\ref{eq:Overlap15})の結果は最悪条件の下で計算したものであることを考慮しながら，
+実際の撮像データで幅3ピクセルの音溝に大きい変化があり得ないことが確認でき，この程度の重複であれば無視しても良いと判断できる．
 
 \subsection{湾曲問題}
 
-SPレコードに刻まれた音溝がらせん状にレコードの中心へと近づいていく仕組みであるからレコードの任意の位置で音溝の形状を撮像した際にそれが湾曲していることが画像情報に残される．
-複数の連続的に撮像された画像を並べてみると音溝の湾曲成分が周期的な上下振動として残り，音検出段階でこのゆっくりとした振動が間違って音情報として検出されることを防ぐために，湾曲の影響を最低限に抑える必要がある．
+SPレコードに刻まれた音溝はらせん状にレコードの中心へと近づいていく仕組みであるから，
+レコードのどの位置で音溝の形状を撮像しても湾曲を伴った形状として画像情報が記録される．
+したがって，複数の連続的に撮像された画像を並べると音溝の湾曲成分が周期的な上下振動として残こることになり，
+音検出段階でこのゆっくりとした振動が間違って音情報として検出されることを防ぐためには，湾曲の影響を最低限に抑える必要がある．
 
 \begin{figure}[h]
     \begin{center}
@@ -416,50 +414,45 @@ SPレコードに刻まれた音溝がらせん状にレコードの中心へと近づいていく仕組みであるか
     \end{center}
 \end{figure}
 
-図\ref{fig:CurveProblem}において，長方形ABCDがカメラの撮像範囲，TがSPレコードの音溝，MがSPレコードの中心，$\alpha$が次の画像を取るための回転角度だとする．
-また，$\overline{FG} = \overline{GE}$，角$MGF$は直角である．
+図\ref{fig:CurveProblem}において，長方形ABCDをカメラの撮像範囲，TをSPレコードの音溝，MをSPレコードの中心，
+$\alpha$を次の画像を取得するための回転角度とする．
+また，$\overline{FG} = \overline{GE}$であり，角$MGF$は直角である．このとき，
 
-\begin{equation}
+\begin{align}
     \label{eq:CurveProblem1}
-    \overline{GF} = \frac{1}{2}\overline{AB}
-\end{equation}
-
-\begin{equation}
+    \overline{GF} &= \frac{1}{2}\overline{AB}, \\
     \label{eq:CurveProblem2}
-    \frac{\alpha}{2} = \arctan{\left(\frac{\overline{GF}}{\overline{MF}}\right)}
-\end{equation}
-
-\begin{equation}
+    \frac{\alpha}{2} &= \arcsin{\left(\frac{\overline{GF}}{\overline{MF}}\right)} = \arcsin{\left(\frac{\overline{GF}}{\overline{MH}}\right)}, \\
     \label{eq:CurveProblem3}
-    \overline{MG} = \cos{\left(\frac{\alpha}{2}\right)}\overline{MF}
-\end{equation}
-
-\begin{equation}
+    \overline{MG} &= \cos{\left(\frac{\alpha}{2}\right)}\overline{MF}, \\
     \label{eq:CurveProblem4}
-    \rho = \overline{MH} - \overline{MG}
-\end{equation}
+    \rho &= \overline{MH} - \overline{MG}.
+\end{align}
 
-式(\ref{eq:CurveProblem1})～式(\ref{eq:CurveProblem4})より
+\noindent
+が成り立つ．式(\ref{eq:CurveProblem1})～式(\ref{eq:CurveProblem4})より
 
 \begin{equation}
     \label{eq:CurveProblem5}
-    \rho = \overline{MH} \left\{1-\cos{\left[\arctan{\left(\frac{\overline{AB}}{2\overline{MH}}\right)}\right]}\right\}
+    \rho = \overline{MH} \left\{1-\cos{\left[\arcsin{\left(\frac{\overline{AB}}{2\overline{MH}}\right)}\right]}\right\}
 \end{equation}
 
-重複問題の計算と同様にレコードの一番外側と内側で$\rho$を求めることにする．まず，画像の横幅を32ピクセルと設定し，実際の画像幅を
+重複問題の計算と同様にレコードの最外周と最内周で$\rho$を求めることにする．まず，画像の横幅を32ピクセルと設定し，実際の画像幅を
 
 \begin{equation}
     \label{eq:CurveProblem6}
     \verb|width| = \overline{AB} = 0.0378 \left[\si{mm}\right]
 \end{equation}
 
-と置いておく（単位換算には式(\ref{eq:Overlap6})の$\gamma$を用いる）．レコードの外側だと
+\noindent
+と置いておく（単位換算には式(\ref{eq:Overlap6})の$\gamma$を用いる）．レコードの外周では
 
 \begin{equation}
     \label{eq:CurveProblem7}
     \overline{MH} = 120.0 \left[\si{mm}\right]
 \end{equation}
 
+\noindent
 になる．このときの湾曲問題係数$\rho$は
 
 \begin{equation}
@@ -467,52 +460,58 @@ SPレコードに刻まれた音溝がらせん状にレコードの中心へと近づいていく仕組みであるか
     \rho_{1} = 0.001488 \left[\si{\micro\metre}\right] = 0.000629 \left[\si{pixel}\right]
 \end{equation}
 
-レコードの内側では
+\noindent
+となる．また，レコードの内周では
 
 \begin{equation}
     \label{eq:CurveProblem9}
     \overline{MH} = 50.0 \left[\si{mm}\right]
 \end{equation}
 
-なので，湾曲問題係数は
+\noindent
+であるので，湾曲問題係数は
 
 \begin{equation}
     \label{eq:CurveProblem10}
     \rho_{2} = 0.03572 \left[\si{\micro\metre}\right] = 0.0015 \left[\si{pixel}\right]
 \end{equation}
 
+\noindent
 となる．比較のため，以下に悪条件（レコードの内側での撮像）のもとで画像幅2058ピクセル（$\overline{AB} = 4.87 \left[\si{mm}\right]$）のときの湾曲問題係数を示す．
 
 \begin{equation}
     \label{eq:CurveProblem10}
-    \rho_{3} = 59.18 \left[\si{\micro\metre}\right] = 25.0 \left[\si{pixel}\right]
+    \rho_{3} = 59.18 \left[\si{\micro\metre}\right] = 25.0 \left[\si{pixel}\right].
 \end{equation}
 
-以上の計算より，横幅32ピクセルで画像撮像を行った場合の湾曲問題による影響が極めて小さく，無視できる程度であることがわかる．
+以上の計算より，横幅32ピクセルで画像撮像を行った場合の湾曲問題による影響は極めて小さく，無視できる程度であることがわかる．
 
 
 \subsection{うねり問題}
 うねり問題はレコードに開けられた穴が偏心しているために生じる．
-ここまでの幾何学的問題はレコードの性質（音溝がらせん状に円形のレコードに刻まれている）やカメラの撮像範囲が長方形に対し，レコードがカメラの下で回転することに起因している．
-ただし，うねり問題は湾曲問題と重複問題と異なり，不可避の問題ではない．
-完璧に作られたレコードをそれにぴったりと合う実験装置であれば，うねり問題は生じないと考えられる．
+ここまでの幾何学的問題はレコードの原理的性質，すなわち音溝がらせん状に円形のレコードに刻まれていることや
+長方形の撮像範囲を持つカメラの下でレコードが回転することに起因している．
+しかし，うねり問題は湾曲問題や重複問題と異なり，不可避の問題ではない．
+完璧に作られたレコードとそれに正確に適合した実験装置であれば，うねり問題は生じないと考えられる．
 
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{UnariProblem.eps}
-        \caption{レコード一週分の画像データ．横幅は圧縮された．}
+        \caption{レコード1周分の画像データ．横幅は圧縮して表示している．}
         \label{fig:Uneri}
     \end{center}
 \end{figure}
 
-図\ref{fig:Uneri}にレコードの一週分の画像データを示す．
-ページ内に収まるように，横幅は圧縮されました．この画像データに見られる音溝の形を確認してみると，ゆっくりと上下振動していることが分かる．
-この振動は音情報ではなく，単なる穴が偏心しているために生じる．
-本研究においては，うねり問題の影響を信号処理で抑制する．
+図\ref{fig:Uneri}にレコードの1周分の画像データを示す．
+ページ内に収まるように，横幅は圧縮してある．この画像から音溝がゆっくりと上下に振動していることが分かる．
+この振動は明らかに音情報ではなく，単にレコードの中央の穴が偏心しているために生じている．
+本研究においては，この音溝のうねり問題の影響を画像処理ではなく信号処理により抑制する．
 
-\section{部分読み出し法の利点・欠点}
+\section{部分読み出し法による画像合成の利点・欠点}
 
-撮像時に直面するする問題とその解決法については前節に詳しく説明している．ただし，部分読み出し法の利点・欠点について議論を進められるようにそれらの問題をもう一度リストアップする．
+撮像時に直面する問題とその解決法については前節で詳しく説明した．
+本節では，部分読み出し法の利点および欠点について述べる．
+この議論を進めるため，前節の問題をもう一度リストアップする．
 
 \begin{itemize}
     \itemsep-0.3pt 
@@ -521,10 +520,15 @@ SPレコードに刻まれた音溝がらせん状にレコードの中心へと近づいていく仕組みであるか
     \item うねり問題
 \end{itemize}
 
-重複問題と湾曲問題は本研究と同じ実験設定ならば必ず台頭する．その解決法に関しては，画像処理を通じて克服する手法もあるが，部分読み出しを採用すれば重複問題と湾曲問題の影響が無視できる程度に収まる．これが部分読み出しの利点の一つである．
+重複問題と湾曲問題は本研究と同じ実験設定においては必ず発生する．
+その解決法に関しては，カメラの全画像を使った画像を用い，画像処理を通じて克服する手法もあるが，
+前節に述べたように，部分読み出しの機能を採用すれば重複問題と湾曲問題の影響が無視できる程度に収まる．
+これが部分読み出しの利点の一つである．
 
-欠点として挙げられるのは画像結合が増えること．幅が非常に小さい（本研究では32ピクセル）画像データを数多く取得し，画像処理を通して連結させる過程において，
-隣接する画像データの境界面が重複も欠損もなく実際の音溝を連続的に再現できるかどうかが部分読み出し法の難点である．
+一方，欠点として挙げられるのは画像結合が増えることである．
+幅が非常に狭い（本研究では32ピクセル）画像データを数多く取得し，画像処理を通して連結させる過程において，
+隣接する画像データが重複も欠損もなく実際の音溝を連続的かつ正確に再現できるかどうかが部分読み出し法の制度を決める重要なポイントであり，
+その実現が必ずしも容易ではないことが，この方法の難点である．
 
 \chapter{画像データ生成}
 
