@@ -1,0 +1,162 @@
+% 北海学園大学工学部電子情報工学科魚住卒研卒論要旨スタイルファイル
+%	sotsuronB2.sty (卒論要旨用，２段組)
+%						(2002年10月30日作成)
+%						(2004年11月8日修正）
+%						(2009年1月16日修正)
+% このスタイルファイルは下記のスタイルファイルを修正して作成しました
+%
+%   電子情報通信学会北海道支部インターネットシンポジウムスタイルファイル
+%　　　　　　　　symp.sty
+%                                              (2000年1月25日作成）
+%
+
+% もし、印刷位置が紙の中央からずれてしまう場合には、\setlengthの2番目の中カッコの
+% 0mmを変更して下さい。例えばこれを5mmにすると、右に5mmずれて印刷されます。
+%
+\newlength{\水平オフセット}
+\setlength{\水平オフセット}{0mm} % 第2引数 印刷位置の調整パラメータ
+
+\typeout{*** Uozumi-Lab-Graduation-Research-LaTeX-Style ***}
+%
+% 年度の計算
+\newcount{\tmpyearpmt}
+\def\nendo{\tmpyearpmt=\year%
+\ifnum\month<4 \advance\tmpyearpmt -1 \fi%
+\the\tmpyearpmt}
+%\def\nendo{\tmpyearpmt=\year\advance\tmpyearpmt -0 \the\tmpyearpmt}
+%\def\nendo{\tmpyearpmt=\year\advance\tmpyearpmt -2000 \the\tmpyearpmt}
+%
+% これは aaai.sty, acm.sty 等を参考にして art10.sty の一部を
+% 複写・変更して作成したものです．
+
+ \oddsidemargin -1.04cm \evensidemargin -1.04cm
+ \topmargin -1.04cm 
+ \headheight 5mm 
+ \headsep 5mm 
+% \footheight 20pt 
+ \footskip 30pt 
+%
+\textheight 10.0in \textwidth 6.95in \columnsep .33in \columnseprule 0pt 
+
+\addtolength{\oddsidemargin}{\水平オフセット}
+\addtolength{\evensidemargin}{\水平オフセット}
+
+% ヘッダあり，フッタなし
+\def\@oddhead{\begin{minipage}{\textwidth}{\hfill{\large \nendo 年度　電子情報工学
+科魚住卒研卒論概要}\hfill\arabic{page}\vspace{-4mm}\par\mbox{}\hrulefill\mbox{}}\end{minipage}}
+\def\@evenhead{\@oddhead}
+\def\@oddfoot{}\def\@evenfoot{}
+
+%
+\def\contactto#1{\thanks{#1}}
+\def\Email#1{\thanks{#1}}
+
+% 表題形式指定
+\def\maketitle{\par
+ \begingroup
+ \def\thefootnote{\fnsymbol{footnote}}
+ \def\@makefnmark{\hbox 
+ to 0pt{$^{\@thefnmark}$\hss}} 
+ \twocolumn[\@maketitle] %本文2段組指定
+ \@thanks
+ \endgroup
+ \setcounter{footnote}{0}
+ \let\maketitle\relax
+ \let\@maketitle\relax
+ \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}
+
+% 表題の配置 (1.5cm+1.1inchのところから本文が始まる)
+% ・タイトルの長さによってもう少し本文の始まるところを下げたい場合には，
+% この1.6inchという長さをタイトルの幅に合わせるとよい
+\def\@maketitle{\vbox to 1.1in{\hsize\textwidth
+ \linewidth\hsize
+ \centering
+% {\large インターネットシンポジウム\nendo\vspace{-4mm}\par}
+% \mbox{}\hrulefill\mbox{}\par
+ {\LARGE \@title \par}
+ {\large \begin{tabular}[t]{c}\@author\end{tabular}\par} 
+ \vfil}
+}
+%\centering
+% {\large インターネットシンポジウム\nendo\vspace{-4mm}\par}
+% \mbox{}\hrulefill\mbox{}\par
+% {\LARGE \hspace*{10mm}\@title \par}
+% {\large \begin{tabular}[t]{c}\@author\end{tabular}\par} 
+% \vfil}
+%}
+
+\def\copyrightspace{\footnotetext[0]{\mbox{}\vrule height .80in width 0pt}}
+
+% 図表の量の指定
+
+\setcounter{topnumber}{10}
+\def\topfraction{.99}
+\setcounter{bottomnumber}{10}
+\def\bottomfraction{.99}
+\setcounter{totalnumber}{20}
+\def\textfraction{.0}
+\setcounter{dbltopnumber}{4}
+\def\dbltopfraction{.99}
+
+\floatsep 12pt plus 12pt minus 12pt
+\textfloatsep 20pt plus 12pt minus 12pt
+\intextsep 12pt plus 12pt minus 12pt
+
+\def\fnum@figure{Fig.\,\thefigure} % 図の見出しはFig. 表はTableとする
+\def\fnum@table{Table \thetable}  % 
+\long\def\@makecaption#1#2{
+ \vskip 10pt 
+ \setbox\@tempboxa\hbox{#1\ \ #2} % <-Fig. とキャプションの間に空白2個
+ \ifdim \wd\@tempboxa >\hsize \unhbox\@tempboxa\par \else \hbox
+to\hsize{\hfil\box\@tempboxa\hfil} 
+ \fi}
+
+% 章の見出し
+% 第4,5引き数はそれぞれ見出しの上下の空白の量である．
+% \@startsectionの第4引き数を負にすると見出しの後インデントしない．
+% 　　　〃　　　　第5引き数を負にすると見出しの後改行しない．
+% 　　　〃　　　　第6引き数は見出しフォントの指定
+
+\def\section{\@startsection {section}{1}{\z@}{1.25ex plus 1ex minus 
+ .2ex}{1.0ex plus .2ex}{\large\bf}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{1.25ex plus 1ex minus 
+ .2ex}{1.0ex plus .2ex}{\normalsize\bf}}
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{1.25ex plus 
+ 1ex minus .2ex}{1.0ex plus .2ex}{\normalsize\bf}}
+\def\paragraph{\@startsection
+ {paragraph}{4}{\z@}{1.25ex plus 1ex minus .2ex}{-1em}{\normalsize\bf}}
+\def\subparagraph{\@startsection
+ {subparagraph}{4}{\parindent}{1.25ex plus 1ex minus 
+ .2ex}{-1em}{\normalsize\bf}}
+
+%　リスト環境のパラメータ
+\leftmargini 18pt
+\leftmarginii 16pt \leftmarginiii 13pt \leftmarginiv 10pt \leftmarginv 10pt
+\leftmarginvi 10pt
+\leftmargin\leftmargini
+\labelsep 5pt
+\labelwidth\leftmargini\advance\labelwidth-\labelsep
+\def\@listI{\leftmargin=\leftmargini
+ \topsep=0pt \parsep=0pt \itemsep=0pt \parsep=0pt \itemindent 0pt \relax}
+\def\@listii{\leftmargin=\leftmarginii
+ \labelwidth=\leftmarginii
+ \advance\labelwidth by -\labelsep
+ \topsep=0pt \parsep=0pt \itemsep=0pt \parsep=0pt \itemindent 0pt \relax}
+\let\@listi\@listI \@listi 
+
+% 数式モードのパラメータ
+
+% 参考文献
+\def\thebibliography#1{\section*{参考文献}
+  \global\def\@listi{\leftmargin\leftmargini
+               \labelwidth\leftmargini \advance\labelwidth-\labelsep
+               \topsep 1pt plus 2pt minus 1pt
+               \parsep 0.25ex plus 1pt \itemsep 0.25ex plus 1pt}
+  \list {[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+    \advance\leftmargin\labelsep\usecounter{enumi}}
+    \def\newblock{\hskip .11em plus .33em minus -.07em}
+    \sloppy
+    \sfcode`\.=1000\relax}
+%
+%
+% End of file: symp.sty

@@ -1,0 +1,208 @@
+\documentclass[]{jarticle}
+
+
+% 下の4つのスタイルのどれか一つを選択する．
+%\usepackage{sotsuronA1} %中間発表，１段組
+%\usepackage{sotsuronA2} %中間発表，２段組
+%\usepackage{sotsuronB1} %卒論概要，１段組
+\usepackage{sotsuronB2} %卒論概要，２段組
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\author{% 
+%\begin{tabular}{ccc}
+\begin{tabular}{c}
+ %この下に自分の名前を入れる．たとえば，
+ クーン・トビアス 
+ %
+ %\Email{bcdef@ieice.or.jp} 
+ %&
+ %&
+ \\
+ %\multicolumn{2}{c}{%
+ 北海学園大学工学部電子情報工学科
+ %\contactto{札幌市中央区南26条西11丁目1-1 北海学園大学工学部}
+ %} &
+ %(北学園大工) 
+ \\
+\end{tabular}
+}
+
+\title{
+疑似ラインセンサによるSP盤の再生
+}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+	
+SP（standard playing）盤は，いわゆるLP（long playing）盤の登場以前に広く利用されて
+いたモノラルの円盤レコードである． % check from here
+本来は蓄音機で再生されるように設計されたとはいえ，針を用いた再生法では
+記録媒体が痛み，再生する度に音質の劣化を伴うことから，非接触再生法がこの
+貴重な文化財を傷を付けずにディジタル化できる技術として注目を浴びるようになっ
+た．非接触再生法はレコードに損害を与えずに再生できるばかりでなく，割れや
+ひびが入ったレコードも再生可能であるというメリットを持っている．
+本研究では，SP レコード表面を顕微鏡付きカメラで撮像することにより，全レ
+コードの音溝データを収集する．その際の一フレームの画像の幅が僅か32 ピクセルであるこ
+とがこの研究で用いる「部分読み出し法」の特徴である．
+データ収集後は画像データに一連の画像処理アルゴリズムを施し，
+その結果として得られた信号はさらに処理し，最終的にはWAVファイルへと変換する．
+
+
+\section{実験装置}
+
+実験装置はエリアイメージセンサ，顕微鏡，光照射装置，回転パルスステージ，
+x軸パルスステージから構成される（Fig. 1参照）．回転パルスステージ上に置かれたSP盤に斜めに
+光を照射する．V字型の音溝の片方の壁に当たった光が上方向に反射してレコードの真上に
+位置する顕微鏡に入る．顕微鏡を通過した光は，エリアイメージセンサ上に拡大像を形成し，
+ディジタル信号に変換される．
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=70mm]{../experimentalSetup.eps}
+    \setlength{\unitlength}{1mm}
+    \setlength{\abovecaptionskip}{0mm} % 図キャプション上空行幅調整
+    \setlength{\belowcaptionskip}{0mm} % 図キャプション下空行幅調整
+    \caption{SP盤の音溝を撮像する実験装置の模式図}
+  \end{center}
+\end{figure}
+
+\section{部分読み出し法}
+SP盤が円形であるために，通常のエリアセンサで取得した画像データを順次繋いで音溝データを
+形成する方法を用いると，音溝が湾曲している，取得した画像データのつなぎ目がきれいに一致
+しない（重複問題，Fig. 2参照）などの問題が生じる\cite{1stPaper,2ndPaper}．
+本研究では，部分読み出しが可能なCCDセンサを用い，
+取得した画像の幅を小さく（32ピクセルほど）することでこれらの問題の影響を無視できる
+程度に留めることに成功した．
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=80mm]{../OverlapProblem_2.eps}
+    \setlength{\unitlength}{1mm}
+    \setlength{\abovecaptionskip}{0mm} % 図キャプション上空行幅調整
+    \setlength{\belowcaptionskip}{0mm} % 図キャプション下空行幅調整
+    \label{fig:soundgroove}
+    \caption{画像データのつなぎ目に重複部分が生じる問題}
+  \end{center}
+\end{figure}
+
+
+\section{画像データ生成}
+SP盤一枚を完全にディジタル化するためには膨大な画像データを集め・管理しなければならない．
+そのために「SPRecAnalyzer」が作成された．このプログラムがパルスステージの現在位置を
+把握しながらカメラに露光開始命令を送り，送り返される画像データを
+パーソナルコンピュータ（PC）のハードディスクに保存する．
+画像データ処理を開始する前にカリブレーションアルゴリズムを通し，
+画像中の1ピクセルの物理的サイズを算出する機能もついており，
+これはSP盤上を一定のピクセル数だけ変位したい場合に便利であり，
+画像データ生成中に使用される．
+
+\section{画像処理}
+画像処理アルゴリズムには次の三つがある．
+
+\begin{enumerate}
+    \itemsep-0.3pt 
+    \item SpliceBot 
+    \item SigExBot 
+    \item Needle
+\end{enumerate}
+
+SpliceBotは画像データ生成処理の際に保存された幅が短い画像データを50枚繋げて保存するアルゴリズム．
+これが後ほどの音検出アルゴリズムのデバグ作業を効率良くするための手段である．
+
+
+SigExBotは画像データから音情報を抽出することを目的とするアルゴリズム．
+ひびや割れに影響されないように，ギャップ埋め立て機能や音溝を見失った際に起動する回復機能が備わっている．
+Fig. 3に音検出アルゴリズムが音溝を追跡する様子を示す．
+
+
+NeedleはSigExBot が検出した信号を処理対象とし，フーリエ変換や振
+幅調整などを通じて元信号をWAVファイルへと変換する．
+SigExBot が音溝画像データから抽出した信号データ
+をFig. 4に示す．
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=80mm]{../GapFilling1.eps}
+    \setlength{\unitlength}{1mm}
+    \setlength{\abovecaptionskip}{0mm} % 図キャプション上空行幅調整
+    \setlength{\belowcaptionskip}{0mm} % 図キャプション下空行幅調整
+    \label{fig:soundgroove}
+    \caption{音検出アルゴリズムが音溝を追跡する様子}
+  \end{center}
+\end{figure}
+
+
+Fig. 4に示す信号データについて考察しよう．まず特徴的なところとしてゆっくり
+としたサイン波に近い成分が挙げられる．これはうねり問題の影響である．レコー
+ドの穴が偏心しているときの音溝撮像への影響が理論上サイン波になることと，音
+信号より遥かに振幅が大きく，周期が長いこととを考慮すれば間違えなくそう関係
+付けられる．また，この信号を構成するもう一つの成分として，左上から右下に向
+かう直線が挙げられる．これは単に音溝を謎っていけばいくほど，レコードの中心
+に近付いていく影響である．
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=80mm]{../SigExBotOutput.eps}
+    \setlength{\unitlength}{1mm}
+    \setlength{\abovecaptionskip}{0mm} % 図キャプション上空行幅調整
+    \setlength{\belowcaptionskip}{0mm} % 図キャプション下空行幅調整
+    \label{fig:soundgroove}
+    \caption{SP盤から検出された音信号の一部}
+  \end{center}
+\end{figure}
+
+音信号データはもっと振幅が小さく，Fig. 4ではその存在確認が困難．Fig. 4の一
+部を拡大した図がFig. 5である．音信号が確かにうねり信号に載っていることが分
+かる．Needleアルゴリズムはトレンド修正処理とFFTにより音データを検出し，
+さらに仮想針アルゴリズムでホワイトノイズを除法しようとする．
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=80mm]{../SigExBotOutput2.eps}
+    \setlength{\unitlength}{1mm}
+    \setlength{\abovecaptionskip}{0mm} % 図キャプション上空行幅調整
+    \setlength{\belowcaptionskip}{0mm} % 図キャプション下空行幅調整
+    \label{fig:soundgroove}
+    \caption{ゆっくりとした振動の上に音信号が載っている}
+  \end{center}
+\end{figure}
+
+\section{結果と考察}
+
+本研究で部分読み出し法を用いたSP レコード音検出を試みた．レコード一枚を
+完全にデータ化するプログラム「SPRecAnalyzer」を作成し，そのデータを画像処
+理アルゴリズムで分析する．その過程で作成される音声ファイルを聞いてみると人
+間の声が聞こえており，ある程度目的を達成したといえる．しかし，原理的には針
+を用いた再生法よりも高質な音声データが得られることにも関わらず，本研究で用
+いた方法では普段の蓄音機に達成する音質が得られなかった．蓄音機の音質と比べ
+ると，本研究で得られた音声データにホワイトノイズの成分がより強くなっている
+ことが分かる．このホワイトノイズをFFT のバンドフィルタリングで削除しようと
+したところ，ホワイトノイズが減衰した半面，音声データも劣化し，より籠った感
+じの声になった．これは，人間の音声にも周波数8kHz 以上の成分があり，ノイズと
+同領域に存在しているため，ノイズとはっきりと区別することが困難であることに
+起源している．
+しかし，オープンソース音データ編集ソフトウェア「Audacity」の動的ノイズ削除フィルタ\footnote{「エフェクト→ノイズの削除」により適用できる}
+を適用しても，蓄音機より音質が低いことから，
+高品質の音声が取得できるためには，
+画像データ生成段階でより音溝に充実した形の画像が得られるように工夫を重ねるべきと考えられる．
+
+\begin{thebibliography}{0}
+\setlength{\itemsep}{0mm}
+\setlength{\baselineskip}{10pt}
+\vspace{2mm}
+
+\bibitem{1stPaper} 魚住　純：光と画像による古レコードの非接触
+再生＝蝋管・SP盤を針を使わずに再生する＝，
+光アライアンス，23，5，pp. 21--25，2012．
+
+\bibitem{2ndPaper} 
+魚住　純：画像処理によるモノラル円盤レコー
+ドからの音声再生，北海学園大学工学部研究
+報告，No. 35，pp. 119--129，2008．
+\end{thebibliography}
+
+\end{document}
