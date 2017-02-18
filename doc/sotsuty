@@ -6,7 +6,9 @@
 %                                  魚住研究室
 %                                  2017.02.18
 %
+
 \documentclass[12pt,a4paper]{jreport}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  <<使用するパッケージ一覧>>
@@ -18,10 +20,6 @@
 \usepackage{fancybox}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage[autolinebreaks, numbered]{mcode}
-\usepackage{enumitem}
-\usepackage{siunitx}
-\sisetup{detect-all}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  次の文は，H13sotsusty.tex というファイルを読込ます
@@ -35,20 +33,24 @@
 %　必要事項をここに記入して下さい
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\sei{
-クーン
+\def\sei{%
+%%% ↓姓を入れる
+北海%
 }
 
-\def\mei{
-トビアス
+\def\mei{%
+%%% ↓名をいれる
+太郎%
 }
 
-\def\snumber{
-4513213
+\def\snumber{%
+%%% ↓学生番号を入れる（半角，末尾に%をつける）
+4500000%
 }
 
-\def\stitle{
-疑似ラインセンサを用いた\\SPレコード音検出
+\def\stitle{%
+%%% ↓卒論題名を入れる
+フラクタルとは何か
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -80,12 +82,59 @@
 %%%%%%%%% 本文ページ %%%%%%%%%%%%%%
 %%%%%%%%%            %%%%%%%%%%%%%%
 
+
+
+
+
+
+
+
+
+
+
+\pagestyle{headings}
+\topmargin 0mm
+\oddsidemargin 5mm
+\textwidth 150mm
+\textheight 230mm
+
+\usepackage[autolinebreaks, numbered]{mcode}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\sisetup{detect-all}
+
+\title{平成28年　卒業研究論文\\
+    　\\
+    　\\
+    　\\
+\huge\bf 疑似ラインセンサーを用いた\\ＳＰレコード音検出\\}
+\author{　\\
+    　\\
+    北海学園大学工学部 電子情報工学科\\
+    魚住研究室\\
+    \\
+    \\
+    4513213\\
+クーン・トビアス}
+\date{2017年1月16日}
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+
+
 \chapter{はじめに}
 
 1888年から1950年代後半まで生産されたSPレコードは今現在も数多く残っている．
 本来は蓄音機で再生されるように設計されたとはいえ，
 針を用いた再生法では記録媒体が痛んで，再生する度に音質の劣化が伴うことから，
-非接触法再生がこの貴重な文化財を傷を付けずにデジタル化できる技術として注目を浴びるようになった\cite{1stPaper,2ndPaper}．
+非接触法再生がこの貴重な文化財を傷を付けずにデジタル化できる技術として注目を浴びるようになった．
 非接触法の利点はレコードに損害を与えずに再生できるばかりでなく，
 割れやひびが入ったレコードも再生可能であることもこの技術のメリットである．
 
@@ -1087,27 +1136,9 @@ imgOriginal = imread('img/tmp.bmp', 'bmp'); % load the original image
 今度の課題として残ることはのノイズ削除アルゴリズムの見直しとずれ発生メカニズムの研究と対策法．
 画像データを画像ファイルとして取得しないでビデオの形で保存する手法もずれ問題の解決に繋がるかもしれない．
 
-%%%%%%%%%%%%%%% 謝辞%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter*{謝辞}
-\addcontentsline{toc}{chapter}{謝辞}
-
-本研究を進めるにあたり，お忙しい中，終始，御指導，御鞭撻をいただいた北海学
-園大学工学部電子情報工学科魚住純教授に心より感謝いたします．
-
-%%%%%%%%%%%%%%% 参考文献 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{thebibliography}{9}
-\addcontentsline{toc}{chapter}{参考文献}
-\bibitem{1stPaper} 魚住　純：光と画像による古レコードの非接触
-再生＝蝋管・SP盤を針を使わずに再生する＝，
-光アライアンス，23，5，pp. 21--25，2012．
-\bibitem{2ndPaper} 
-魚住　純：画像処理によるモノラル円盤レコー
-ドからの音声再生，北海学園大学工学部研究
-報告，No. 35，pp. 119--129，2008．
-\end{thebibliography}
-
-
 \appendix
+
+
 \chapter{SPRecAnalyzerの使用法}
 SPRecAnalyzerは画像データ生成処理過程を管理しやすくするために作成された．
 市販のソフトウェアと異なり，十分にテストされているわけではなく，

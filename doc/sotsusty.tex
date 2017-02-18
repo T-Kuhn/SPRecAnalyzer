@@ -1,0 +1,82 @@
+%  
+%    魚住卒研　卒業論文用スタイルファイル
+%    sotsusty.tex
+%                          魚住研究室
+%                          2004.11.8
+%
+
+\pagestyle{headings}
+\topmargin 0mm
+\oddsidemargin 5mm
+\textwidth 150mm
+\textheight 230mm
+
+
+\setcounter{topnumber}{100}
+\setcounter{bottomnumber}{100}
+\setcounter{totalnumber}{100}
+\renewcommand{\topfraction}{1.0}
+\renewcommand{\bottomfraction}{1.0}
+\renewcommand{\textfraction}{0.0}
+\renewcommand{\floatpagefraction}{0.0}
+\renewcommand{\bibname}{参考文献}
+
+
+\newcount{\tmpyearpmt}
+\def\nendow{\tmpyearpmt=\year%
+\ifnum\month<4 \advance\tmpyearpmt -1 \fi%
+\the\tmpyearpmt}
+
+\def\nendoj{\tmpyearpmt=\year%
+\ifnum\month>3 \advance\tmpyearpmt -1988 \fi%
+\ifnum\month<4 \advance\tmpyearpmt -1989 \fi%
+ \the\tmpyearpmt}
+
+\newcommand{\covpage}{
+\mbox{}
+\vspace*{2cm}
+\begin{center}
+{\bfseries
+{\LARGE 平成{\sffamily\nendoj}年度\quad 卒業研究論文}
+\vfill
+{\huge \stitle}
+\vfill\vfill
+{\Large 
+{\sffamily\the\year}年{\sffamily 2}月}
+\vfill
+{\Large 
+北海学園大学工学部 電子情報工学科\\[2mm]%
+魚住研究室}
+\vfill
+{\Large% 
+{\sffamily\snumber}\\[5mm]%
+~{\LARGE\sei~\mei}
+}
+}
+\end{center}
+\vfill
+\mbox{}
+}
+
+%%%%%%% 章の形式の変更 %%%%%%%%
+
+%\makeatletter
+%\renewcommand{\chapter}{%
+%\newpage
+%\addtocounter{chapter}{1}
+%\@startsection%
+%{chapter}{5}{0mm}{0mm}{15mm}{%
+%\bfseries\Huge\prechaptername\thechapter\postchaptername%
+%\begin{picture}(0,0)
+%\put(0,-7){\rule{130mm}{0.5mm}}
+%\put(0,22){\rule{130mm}{0.5mm}}
+%\end{picture}}}
+%\makeatother
+
+
+
+
+
+
+
+

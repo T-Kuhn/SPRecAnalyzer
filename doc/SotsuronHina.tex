@@ -1,0 +1,157 @@
+%
+%    SotsuronHina.tex
+%
+%    卒業論文用サンプルファイル
+%
+%                                  魚住研究室
+%                                  2004.11.8
+%
+%    このファイルを適当な名前に変えて，各自の卒論
+%    作成に利用して下さい．
+%
+
+\documentclass[12pt,a4paper]{jreport}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  <<使用するパッケージ一覧>>
+%　必要に応じて，使用するパッケージを追加して下さい
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  次の文は，H13sotsusty.tex というファイルを読込ます
+%　このファイルが同じフォルダにある必要があります．
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{sotsusty.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%　<<氏名，学生番号，題名等>>
+%　必要事項をここに記入して下さい
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\sei{%
+%%% ↓姓を入れる
+北海%
+}
+
+\def\mei{%
+%%% ↓名をいれる
+太郎%
+}
+
+\def\snumber{%
+%%% ↓学生番号を入れる（半角，末尾に%をつける）
+4500000%
+}
+
+\def\stitle{%
+%%% ↓卒論題名を入れる
+フラクタルとは何か
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%% 表紙ページ %%%%%%%%%%%%%
+\thispagestyle{empty}
+\covpage
+\renewcommand{\thepage}{\roman{page}}
+\clearpage
+
+%%%%%%%%% 目次ページ %%%%%%%%%%%%%%
+\setcounter{tocdepth}{3}
+\tableofcontents
+
+\clearpage
+%%%%%%%%% 図目次ページ %%%%%%%%%%%%
+%
+%  図の目次を入れたい場合は
+%  次の2行を有効にして下さい
+%
+%\listoffigures
+%\clearpage
+\renewcommand{\thepage}{\arabic{page}}
+\setcounter{page}{1}
+
+%%%%%%%%%            %%%%%%%%%%%%%%
+%%%%%%%%% 本文ページ %%%%%%%%%%%%%%
+%%%%%%%%%            %%%%%%%%%%%%%%
+
+
+
+
+
+
+\chapter*{謝辞}
+\addcontentsline{toc}{chapter}{謝辞}
+
+% \chapter*{ }のように * をつけると，番号のない章になる．
+謝辞を入れる場合にはここに入れる．
+
+家族・友人等へのプライベートな謝辞でも構わない．
+
+
+%%%%%%%%%%%%%%% 参考文献 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  「参考文献」を目次にいれるため，次の
+%   \addtocontentsline のコマンドを忘れずに入れる
+%
+\begin{thebibliography}{9}
+\addcontentsline{toc}{chapter}{参考文献}
+\bibitem{mand}
+ B. Mandelbrot, 「フラクタル幾何学」，日経サイエンス社(1985).
+\bibitem{takayasu}
+ 高安秀樹，「フラクタル」，朝倉書店(1986).
+\bibitem{feder}
+ J. Feder, 「フラクタル」，啓学出版(1991).
+\end{thebibliography}
+
+※ここに挙げた参考文献は，必ず本文で，上のリスト順に参照していること．
+
+%%%%%%%%%%%%%%% 付録 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  プログラム等は付録 (Appendix) につけるとよい
+%
+\appendix
+\chapter{プログラム}
+ \section{○○○のプログラム}
+ \begin{verbatim}
+	% plotGaussian.m　　← ファイル名
+	%
+	% Example program using Function M-file Gaussian.m 
+	% x: coordinate vector
+	x=linspace(-10,10,100);
+	[y,ymax]=gaussian(x,0,1);plot(x,y);hold on
+	[y,ymax]=gaussian(x,0,2);plot(x,y)
+	[y,ymax]=gaussian(x,0,3);plot(x,y)
+	hold off
+	%End of file
+ \end{verbatim}
+
+
+ \section{□□□のプログラム}
+ \begin{verbatim}	
+	% Example: lilac64.m　 ← ファイル名
+	%
+	% ファイル「lilac.bmp」を読み込んで表示するプログラム
+	%
+	X=imread('lilac.bmp');	
+	Xred=X(:,:,1);
+	subplot(1,2,1); imagesc(Xred); axis image
+	subplot(1,2,2); imagesc(Xred); axis([1,256,1,256])
+	colormap(gray)
+	%End of file
+ \end{verbatim}
+
+\end{document}
+
+
+
