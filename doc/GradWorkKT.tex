@@ -343,7 +343,7 @@ $\epsilon$を求めるために，まず直角三角形MCFにおいて頂角$\alpha/2$を考えると，
    
 \begin{align}
     \texttt{height} &= \overline{EF} = 5.81 \left[\si{mm}\right], \label{eq:Overlap7} \\
-    \texttt{width} &= 2\cdot\overline{BE} = 4.87 \left[\si{mm}\right]. \label{eq:Overlap8}
+    \texttt{width} &= 2\cdot\overline{BE} = 4.87 \left[\si{mm}\right] \label{eq:Overlap8}
 \end{align}
 
 \noindent
@@ -426,7 +426,7 @@ $\alpha$を次の画像を取得するための回転角度とする．
     \label{eq:CurveProblem3}
     \overline{MG} &= \cos{\left(\frac{\alpha}{2}\right)}\overline{MF}, \\
     \label{eq:CurveProblem4}
-    \rho &= \overline{MH} - \overline{MG}.
+    \rho &= \overline{MH} - \overline{MG}
 \end{align}
 
 \noindent
@@ -532,30 +532,31 @@ $\alpha$を次の画像を取得するための回転角度とする．
 
 \chapter{画像データ生成}
 
-本研究の画像取得にははJAI社の「BB-500GE」フルカラーカメラを用いる．
-しかしながら，同じカメラでも取得方法には「ビデオとして取得」と「画像データとして取得」と
-2つがある．前者の方法は昨年の研究で適応され，圧縮をかけずに動画撮影を行えばMatlabで各フレームごとに処理を施すことができる．
-この方法の利点は，フレームレートを一旦設定した後はカメラが等時間間隔で画像を取得し映画ファイルに格納してくれるため，
-フレームレートと回転速度の設定さえ正しければ隣接する画像データ同士は重複部分も情報損失も起きず，連続的なデータが得られる．
-一方，画像データに対しMatlabで一枚ずつ画像処理を行いたいため，ビデオ形式で取得する必要がなく，最初から画像ファイル形式で取得した方が
-データとして扱いやすい，というのが欠点として考えられる．
+本研究の画像取得にはJAI社のフルカラーカメラBB-500GEを用いる．
+このカメラからの画像取得方法には，「ビデオ（動画像）として取得」と「静止画像として取得」と
+2つがある．前者の方法は昨年の研究で適応され，圧縮をかけずに動画撮影を行えばMatlabで各フレームごとに処理を施し，それらを接続することができる．
+この方法の利点は，フレームレートを一旦設定した後はカメラが等時間間隔で画像を取得し動画ファイルに格納するため，
+フレームレートと回転速度の設定さえ正しければ隣接する画像データ同士は重複部分も情報損失も起きず，良好な連続的画像データが得られることである．
+一方，画像データに対しMatlabで一枚ずつ画像処理を行いたい場合には，ビデオ形式で取得する必要がなく，最初から静止画像形式で取得した方が
+データとして扱いやすく，それが動画にする手取の欠点として考えられる．
 
-それに対し，後者の「画像データとして取得する」といった手法の利点と欠点はどうなるだろうか．
+それに対し，後者の「静止画像として取得する」手法の利点と欠点はどうなるだろうか．
 最初から画像ファイルとして保存されるので，画像処理には向いている．しかし，画像取得タイミングを
 何らかの基準に基づき，画像データが連続的になるようにカメラに撮像開始命令を送らなければならない．
-本研究ではこの方法を適応し，回転ステージの回転度を毎マイクロセカンド取得し，このデータを基準に撮像命令のタイミングを決める．
+本研究ではこの方法を適用し，回転ステージの回転角度をマイクロ秒単位で取得し，このデータを基準に撮像命令のタイミングを決める．
 
 \section{SPRecAnalyzer}
 
-カメラやパルスステージとの通信を制御し，大量の画像データを管理するために「SPRecAnalyzer」が作成された．
-このソフトウェアはC♯で書かれたもので，JAI社が公開しているカメラ制御用DLLファイル\footnote{Jai\_FactoryDotNET.dll}を活用する．
-パルスステージとの通信には同様にNational Instruments社の専用DLLファイル\footnote{NationalInstruments.NI4882.dll}を使用．
-SPRecAnalyzerの目的は画像データ取得であり，カリブレーションを行った後にAIAタブで「スターと」ボタンを押すことにより，
-自動的にレコードの全面画像データ取得プログラムが開始できる．図\ref{fig:GPIBwhileCalibrating}にSPRecAnalyzerのUIを示す．
+カメラやパルスステージとの通信を制御し，大量の画像データを管理するためのプログラムSPRecAnalyzerを作成した．
+このソフトウェアはC$\♯$で書かれており，JAI社が公開しているカメラ制御用DLLファイル\footnote{Jai\_FactoryDotNET.dll}を活用する．
+パルスステージとの通信には同様にNational Instruments社のGPIBコントローラ専用DLLファイル\footnote{NationalInstruments.NI4882.dll}を使用した．
+図\ref{fig:GPIBwhileCalibrating}にSPRecAnalyzerのUIを示す．
+SPRecAnalyzerの目的は画像データの取得であり，キャリブレーションを行った後にAIA（Automatic Image Acquisition）タブで「スターと」ボタンを押すことにより，
+自動的にレコードの全面画像データ取得プログラムが開始できる．
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=0.9\textwidth, clip]{GPIBwhileCalibrating.eps}
+        \includegraphics[width=0.95\textwidth, clip]{GPIBwhileCalibrating.eps}
         \caption{SPRecAnalyzerのユーザーインターフェース}
         \label{fig:GPIBwhileCalibrating}
     \end{center}
@@ -563,52 +564,61 @@ SPRecAnalyzerの目的は画像データ取得であり，カリブレーションを行った後にAIAタブで
 
 \newpage
 
-SPRecAnalyzerのUIには重要なタブが３つあり，それらの役割について以下の表にまとめる．
-なお，「Matlab」タブもあるものの，デバグ目的で作成されたため，画像データ生成や各装置のセットアップには不要である．
+SPRecAnalyzerのUIには重要なタブが３つあり，それらの役割について表\ref{table:tab}にまとめる．
+なお，「Matlab」タブもあるが，デバグ目的で作成したもので，画像データ生成や各装置のセットアップには不要である．
 
 \begin{table}[h]
     \begin{center}
-        \begin{tabular}{ l l }
-            GPIB Interface & GPIB設定，パルスステージ状況表示，カリブレーション\\
-            Camera & カメラ設定\\ 
-            Automatic Image Acq. & 自動画像取得\\
+        \caption{SPRecAnalyzerのタブとその機能\strut}
+        \label{table:tab}
+        \begin{tabular}{ | l | l |}
+            \hline
+            タブ名 & 機能 \\
+            \hline
+            GPIB Interface & GPIB設定，パルスステージ状況表示，キャリブレーション \\
+            Camera & カメラ設定 \\ 
+            Automatic Image Acq. & 自動画像取得 \\
+            \hline
         \end{tabular}
     \end{center}
 \end{table}
 
 \subsection{GPIB Interfaceタブ}
-このタブでの一番左に「Basics」区切りがあり，そこでGPIBをセットアップできる．
+このタブの一番左に「Basics」のセクションがあり，そこでGPIBをセットアップできる．
 パルスステージは標準でアドレスが8になっているため，変更する必要がない．
 「Open」ボタンで通信開始した後に「Write」・「Read」ボタンでバスへの書き込み
-とバスバッファーからの読出しができる．
+とバスバッファからの読出しができる．
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=0.9\textwidth, clip]{GPIBSetupFinished.eps}
+        \includegraphics[width=0.95\textwidth, clip]{GPIBSetupFinished.eps}
         \caption{GPIBをセットアップした後のGPIB Interfaceタブの様子}
         \label{fig:GPIBSetupFinished}
     \end{center}
 \end{figure}
 
-「Advanced」区切りではパルスステージに対する命令を複数行記述し「Start」ボタンを押すことで
-順次実行できる．「Status」はバス状況についての情報が表示される．
-「Calibration」区切りはカリブレーション機能を実行，その結果を確認するために設置された．
-なお，カリブレーション機能を実行するためにはGPIBとカメラがセットアップ済みでなければならない．
+「Advanced」セクションではパルスステージに対する命令を複数行記述し「Start」ボタンを押すことで
+順次実行できる．「Status」セクションはバス状況についての情報が表示される．
+「Calibration」セクションはキャリブレーション機能を実行し，その結果を確認するために設置された．
+なお，キャリブレーション機能を実行するためにはGPIBとカメラがセットアップ済みでなければならない．
+GPIBをセットアップした後のUIを図\ref{fig:GPIBSetupFinished}に示す．
 
 \newpage
 
 \subsection{Cameraタブ}
-Cameraタブではカメラ設定を行うことと画像データを取得することができる．
-本研究ではカメラのSoftware Trigger機能を利用し画像データの取得タイミングを一枚一枚
-トリガーを送ることで決める．「Gain Control」スライダーではカメラのアナログ利得を設定可能．
+Cameraタブではカメラ設定を行い画像データを取得することができる．
+本研究ではカメラのSoftware Trigger機能を利用し
+撮影毎にトリガーを送ることで
+画像データの取得タイミングを
+決める．「Gain Control」スライダーではカメラのアナログ利得を設定可能であり，
 「Exposure Control」スライダーではカメラの露光時間を設定できる．
 本研究の撮像設定では，レコードが一定速度で回転しながら撮像を行うため，
 露光時間の値は小さく設定しないと画像データに回転によるぶれが生じる．
-本研究で用いた設定の詳細については付属Aを参照．
+本研究で用いた設定の詳細については付録Aを参照のこと．
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=0.9\textwidth, clip]{cameraSetupFinished.eps}
+        \includegraphics[width=0.95\textwidth, clip]{cameraSetupFinished.eps}
         \caption{SPRecAnalyzerのユーザーインターフェース}
         \label{fig:cameraSetupFinished}
     \end{center}
@@ -617,78 +627,80 @@ Cameraタブではカメラ設定を行うことと画像データを取得することができる．
 
 \subsection{物理的距離検出}
 
-物理的距離検出機能は本研究において非常に重要な機能である．
+物理的距離検出は本研究において非常に重要な機能である．
 なぜなら，カメラに撮像命令を送信した際に，回転パルスステージが何パルス進んだ後に次の画像を取るべきかを判定するためには
-回転パルスステージにおいて1パルス当たり横方向に何画素進むかといった情報が必要不可欠だからである．
+回転パルスステージにおいて1パルス当たり横方向に何画素進むかという情報が必要不可欠だからである．
 SPRecAnalyzerでは，この重要な変数を「Pulses per pixel ratio」と呼ぶ．
 
-物理的距離検出アルゴリズム内容を以下に示す．
+物理的距離検出アルゴリズムの内容を以下に示す．
 
 \begin{enumerate}
     \itemsep-0.3pt 
-    \item レコードの外側の音溝がカメラ撮像範囲の半分くらいに入る位置まで進む 
-    \item 画像一枚を取る
-    \item Matlabで画像処理を行い，レコードの外側から見て一番近い音溝の位置情報を検出
-    \item 平行移動パルスステージを400パルスだけレコード中心に向かって移動する
-    \item 画像一枚を取る
-    \item Matlabで画像処理を行い，レコードの外側から見て一番近い音溝の位置情報を検出
-    \item 2回行った画像処理の位置情報を比較し，平行移動後，音溝が何ピクセル移動したかを計算する
+    \item レコードの外側の音溝がカメラ撮像範囲の半分くらいに入る位置まで移動 
+    \item 画像を1枚撮影
+    \item Matlabで画像処理を行い，レコードの外側に最も番近い音溝の位置情報を検出
+    \item 平行移動パルスステージを400パルスだけレコード中心に向かって移動
+    \item 画像を1枚撮影
+    \item Matlabで画像処理を行い，レコードの外側に最も番近い音溝の位置情報を検出
+    \item 2回行った画像処理の位置情報を比較し，平行移動後，音溝が何ピクセル移動したかを計算
 \end{enumerate}
 
-400パルスだけ移動した際に，表\ref{table:PulseStage}の定数を利用することで何mmだけ平行移動したかということが用意に計算できる．
-この結果を用いり，mm/pixel割合を計算することができる．これがいわゆる1ピクセルの物理的サイズ．
-これを一画像当たりの回転パルス数の計算に利用する．
+400パルス分移動した際に，表\ref{table:PulseStage}の定数を利用することで何mm平行移動したかが容易に計算できる．
+この結果を用い，mm/pixelの割合を計算することができる．これがいわゆる1ピクセルの物理的サイズであり，
+これを1画像当たりの回転パルス数の計算に利用する．
 
-物理的距離検出のための画像処理アルゴリズムを付属Bに示す．画像処理内容は２値化，黒枠削除，ラベリング，音溝検出とまとめることができる．
-ここでいう「音溝検出」はあくまでも一定のピクセル数を超える集合を音溝だと判断する処理の処理のことである．
+物理的距離検出のための画像処理アルゴリズムを付録Bに示す．画像処理内容は２値化，黒枠削除，ラベリング，および音溝検出にまとめることができる．
+ここでいう「音溝検出」はあくまでも一定のピクセル数を超える集合を音溝であると判断する処理のことである．
 
 \subsection{$\beta$角算出}
 
-$\beta$角は画像一枚当たりに回転すべき角度（単位は度）であり，それをパルス数に換算した値が「pulsesPerImage」である．
-SPレコードの回転速度を一定に保ちながらレコードの外側から内側へと移動することに連れて，レコードの表面速度が低下する．
-従った，レコードの内側に近づけば近づくほど，一定幅の画像を撮像する際の「pulsesPerImage」値が大きくなるはず．
+$\beta$角は画像1枚当たりに回転すべき角度（単位は度）であり，それをパルス数に換算した値がpulsesPerImageである．
+SPレコードの回転速度を一定に保ちながらレコードの外側から内側へと移動するに連れて，レコードの表面速度（線速度）が低下する．
+したがって，レコードの内側に近づくほど，一定幅の画像を撮像する際の「pulsesPerImage」の値が大きくなると考えられる．
 
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.9\textwidth, clip]{BetaAngle.eps}
-        \caption{$\beta$角が1画像当たり回転すべき角度である}
+        \caption{1画像当たり回転すべき角度$\beta$}
         \label{fig:BetaAngle}
     \end{center}
 \end{figure}
 \newpage
-この関係を数学的に突き止めてみよう．図\ref{fig:BetaAngle}において，カメラの撮像範囲を長方形ABCD，
+この関係を数学的に突き求めてみよう．図\ref{fig:BetaAngle}において，カメラの撮像範囲を長方形ABCD，
 $\overline{MH}$をレコードの中心からカメラ撮像領域中心点までの距離とする．また，$\overline{EF}$を撮像画像幅とする．
-MHEが直角三角形より
+MHEが直角三角形であるから
 
 \begin{equation}
     \label{eq:BetaAngle1}
-    \frac{\beta}{2} = \arctan{\left(\frac{\overline{MH}}{\overline{HE}}\right)}
+    \frac{\beta}{2} = \arctan{\left(\frac{\overline{HE}}{\overline{MH}}\right)}
 \end{equation}
 
+\noindent
 よって，
 
 \begin{equation}
     \label{eq:BetaAngle1}
-    \beta = 2\arctan{\left(\frac{\overline{MH}}{\overline{HE}}\right)}
+    \beta = 2\arctan{\left(\frac{\overline{HE}}{\overline{MH}}\right)}
 \end{equation}
 
-と$\beta$角が求まる．物理的距離検出の物理的ピクセルサイズと表\ref{table:PulseStage}に示す定数を利用し，
-一画像当たりの回転パルス数（「pulsesPerImage」）を計算できる．
+\noindent
+と求まる．物理的距離検出の物理的ピクセルサイズと表\ref{table:PulseStage}に示す定数を利用し，
+1画像当たりの回転パルス数pulsesPerImageを計算できる．
 
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.5\textwidth, clip]{StatusAndCalibration.eps}
-        \caption{「Beta Angle」と「pulsesPerImage」はGPIB Interfaceタブで表示される}
+        \caption{GPIB Interfaceタブで表示される「Beta Angle」と「pulsesPerImage」}
         \label{fig:StatusAndCalibration}
     \end{center}
 \end{figure}
 
 
-\subsection{カリブレーション機能}
+\subsection{キャリブレーション機能}
 
-カリブレーション機能はGPIB Interfaceタブに配置された「Start Calib」ボタンで実行できる．
+キャリブレーション機能はGPIB Interfaceタブに配置された「Start Calib」ボタンで実行できる．
 自動撮像機能を使う前にこの機能を実行する必要がある．
-カリブレーション機能の処理内容を以下に示す．
+キャリブレーション機能の処理内容を以下に示す．
 
 \begin{enumerate}
     \itemsep-0.3pt 
@@ -704,19 +716,19 @@ MHEが直角三角形より
 
 \subsection{自動撮像機能}
 
-「Automatic Image Acq.」タブは自動撮像機能関連の操作ができる．
-物理的距離検出アルゴリズムでカメル直結顕微鏡の拡大率に関わらず
+「Automatic Image Acq.」タブでは自動撮像機能関連の操作ができる．
+物理的距離検出アルゴリズムでカメラに直結した顕微鏡の拡大率に関わらず
 正確に１ピクセルの物理的サイズが計算できるため，
 顕微鏡の拡大率を変えても，自動撮像機能で取得する画像データが連続的になる．
 
-またパルス対ピクセル割合が計算で求まるため，レコードを一周した後に正確に1500ピクセルだけ，
-レコードの中心へと平行移動することができる．平行移動後に撮像する画像データは前の週のデータと
-比べてちょうど1500ピクセルずれているため，音検出アルゴリズム「SigExBot」は
+またパルス対ピクセルの割合が計算で求まるため，レコードを一周した後に正確に1500ピクセルだけ，
+レコードの中心へと平行移動することができる．平行移動後に撮像する画像データは前の周のデータと
+比べて正確に1500ピクセルずれているため，音検出アルゴリズム「SigExBot」は
 例えば，Round1からRound2のデータに移行するときに，現在追跡中の音溝を新しい画像データの中で容易に
 特定することができる．
 
 取得される画像データは「SPRecordAnalyzer\matlab\getPulsePerPixelData\img」フォルダ内に「Round1」，「Round2」，「Round3」...と
-週別にフォルダに格納される．このデータは次章の画像処理アルゴリズムの対象となる．
+周別にフォルダに格納される．このデータは次章の画像処理アルゴリズムの対象となる．
 
 
 \chapter{画像処理}
